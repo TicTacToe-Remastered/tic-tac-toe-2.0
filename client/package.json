@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "type": "module",
   "scripts": {
     "start": "snowpack dev",
     "build": "snowpack build"
@@ -10,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "notyf": "^3.9.0",
     "snowpack": "^3.5.5",
     "socket.io-client": "^4.1.2"
   }
