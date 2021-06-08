@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #171717;
+    color: white;
+    font-family: Montserrat, Helvetica, sans-serif;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+
+        h1 {
+            margin: 2rem;
+        }
+        
+        .col {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 2rem;
+
+            .row {
+                flex: 25%;
+                flex-shrink: 0;
+                width: 100%;
+
+                &.row-center {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    .grid {
+                        display: grid;
+                        grid-template-columns: 25vmin 25vmin 25vmin;
+                        grid-template-rows: 25vmin 25vmin 25vmin;
+                        border: 1px solid #FFF;
+
+                        .box {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            cursor: pointer;
+
+                            &:nth-child(2n) {
+                                background-color: #212121;
+                            }
+
+                            /* Circle Style */
+                            span {
+                                border: 8px solid #FFF;
+                                border-radius: 50%;
+                                height: 50%;
+                                width: 50%;
+
+                                &.small {
+                                    height: 25%;
+                                    width: 25%;
+                                }
+
+                                &.medium {
+                                    height: 50%;
+                                    width: 50%;
+                                }
+
+                                &.large {
+                                    height: 75%;
+                                    width: 75%;
+                                }
+
+                                &.blue {
+                                    border-color: blue;
+                                }
+
+                                &.red {
+                                    border-color: red;
+                                }
+                            }
+                            /* End Circle Style */
+                        }
+                    }
+                }
+                
+                &.row-right {
+                    margin: 0 2rem;
+
+                    .team {
+                        margin: 8px 0;
+    
+                        button {
+                            width: 4rem;
+                            height: 2rem;
+                            border-radius: 4px;
+                            transition: 0.3s ease;
+    
+                            &:hover {
+                                background-color: lightgrey;
+                            }
+                        }
+
+                        &.team-blue button {
+                            border-color: blue;
+                        }
+                        
+                        &.team-red button {
+                            border-color: red;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
