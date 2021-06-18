@@ -8,12 +8,14 @@ let teams = {
     blue: {
         id: 'blue',
         count: 0,
-        player: ''
+        player: '',
+        score: 0
     },
     red: {
         id: 'red',
         count: 0,
-        player: ''
+        player: '',
+        score: 0
     }
 };
 
@@ -62,6 +64,8 @@ io.on('connection', socket => {
             if (checkWin()) {
                 io.emit('receive-win', activeTeam.id);
                 resetGrid();
+                findTeamByName(team).score++;
+                io.emit('receive-teams', teams);
             }
             toogleActiveTeam();
         } else {

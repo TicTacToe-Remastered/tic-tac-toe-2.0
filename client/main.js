@@ -81,7 +81,8 @@ function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
         const el = document.getElementById(key);
-        el.querySelector('span').innerHTML = value.count;
+        el.querySelector('#place').innerHTML = value.count;
+        el.querySelector('#score').innerHTML = value.score;
     });
 }
 
