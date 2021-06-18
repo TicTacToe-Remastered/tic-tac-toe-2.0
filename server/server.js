@@ -22,7 +22,7 @@ let grid = [
     [0, '', ''], [0, '', ''], [0, '', ''],
     [0, '', ''], [0, '', ''], [0, '', '']
 ];
-//ID - Player - Size
+//ID - Team - Size
 
 let activeTeam = teams.blue;
 
@@ -59,6 +59,10 @@ io.on('connection', socket => {
             grid[box - 1][0] = 1;
             grid[box - 1][1] = team;
             io.emit('receive-play', box, team);
+            if (checkWin()) {
+                io.emit('receive-win', activeTeam.id);
+                resetGrid();
+            }
             toogleActiveTeam();
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
@@ -79,12 +83,7 @@ io.on('connection', socket => {
 
     socket.on('send-reset', (user, callback) => {
         if (!isPlayer(user)) return callback("You're not a player, you can't reset the grid!");
-        grid = [
-            [0, '', ''], [0, '', ''], [0, '', ''],
-            [0, '', ''], [0, '', ''], [0, '', ''],
-            [0, '', ''], [0, '', ''], [0, '', '']
-        ];
-        io.emit('receive-init', grid);
+        resetGrid();
     });
 });
 
@@ -107,4 +106,28 @@ function toogleActiveTeam() {
         activeTeam = teams.blue;
     }
     io.emit('receive-active', `It's <b>${activeTeam.id}</b> turn!`);
+}
+
+function checkWin() {
+    if ((grid[0][1] != '' && grid[0][1] === grid[1][1] && grid[1][1] === grid[2][1]) ||
+    (grid[3][1] != '' && grid[3][1] === grid[4][1] && grid[4][1] === grid[5][1]) ||
+    (grid[6][1] != '' && grid[6][1] === grid[7][1] && grid[7][1] === grid[8][1]) ||
+    (grid[0][1] != '' && grid[0][1] === grid[3][1] && grid[3][1] === grid[6][1]) ||
+    (grid[1][1] != '' && grid[1][1] === grid[4][1] && grid[4][1] === grid[7][1]) ||
+    (grid[2][1] != '' && grid[2][1] === grid[5][1] && grid[5][1] === grid[8][1]) ||
+    (grid[0][1] != '' && grid[0][1] === grid[4][1] && grid[4][1] === grid[8][1]) ||
+    (grid[2][1] != '' && grid[2][1] === grid[4][1] && grid[4][1] === grid[6][1])) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function resetGrid() {
+    grid = [
+        [0, '', ''], [0, '', ''], [0, '', ''],
+        [0, '', ''], [0, '', ''], [0, '', ''],
+        [0, '', ''], [0, '', ''], [0, '', '']
+    ];
+    io.emit('receive-init', grid);
 }

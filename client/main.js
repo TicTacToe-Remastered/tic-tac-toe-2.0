@@ -36,7 +36,7 @@ socket.on('receive-teams', teams => {
 
 socket.on('receive-play', (box, team, size) => {
     play(box, team, size);
-    notyf.success(`<b>${team}</b> play on <b>box ${box}</b>`);
+    /* notyf.success(`<b>${team}</b> play on <b>box ${box}</b>`); */
 });
 
 socket.on('receive-init', grid => {
@@ -45,6 +45,10 @@ socket.on('receive-init', grid => {
 
 socket.on('receive-active', activeMessage => {
     editActive(activeMessage);
+});
+
+socket.on('receive-win', (win, grid) => {
+    notyf.success(`<b>${win}</b> win the match!`);
 });
 
 /* SEND */
