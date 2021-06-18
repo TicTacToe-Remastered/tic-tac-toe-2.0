@@ -6,10 +6,12 @@ const io = require('socket.io')(3000, {
 
 let teams = {
     blue: {
+        id: 'blue',
         count: 0,
         player: ''
     },
     red: {
+        id: 'red',
         count: 0,
         player: ''
     }
@@ -35,15 +37,19 @@ io.on('connection', socket => {
         t.count = 0;
         t.player = '';
         io.emit('receive-teams', teams);
-    })
+    });
 
     socket.on('get-teams', callback => {
         callback(teams);
-    })
+    });
 
     socket.on('get-grid', callback => {
         callback(grid);
-    })
+    });
+
+    socket.on('get-active', callback => {
+        callback(`It's <b>${activeTeam.id}</b> turn!`);
+    });
 
     socket.on('play', (user, box, callback) => {
         const team = isPlayer(user);
@@ -57,7 +63,7 @@ io.on('connection', socket => {
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
         }
-    })
+    });
 
     socket.on('join-team', (user, teamName, callback) => {
         if (isPlayer(user)) return callback('You already joined a team!');
@@ -69,7 +75,7 @@ io.on('connection', socket => {
         } else {
             callback(`<b>${teamName}</b> is full!`);
         }
-    })
+    });
 
     socket.on('send-reset', (user, callback) => {
         if (!isPlayer(user)) return callback("You're not a player, you can't reset the grid!");
@@ -79,8 +85,8 @@ io.on('connection', socket => {
             [0, '', ''], [0, '', ''], [0, '', '']
         ];
         io.emit('receive-init', grid);
-    })
-})
+    });
+});
 
 function isPlayer(user) {
     return Object.keys(teams).find(key => teams[key].player === user);
@@ -100,4 +106,5 @@ function toogleActiveTeam() {
     } else {
         activeTeam = teams.blue;
     }
+    io.emit('receive-active', `It's <b>${activeTeam.id}</b> turn!`);
 }
