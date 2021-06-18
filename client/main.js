@@ -7,55 +7,88 @@ const notyf = new Notyf({
       y: 'top'
     }
 });
-const boxes = document.querySelectorAll('.box')
-const teamButtons = document.querySelectorAll('.btn-team')
+const boxes = document.querySelectorAll('.box');
+const teamButtons = document.querySelectorAll('.btn-team');
+const resetButton = document.querySelector('.btn-reset');
 
-const socket = io('http://localhost:3000')
+const socket = io('http://localhost:3000');
 
 /* CONNECTIONS */
 socket.on('connect', () => {
-    notyf.success(`You connected with id <b>${socket.id}</b>!`)
-    socket.emit('get-teams', editTeams)
+    notyf.success(`You connected with id <b>${socket.id}</b>!`);
+    socket.emit('get-teams', editTeams);
+    socket.emit('get-grid', initGrid);
 })
 
 /* RECEIVE */
 socket.on('receive-connection', id => {
-    notyf.success(`<b>${id}</b> joined the game!`)
+    notyf.success(`<b>${id}</b> joined the game!`);
 })
 
 socket.on('receive-disconnect', id => {
-    notyf.error(`<b>${id}</b> left the game!`)
-})
-
-socket.on('receive-play', (user, box) => {
-    notyf.success(`<b>${user}</b> play on <b>box ${box}</b>`)
+    notyf.error(`<b>${id}</b> left the game!`);
 })
 
 socket.on('receive-teams', teams => {
-    editTeams(teams)
+    editTeams(teams);
+})
+
+socket.on('receive-play', (box, team, size) => {
+    play(box, team, size);
+    notyf.success(`<b>${team}</b> play on <b>box ${box}</b>`);
+})
+
+socket.on('receive-init', grid => {
+    initGrid(grid);
 })
 
 /* SEND */
+boxes.forEach(box => {
+    box.addEventListener('click', e => {
+        socket.emit('play', socket.id, box.id, function(error) {
+            notyf.error(error);
+        })
+    })
+});
+
 teamButtons.forEach(btn => {
     btn.addEventListener('click', e => {
-        e.preventDefault()
+        e.preventDefault();
         socket.emit('join-team', socket.id, e.target.parentElement.id, function(error) {
-            notyf.error(error)
+            notyf.error(error);
         })
     })
 })
 
-boxes.forEach(box => {
-    box.addEventListener('click', e => {
-        socket.emit('play', socket.id, e.target.id)
-    })
-});
+resetButton.addEventListener('click', e => {
+    e.preventDefault();
+    socket.emit('send-reset', socket.id, function(error) {
+        notyf.error(error);
+    });
+})
 
 /* FUNCTIONS */
 function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
-        const [key, value] = entry
-        const el = document.getElementById(key)
-        el.querySelector('span').innerHTML = value.count
+        const [key, value] = entry;
+        const el = document.getElementById(key);
+        el.querySelector('span').innerHTML = value.count;
     });
+}
+
+function initGrid(grid) {
+    grid.forEach((box, index) => {
+        if (box[0] === 1) {
+            play(index + 1, box[1]);
+        } else {
+            boxes[index].innerHTML = "";
+        }
+    });
+}
+
+function play(boxID, team, size = 'medium') {
+    const box = document.getElementById(boxID);
+    const span = document.createElement('span');
+    span.classList.add(size, team);
+    box.appendChild(span);
 }

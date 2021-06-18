@@ -59,6 +59,8 @@ body {
                                 border-radius: 50%;
                                 height: 50%;
                                 width: 50%;
+                                user-select: none;
+                                pointer-events: none;
 
                                 &.small {
                                     height: 25%;
@@ -94,7 +96,7 @@ body {
                     .team {
                         margin: 8px 0;
     
-                        .btn-team {
+                        .btn-team, .btn-reset {
                             cursor: pointer;
                             width: 4rem;
                             height: 2rem;
