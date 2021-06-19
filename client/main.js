@@ -51,6 +51,10 @@ socket.on('receive-win', (win, grid) => {
     notyf.success(`<b>${win}</b> win the match!`);
 });
 
+socket.on('receive-equality', () => {
+    notyf.success(`Equality!`);
+});
+
 /* SEND */
 boxes.forEach(box => {
     box.addEventListener('click', e => {

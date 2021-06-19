@@ -61,7 +61,10 @@ io.on('connection', socket => {
             grid[box - 1][0] = 1;
             grid[box - 1][1] = team;
             io.emit('receive-play', box, team);
-            if (checkWin()) {
+            if (checkEquality()) {
+                resetGrid();
+                io.emit('receive-equality');
+            } else if (checkWin()) {
                 io.emit('receive-win', activeTeam.id);
                 resetGrid();
                 findTeamByName(team).score++;
@@ -110,6 +113,10 @@ function toogleActiveTeam() {
         activeTeam = teams.blue;
     }
     io.emit('receive-active', `It's <b>${activeTeam.id}</b> turn!`);
+}
+
+function checkEquality() {
+    return grid.filter(g => g[1] != '').length >= 9;
 }
 
 function checkWin() {
