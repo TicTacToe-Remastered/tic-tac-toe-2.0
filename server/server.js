@@ -9,22 +9,34 @@ let teams = {
         id: 'blue',
         count: 0,
         player: '',
-        score: 0
+        score: 0,
+        activePiece: 'medium',
+        pieces: {
+            small: 3,
+            medium: 3,
+            large: 3
+        }
     },
     red: {
         id: 'red',
         count: 0,
         player: '',
-        score: 0
+        score: 0,
+        activePiece: 'medium',
+        pieces: {
+            small: 3,
+            medium: 3,
+            large: 3
+        }
     }
 };
 
 let grid = [
-    [0, '', ''], [0, '', ''], [0, '', ''],
-    [0, '', ''], [0, '', ''], [0, '', ''],
-    [0, '', ''], [0, '', ''], [0, '', '']
+    [null, null], [null, null], [null, null],
+    [null, null], [null, null], [null, null],
+    [null, null], [null, null], [null, null]
 ];
-//ID - Team - Size
+//Team - Size
 
 let activeTeam = teams.blue;
 
@@ -58,9 +70,11 @@ io.on('connection', socket => {
         if (!team) return callback("You're not a player!");
         if (activeTeam != findTeamByName(team)) return callback("It's not your turn!");
         if (isFree(box)) {
-            grid[box - 1][0] = 1;
-            grid[box - 1][1] = team;
-            io.emit('receive-play', box, team);
+            grid[box - 1][0] = team;
+            grid[box - 1][1] = activeTeam.activePiece;
+            activeTeam.pieces[activeTeam.activePiece] --;
+            io.emit('receive-play', box, team, activeTeam.activePiece);
+            io.emit('receive-edit-piece', activeTeam)
             if (checkEquality()) {
                 resetGrid();
                 io.emit('receive-equality');
@@ -92,6 +106,13 @@ io.on('connection', socket => {
         if (!isPlayer(user)) return callback("You're not a player, you can't reset the grid!");
         resetGrid();
     });
+
+    socket.on('select-piece', (user, item, callback) => {
+        const team = isPlayer(user);
+        if (!team) return callback("You're not a player!");
+        findTeamByName(team).activePiece = item;
+        socket.emit('receive-edit-piece', findTeamByName(team));
+    });
 });
 
 function isPlayer(user) {
@@ -99,7 +120,7 @@ function isPlayer(user) {
 }
 
 function isFree(box) {
-    return grid[box - 1][0] === 0;
+    return grid[box - 1][0] === null;
 }
 
 function findTeamByName(teamName) {
@@ -116,18 +137,18 @@ function toogleActiveTeam() {
 }
 
 function checkEquality() {
-    return grid.filter(g => g[1] != '').length >= 9;
+    return grid.filter(g => g[0] !== null).length >= 9;
 }
 
 function checkWin() {
-    if ((grid[0][1] != '' && grid[0][1] === grid[1][1] && grid[1][1] === grid[2][1]) ||
-    (grid[3][1] != '' && grid[3][1] === grid[4][1] && grid[4][1] === grid[5][1]) ||
-    (grid[6][1] != '' && grid[6][1] === grid[7][1] && grid[7][1] === grid[8][1]) ||
-    (grid[0][1] != '' && grid[0][1] === grid[3][1] && grid[3][1] === grid[6][1]) ||
-    (grid[1][1] != '' && grid[1][1] === grid[4][1] && grid[4][1] === grid[7][1]) ||
-    (grid[2][1] != '' && grid[2][1] === grid[5][1] && grid[5][1] === grid[8][1]) ||
-    (grid[0][1] != '' && grid[0][1] === grid[4][1] && grid[4][1] === grid[8][1]) ||
-    (grid[2][1] != '' && grid[2][1] === grid[4][1] && grid[4][1] === grid[6][1])) {
+    if ((grid[0][0] !== null && grid[0][0] === grid[1][0] && grid[1][0] === grid[2][0]) ||
+    (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
+    (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
+    (grid[0][0] !== null && grid[0][0] === grid[3][0] && grid[3][0] === grid[6][0]) ||
+    (grid[1][0] !== null && grid[1][0] === grid[4][0] && grid[4][0] === grid[7][0]) ||
+    (grid[2][0] !== null && grid[2][0] === grid[5][0] && grid[5][0] === grid[8][0]) ||
+    (grid[0][0] !== null && grid[0][0] === grid[4][0] && grid[4][0] === grid[8][0]) ||
+    (grid[2][0] !== null && grid[2][0] === grid[4][0] && grid[4][0] === grid[6][0])) {
         return true;
     } else {
         return false;
@@ -136,9 +157,19 @@ function checkWin() {
 
 function resetGrid() {
     grid = [
-        [0, '', ''], [0, '', ''], [0, '', ''],
-        [0, '', ''], [0, '', ''], [0, '', ''],
-        [0, '', ''], [0, '', ''], [0, '', '']
+        [null, null], [null, null], [null, null],
+        [null, null], [null, null], [null, null],
+        [null, null], [null, null], [null, null]
     ];
+    teams.blue.pieces = {
+        small: 3,
+        medium: 3,
+        large: 3
+    }
+    teams.red.pieces = {
+        small: 3,
+        medium: 3,
+        large: 3
+    }
     io.emit('receive-init', grid);
 }
