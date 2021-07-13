@@ -108,9 +108,10 @@ io.on('connection', socket => {
         resetGrid();
     });
 
-    socket.on('select-piece', (user, item, callback) => {
-        const team = isPlayer(user);
-        if (!team) return callback("You're not a player!");
+    socket.on('select-piece', (user, team, item, callback) => {
+        const userTeam = isPlayer(user);
+        if (!userTeam) return callback("You're not a player!");
+        if (userTeam !== team) return;
         findTeamByName(team).activePiece = item;
         io.emit('receive-edit-piece', teams);
     });

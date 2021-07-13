@@ -106,7 +106,7 @@ resetButton?.addEventListener('click', e => {
 
 pieceSelectorItems.forEach(item => {
     item.addEventListener('click', e => {
-        socket.emit('select-piece', socket.id, item.id, function (error) {
+        socket.emit('select-piece', socket.id, item.closest('.player-container').id, item.id, function (error) {
             notyf.error(error);
         });
     });
