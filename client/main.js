@@ -1,5 +1,7 @@
+import.meta.env;
 import { io } from 'socket.io-client';
 import { Notyf } from 'notyf';
+
 const notyf = new Notyf({
     duration: 5000,
     position: {
@@ -14,7 +16,7 @@ const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
 
-const socket = io('http://localhost:3000');
+const socket = io(`${__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST}:${__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_PORT}`);
 
 /* CONNECTIONS */
 socket.on('connect', () => {
