@@ -75,7 +75,7 @@ io.on('connection', socket => {
             grid[box - 1][1] = activeTeam.activePiece;
             activeTeam.pieces[activeTeam.activePiece]--;
             io.emit('receive-play', box, team, activeTeam.activePiece);
-            socket.emit('receive-edit-piece', activeTeam)
+            io.emit('receive-edit-piece', teams)
             if (checkEquality()) {
                 resetGrid();
                 io.emit('receive-equality');
@@ -112,7 +112,7 @@ io.on('connection', socket => {
         const team = isPlayer(user);
         if (!team) return callback("You're not a player!");
         findTeamByName(team).activePiece = item;
-        socket.emit('receive-edit-piece', findTeamByName(team));
+        io.emit('receive-edit-piece', teams);
     });
 });
 

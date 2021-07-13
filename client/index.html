@@ -16,28 +16,34 @@
     </head>
     <body>
         <main class="container">
-            <!-- <div class="circle-container">
-                <span class="circle small red"></span>
-                <span class="circle small red"></span>
-                <span class="circle small red"></span>
-                <span class="circle medium red" style="opacity: 0.25;"></span>
-                <span class="circle medium red" style="opacity: 0.25;"></span>
-                <span class="circle medium red"></span>
-                <span class="circle large red"></span>
-                <span class="circle large red"></span>
-                <span class="circle large red"></span>
-            </div> -->
             <div class="col">
-                <div class="row row-left">
-                    <!-- <h2>Your circles</h2> -->
+                <div class="row row-left player-container" id="blue">
+                    <div class="player-card">
+                        <div class="player-logo blue"></div>
+                        <div class="player-number">Player 1</div>
+                        <div class="player-name">Waiting for player...</div>
+                        <div class="player-score">0</div>
+                    </div>
                     <div class="pieceSelector">
-                        <div class="pieceItem" id="large"><span class="circle large blue">LARGE x3</span></div>
-                        <div class="pieceItem active" id="medium"><span class="circle medium blue">MEDIUM x3</span></div>
-                        <div class="pieceItem" id="small"><span class="circle small blue">SMALL x3</span></div>
+                        <div class="pieceItem" id="small">
+                            <div class="piece-item-circle blue"></div>
+                            <div class="piece-item-size">Small</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
+                        <div class="pieceItem active" id="medium">
+                            <div class="piece-item-circle blue"></div>
+                            <div class="piece-item-size">Medium</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
+                        <div class="pieceItem" id="large">
+                            <div class="piece-item-circle blue"></div>
+                            <div class="piece-item-size">Large</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
                     </div>
                 </div>
                 <div class="row row-center">
-                    <div class="grid">
+                    <div class="board">
                         <div class="box" id="1"></div>
                         <div class="box" id="2"></div>
                         <div class="box" id="3"></div>
@@ -48,9 +54,7 @@
                         <div class="box" id="8"></div>
                         <div class="box" id="9"></div>
                     </div>
-                </div>
-                <div class="row row-right">
-                    <h2>Choose a team</h2>
+                    <!-- <h2>Choose a team</h2>
                     <div id="blue" class="team team-blue">
                         <button class="btn-team">Blue</button>
                         <span id="place">0</span>/1 - Score :
@@ -60,25 +64,36 @@
                         <button class="btn-team">Red</button>
                         <span id="place">0</span>/1 - Score :
                         <span id="score">0</span> win
-                    </div>
-                    <h2>RESET</h2>
-                    <div class="team reset">
-                        <button class="btn-reset">RESET</button> Reset grid
-                    </div>
-                    <h2>ACTIVE TEAM</h2>
-                    <div id="activeTeam">Game doesn't start!</div>
+                    </div> -->
+                    <button class="btn btn-reset">Reset</button>
+                    <!-- <h2>ACTIVE TEAM</h2>
+                    <div id="activeTeam">Game doesn't start!</div> -->
                 </div>
-            </div>
-            <div class="circle-container">
-                <!-- <span class="circle large blue"></span>
-                <span class="circle large blue"></span>
-                <span class="circle large blue"></span>
-                <span class="circle medium blue" style="opacity: 0.25;"></span>
-                <span class="circle medium blue"></span>
-                <span class="circle medium blue"></span>
-                <span class="circle small blue"></span>
-                <span class="circle small blue"></span>
-                <span class="circle small blue"></span> -->
+                <div class="row row-right player-container" id="red">
+                    <div class="player-card">
+                        <div class="player-logo red"></div>
+                        <div class="player-number">Player 2</div>
+                        <div class="player-name">Waiting for player...</div>
+                        <div class="player-score">0</div>
+                    </div>
+                    <div class="pieceSelector">
+                        <div class="pieceItem" id="small">
+                            <div class="piece-item-circle red"></div>
+                            <div class="piece-item-size">Small</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
+                        <div class="pieceItem active" id="medium">
+                            <div class="piece-item-circle red"></div>
+                            <div class="piece-item-size">Medium</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
+                        <div class="pieceItem" id="large">
+                            <div class="piece-item-circle red"></div>
+                            <div class="piece-item-size">Large</div>
+                            <div class="piece-item-number">x3</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
 
