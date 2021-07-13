@@ -3,8 +3,8 @@ import { Notyf } from 'notyf';
 const notyf = new Notyf({
     duration: 5000,
     position: {
-      x: 'right',
-      y: 'top'
+        x: 'right',
+        y: 'top'
     }
 });
 const boxes = document.querySelectorAll('.box');
@@ -72,7 +72,7 @@ socket.on('receive-edit-piece', team => {
 /* SEND */
 boxes.forEach(box => {
     box.addEventListener('click', e => {
-        socket.emit('play', socket.id, box.id, function(error) {
+        socket.emit('play', socket.id, box.id, function (error) {
             notyf.error(error);
         });
     });
@@ -81,7 +81,7 @@ boxes.forEach(box => {
 teamButtons.forEach(btn => {
     btn.addEventListener('click', e => {
         e.preventDefault();
-        socket.emit('join-team', socket.id, e.target.parentElement.id, function(error) {
+        socket.emit('join-team', socket.id, e.target.parentElement.id, function (error) {
             notyf.error(error);
         });
     });
@@ -89,14 +89,14 @@ teamButtons.forEach(btn => {
 
 resetButton?.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('send-reset', socket.id, function(error) {
+    socket.emit('send-reset', socket.id, function (error) {
         notyf.error(error);
     });
 });
 
 pieceSelectorItems.forEach(item => {
     item.addEventListener('click', e => {
-        socket.emit('select-piece', socket.id, item.id, function(error) {
+        socket.emit('select-piece', socket.id, item.id, function (error) {
             notyf.error(error);
         });
     });
@@ -107,7 +107,7 @@ function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
         const el = document.getElementById(key);
-        if(!el) return;
+        if (!el) return;
         el.querySelector('#place').innerHTML = value.count;
         el.querySelector('#score').innerHTML = value.score;
     });
@@ -141,5 +141,6 @@ function editPieceSelector(team) {
         const span = item.querySelector('span');
         span.innerHTML = `${item.id.toUpperCase()} x${team.pieces[item.id]}`;
         team.activePiece === item.id ? item.classList.add('active') : item.classList.remove('active');
+        if (team.pieces[item.id] <= 0) span.classList.add('disabled');
     });
 }

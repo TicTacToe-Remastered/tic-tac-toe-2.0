@@ -101,6 +101,7 @@ body {
                         border: 1px solid #fff;
 
                         .box {
+                            position: relative;
                             display: flex;
                             justify-content: center;
                             align-items: center;
@@ -112,6 +113,7 @@ body {
 
                             /* Circle Style */
                             span {
+                                position: absolute;
                                 border: 8px solid #fff;
                                 border-radius: 50%;
                                 height: 50%;

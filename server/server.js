@@ -69,12 +69,13 @@ io.on('connection', socket => {
         const team = isPlayer(user);
         if (!team) return callback("You're not a player!");
         if (activeTeam != findTeamByName(team)) return callback("It's not your turn!");
+        if (!isPieceAvailable(activeTeam)) return callback(`You used all your ${activeTeam.activePiece} pieces!`);
         if (isFree(box)) {
             grid[box - 1][0] = team;
             grid[box - 1][1] = activeTeam.activePiece;
-            activeTeam.pieces[activeTeam.activePiece] --;
+            activeTeam.pieces[activeTeam.activePiece]--;
             io.emit('receive-play', box, team, activeTeam.activePiece);
-            io.emit('receive-edit-piece', activeTeam)
+            socket.emit('receive-edit-piece', activeTeam)
             if (checkEquality()) {
                 resetGrid();
                 io.emit('receive-equality');
@@ -120,7 +121,11 @@ function isPlayer(user) {
 }
 
 function isFree(box) {
-    return grid[box - 1][0] === null;
+    boxContent = grid[box - 1][1];
+    if (boxContent === null) return true;
+    else if (boxContent === 'small' && (activeTeam.activePiece === 'medium' || activeTeam.activePiece === 'large')) return true;
+    else if (boxContent === 'medium' && activeTeam.activePiece === 'large') return true;
+    else return false;
 }
 
 function findTeamByName(teamName) {
@@ -142,13 +147,13 @@ function checkEquality() {
 
 function checkWin() {
     if ((grid[0][0] !== null && grid[0][0] === grid[1][0] && grid[1][0] === grid[2][0]) ||
-    (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
-    (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
-    (grid[0][0] !== null && grid[0][0] === grid[3][0] && grid[3][0] === grid[6][0]) ||
-    (grid[1][0] !== null && grid[1][0] === grid[4][0] && grid[4][0] === grid[7][0]) ||
-    (grid[2][0] !== null && grid[2][0] === grid[5][0] && grid[5][0] === grid[8][0]) ||
-    (grid[0][0] !== null && grid[0][0] === grid[4][0] && grid[4][0] === grid[8][0]) ||
-    (grid[2][0] !== null && grid[2][0] === grid[4][0] && grid[4][0] === grid[6][0])) {
+        (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
+        (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
+        (grid[0][0] !== null && grid[0][0] === grid[3][0] && grid[3][0] === grid[6][0]) ||
+        (grid[1][0] !== null && grid[1][0] === grid[4][0] && grid[4][0] === grid[7][0]) ||
+        (grid[2][0] !== null && grid[2][0] === grid[5][0] && grid[5][0] === grid[8][0]) ||
+        (grid[0][0] !== null && grid[0][0] === grid[4][0] && grid[4][0] === grid[8][0]) ||
+        (grid[2][0] !== null && grid[2][0] === grid[4][0] && grid[4][0] === grid[6][0])) {
         return true;
     } else {
         return false;
@@ -172,4 +177,8 @@ function resetGrid() {
         large: 3
     }
     io.emit('receive-init', grid);
+}
+
+function isPieceAvailable(activeTeam) {
+    return activeTeam.pieces[activeTeam.activePiece] > 0;
 }
