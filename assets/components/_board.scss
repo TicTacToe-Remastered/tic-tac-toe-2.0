@@ -1,0 +1,76 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 16vmin);
+    grid-template-rows: repeat(3, 16vmin);
+    gap: 1rem;
+
+    .box {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: $box-shadow;
+        border-radius: 1rem;
+
+        /* Circle Style */
+        span {
+            position: absolute;
+            /* border: 8px solid #fff; */
+            border-radius: 50%;
+            height: 10vmin;
+            width: 10vmin;
+            user-select: none;
+            pointer-events: none;
+
+            &::after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+                height: calc(10vmin - 0.6vmin);
+                width: calc(10vmin - 0.6vmin);
+                margin: 0.3vmin;
+                background: $background-color;
+            }
+
+            &.small {
+                height: 8vmin;
+                width: 8vmin;
+
+                &::after {
+                    height: calc(8vmin - 0.6vmin);
+                    width: calc(8vmin - 0.6vmin);
+                }
+            }
+
+            &.medium {
+                height: 10vmin;
+                width: 10vmin;
+
+                &::after {
+                    height: calc(10vmin - 0.6vmin);
+                    width: calc(10vmin - 0.6vmin);
+                }
+            }
+
+            &.large {
+                height: 12vmin;
+                width: 12vmin;
+
+                &::after {
+                    height: calc(12vmin - 0.6vmin);
+                    width: calc(12vmin - 0.6vmin);
+                }
+            }
+
+            &.blue {
+                background: $gradient-blue;
+            }
+
+            &.red {
+                background: $gradient-red;
+            }
+        }
+        /* End Circle Style */
+    }
+}

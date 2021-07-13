@@ -1,0 +1,126 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: $background-color;
+    color: $text-color;
+    font-family: Montserrat, Helvetica, sans-serif;
+    overflow-x: hidden;
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+
+        h1 {
+            margin: 2rem;
+        }
+
+        .col {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            gap: 2rem;
+
+            .row {
+                flex: 25%;
+                flex-shrink: 0;
+                width: 100%;
+
+                &.row-left {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: flex-start;
+                }
+
+                &.row-center {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                &.row-right {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: flex-start;
+                    text-align: center;
+
+                    .team {
+                        margin: 8px 0;
+
+                        .btn-team,
+                        .btn-reset {
+                            cursor: pointer;
+                            width: 4rem;
+                            height: 2rem;
+                            border-radius: 4px;
+                            transition: 0.3s ease;
+
+                            &:hover {
+                                background-color: lightgrey;
+                            }
+                        }
+
+                        &.team-blue button {
+                            border-color: blue;
+                        }
+
+                        &.team-red button {
+                            border-color: red;
+                        }
+                    }
+                }
+            }
+        }
+
+        .circle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem 0;
+
+            .circle {
+                display: inline-block;
+                border: 8px solid #fff;
+                border-radius: 50%;
+                height: 10vmin;
+                width: 10vmin;
+                user-select: none;
+                pointer-events: none;
+                margin: 8px;
+
+                &.small {
+                    height: 4vmin;
+                    width: 4vmin;
+                }
+
+                &.medium {
+                    height: 8vmin;
+                    width: 8vmin;
+                }
+
+                &.large {
+                    height: 12vmin;
+                    width: 12vmin;
+                }
+
+                &.blue {
+                    border-color: blue;
+                }
+
+                &.red {
+                    border-color: red;
+                }
+            }
+        }
+    }
+}

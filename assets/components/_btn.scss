@@ -1,0 +1,21 @@
+.btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 1vmin 3vmin;
+    border-radius: 8px;
+    box-shadow: $box-shadow;
+    font-size: 2vmin;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+
+    &.btn-reset {
+        background: $gradient-red;
+        color: $background-color;
+        margin-top: 2vmin;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
