@@ -1,4 +1,3 @@
 node_modules/
 .vscode/
-client/style.min.css
-client/style.min.css.map
+client/build
