@@ -1,6 +1,15 @@
-const io = require('socket.io')(3000, {
+const express = require('express');
+const cors = require('cors');
+const PORT = process.env.PORT || 3000;
+
+const app = express()
+    .use(cors())
+    .use((req, res) => res.end('Hello world!'))
+    .listen(PORT, () => console.log(`Listening on ${PORT}`));
+
+const io = require('socket.io')(app, {
     cors: {
-        origin: ['http://localhost:8080']
+        origin: "*"
     }
 });
 

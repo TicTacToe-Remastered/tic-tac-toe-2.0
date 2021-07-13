@@ -16,7 +16,7 @@ const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
 
-const socket = io(`${__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST}:${__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_PORT}`);
+const socket = io(__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST || 'http://localhost:3000/');
 
 /* CONNECTIONS */
 socket.on('connect', () => {
