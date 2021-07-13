@@ -38,7 +38,6 @@ socket.on('receive-teams', teams => {
 
 socket.on('receive-play', (box, team, size) => {
     play(box, team, size);
-    /* notyf.success(`<b>${team}</b> play on <b>box ${box}</b>`); */
 });
 
 socket.on('receive-piece', (team, piecesData) => {
@@ -79,15 +78,6 @@ boxes.forEach(box => {
     });
 });
 
-/* teamButtons.forEach(btn => {
-    btn.addEventListener('click', e => {
-        e.preventDefault();
-        socket.emit('join-team', socket.id, e.target.parentElement.id, function (error) {
-            notyf.error(error);
-        });
-    });
-}); */
-
 playerCards.forEach(card => {
     card.addEventListener('click', e => {
         e.preventDefault();
@@ -113,16 +103,6 @@ pieceSelectorItems.forEach(item => {
 });
 
 /* FUNCTIONS */
-/* function editTeams(teams) {
-    Object.entries(teams).forEach(entry => {
-        const [key, value] = entry;
-        const el = document.getElementById(key);
-        if (!el) return;
-        el.querySelector('#place').innerHTML = value.count;
-        el.querySelector('#score').innerHTML = value.score;
-    });
-} */
-
 function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
