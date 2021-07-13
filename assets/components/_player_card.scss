@@ -7,6 +7,16 @@
         --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
     }
 
+    &.active-player {
+        .player-card {
+            .player-logo {
+                i {
+                    display: block;
+                }
+            }
+        }
+    }
+
     .player-card {
         border-radius: 1rem;
         padding: 16px;
@@ -20,11 +30,28 @@
         cursor: pointer;
 
         .player-logo {
+            position: relative;
             width: 6vmin;
             height: 6vmin;
             border-radius: 6vmin;
             margin-bottom: 2vmin;
             background: var(--gradient-color);
+
+            i {
+                display: none;
+                position: absolute;
+                font-size: 3vmin;
+                top: 50%;
+                transform: translateY(-50%);
+
+                &:first-child {
+                    left: -4vmin;
+                }
+
+                &:last-child {
+                    right: -4vmin;
+                }
+            }
         }
 
         .player-number {

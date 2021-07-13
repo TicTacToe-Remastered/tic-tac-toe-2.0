@@ -9,6 +9,7 @@ const notyf = new Notyf({
 });
 const boxes = document.querySelectorAll('.box');
 const teamButtons = document.querySelectorAll('.btn-team');
+const playerContainers = document.querySelectorAll('.player-container');
 const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
@@ -53,8 +54,8 @@ socket.on('receive-init', grid => {
     initGrid(grid);
 });
 
-socket.on('receive-active', activeMessage => {
-    editActive(activeMessage);
+socket.on('receive-active', activeTeam => {
+    editActive(activeTeam);
 });
 
 socket.on('receive-win', (win, grid) => {
@@ -123,10 +124,13 @@ function initGrid(grid) {
     });
 }
 
-function editActive(activeMessage) {
-    const activeDiv = document.getElementById('activeTeam');
-    if (!activeDiv) return;
-    activeDiv.innerHTML = activeMessage;
+function editActive(activeTeam) {
+    playerContainers.forEach(container => {
+        if (container.id === activeTeam) container.classList.add('active-player');
+        else container.classList.remove('active-player');
+    });
+    const activeTeamContainer = document.getElementById(activeTeam);
+    activeTeamContainer
 }
 
 function play(boxID, team, size = 'medium') {

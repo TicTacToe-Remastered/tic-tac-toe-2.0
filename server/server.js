@@ -62,7 +62,7 @@ io.on('connection', socket => {
     });
 
     socket.on('get-active', callback => {
-        callback(`It's <b>${activeTeam.id}</b> turn!`);
+        callback(activeTeam.id);
     });
 
     socket.on('play', (user, box, callback) => {
@@ -139,7 +139,7 @@ function toogleActiveTeam() {
     } else {
         activeTeam = teams.blue;
     }
-    io.emit('receive-active', `It's <b>${activeTeam.id}</b> turn!`);
+    io.emit('receive-active', activeTeam.id);
 }
 
 function checkEquality() {
