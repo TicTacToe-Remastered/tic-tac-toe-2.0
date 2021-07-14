@@ -60,6 +60,7 @@ io.on('connection', socket => {
         t.count = 0;
         t.player = '';
         io.emit('receive-teams', teams);
+        console.log(`${socket.id} disconnect!`);
     });
 
     socket.on('get-teams', callback => {
@@ -107,6 +108,7 @@ io.on('connection', socket => {
             t.count = 1;
             t.player = user;
             io.emit('receive-teams', teams);
+            console.log(`${user} join ${teamName} team!`);
         } else {
             callback(`<b>${teamName}</b> is full!`);
         }
