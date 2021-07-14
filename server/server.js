@@ -86,14 +86,14 @@ io.on('connection', socket => {
             activeTeam.pieces[activeTeam.activePiece]--;
             io.emit('receive-play', box, team, activeTeam.activePiece);
             io.emit('receive-edit-piece', teams)
-            if (checkEquality()) {
-                resetGrid();
-                io.emit('receive-equality');
-            } else if (checkWin()) {
+            if (checkWin()) {
                 io.emit('receive-win', activeTeam.id);
                 resetGrid();
                 findTeamByName(team).score++;
                 io.emit('receive-teams', teams);
+            } else if (checkEquality()) {
+                resetGrid();
+                io.emit('receive-equality');
             }
             toogleActiveTeam();
         } else {
@@ -189,6 +189,7 @@ function resetGrid() {
         large: 3
     }
     io.emit('receive-init', grid);
+    io.emit('receive-edit-piece', teams);
 }
 
 function isPieceAvailable(activeTeam) {
