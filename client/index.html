@@ -17,6 +17,24 @@
         <link rel="stylesheet" href="style.min.css" />
     </head>
     <body>
+        <div class="loader">
+            <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="64" cy="64" r="62" stroke="url(#paint0_linear)" stroke-width="4"/>
+                <circle cx="108" cy="108" r="30" stroke="url(#paint1_linear)" stroke-width="4"/>
+                <defs>
+                    <linearGradient id="paint0_linear" x1="64" y1="0" x2="64" y2="128" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#00D2FF"/>
+                        <stop offset="1" stop-color="#3A7BD5"/>
+                    </linearGradient>
+                    <linearGradient id="paint1_linear" x1="108" y1="76" x2="108" y2="140" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FF512F"/>
+                        <stop offset="1" stop-color="#DD2476"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <h1>Tic Tac Toe 2.0</h1>
+            <div>Connecting to the server</div>
+        </div>
         <main class="container">
             <div class="col">
                 <div class="row player-container" id="blue">

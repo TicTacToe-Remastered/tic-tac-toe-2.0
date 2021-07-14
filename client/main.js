@@ -9,8 +9,9 @@ const notyf = new Notyf({
         y: 'top'
     }
 });
+
+const loader = document.querySelector('.loader');
 const boxes = document.querySelectorAll('.box');
-const teamButtons = document.querySelectorAll('.btn-team');
 const playerContainers = document.querySelectorAll('.player-container');
 const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
@@ -24,6 +25,7 @@ socket.on('connect', () => {
     socket.emit('get-teams', editTeams);
     socket.emit('get-grid', initGrid);
     socket.emit('get-active', editActive);
+    loader?.classList.add('loaded');
 });
 
 /* RECEIVE */
