@@ -6,9 +6,9 @@ const users = [];
  * @returns {object}
  */
 const createUser = ({ id, name }) => {
-    name = name.trim().toLowerCase();
+    name = name.trim();
 
-    const existingUser = users.find((user) => user.room === room && user.name === name);
+    const existingUser = users.find((user) => user.name === name);
 
     if (!name) return { error: 'Username is required.' };
     if (existingUser) return { error: 'Username is taken.' };

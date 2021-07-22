@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
+const { createUser, removeUser, getUser } = require('./users');
+
 const app = express()
     .use(cors())
     .use((req, res) => res.end('Hello world!'))
@@ -18,6 +20,7 @@ let teams = {
         id: 'blue',
         count: 0,
         player: '',
+        playerName: '',
         score: 0,
         activePiece: 'medium',
         pieces: {
@@ -30,6 +33,7 @@ let teams = {
         id: 'red',
         count: 0,
         player: '',
+        playerName: '',
         score: 0,
         activePiece: 'medium',
         pieces: {
@@ -53,7 +57,15 @@ io.on('connection', socket => {
     console.log('Client connected : ', socket.id);
     socket.broadcast.emit('receive-connection', socket.id);
 
+    socket.on('login', ({ name }, callback) => {
+        const { error, user } = createUser({ id: socket.id, name });
+
+        if (error) return callback(error);
+        callback();
+    });
+
     socket.on('disconnect', () => {
+        const user = removeUser(socket.id);
         const t = teams[Object.keys(teams).find(key => teams[key].player === socket.id)];
         socket.broadcast.emit('receive-disconnect', socket.id);
         if (!t) return;
@@ -107,8 +119,9 @@ io.on('connection', socket => {
         if (t.count == 0) {
             t.count = 1;
             t.player = user;
+            t.playerName = getUser(user).name;
             io.emit('receive-teams', teams);
-            console.log(`${user} join ${teamName} team!`);
+            console.log(`${getUser(user).name} join ${teamName} team!`);
         } else {
             callback(`<b>${teamName}</b> is full!`);
         }

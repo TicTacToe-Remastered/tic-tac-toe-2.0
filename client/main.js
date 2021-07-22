@@ -10,14 +10,15 @@ const notyf = new Notyf({
     }
 });
 
+const socket = io(__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST || 'http://localhost:3000/');
+
 const loader = document.querySelector('.loader');
 const boxes = document.querySelectorAll('.box');
 const playerContainers = document.querySelectorAll('.player-container');
 const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
-
-const socket = io(__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST || 'http://localhost:3000/');
+const loginForm = document.getElementById('login-form');
 
 /* CONNECTIONS */
 socket.on('connect', () => {
@@ -107,13 +108,23 @@ pieceSelectorItems.forEach(item => {
     });
 });
 
+loginForm?.addEventListener('submit', e => {
+    e.preventDefault();
+    const username = loginForm.querySelector('#username').value;
+    socket.emit('login', { name: username }, function (error) {
+        if (error) return notyf.error(error);
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('game').style.display = 'flex';
+    });
+});
+
 /* FUNCTIONS */
 function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
         const el = document.getElementById(key);
         if (!el) return;
-        el.querySelector('.player-name').innerHTML = value.player ? value.player : 'Waiting for player...';
+        el.querySelector('.player-name').innerHTML = value.playerName ? value.playerName : 'Waiting for player...';
         el.querySelector('.player-score').innerHTML = value.score;
     });
 }

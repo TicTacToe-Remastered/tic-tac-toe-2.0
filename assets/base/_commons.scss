@@ -18,13 +18,10 @@ body {
         width: 100vw;
         height: 100vh;
 
-        h1 {
-            margin: 2rem;
-        }
-
         .col {
             display: flex;
             /* flex-wrap: wrap; */
+            justify-content: center;
             width: 100%;
             gap: 2rem;
 
@@ -36,6 +33,21 @@ body {
                 flex-direction: column;
                 align-items: center;
                 justify-content: flex-start;
+
+                .login-title {
+                    display: flex;
+                    align-items: center;
+
+                    svg {
+                        width: 12vmin;
+                        height: 12vmin;
+                    }
+
+                    h2 {
+                        margin-left: 4.5vmin;
+                        font-size: 4.5vmin;
+                    }
+                }
             }
         }
     }

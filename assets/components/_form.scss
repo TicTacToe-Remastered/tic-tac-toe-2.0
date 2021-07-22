@@ -1,0 +1,31 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 3vmin 0;
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        margin: 2.5vmin 0;
+    
+        .input-label {
+            font-size: 2.5vmin;
+            font-weight: bold;
+            margin-bottom: 1vmin;
+            margin-left: 1vmin;
+        }
+    
+        .input-control {
+            font-size: 2vmin;
+            width: 50vmin;
+            padding: 1.5vmin 2vmin;
+            border: none;
+            outline: none;
+            border-radius: 1.5vmin;
+            background: $background-color;
+            box-shadow: $box-shadow;
+        }
+    }
+}
