@@ -71,6 +71,7 @@ io.on('connection', socket => {
         if (!t) return;
         t.count = 0;
         t.player = '';
+        t.playerName = '';
         io.emit('receive-teams', teams);
         console.log(`${socket.id} disconnect!`);
     });
