@@ -137,13 +137,22 @@ function initRoomList(rooms) {
     roomSelector.innerHTML = '';
     rooms.forEach(room => {
         const slot = room.teams.filter(team => team.player !== null).length;
-        const roomItem = `
+        const roomItemHTML = `
         <li class="room-item" id="${room.id}">
             <span class="room-title"></span><span class="room-slot">${slot}/2</span>
         </li>
         `;
-        roomSelector.innerHTML += roomItem;
-        document.getElementById(room.id).querySelector('.room-title').innerText = room.name;
+        roomSelector.innerHTML += roomItemHTML;
+        const roomItem = document.getElementById(room.id);
+        roomItem.querySelector('.room-title').innerText = room.name;
+        roomItem.addEventListener('click', e => {
+            e.preventDefault();
+            socket.emit('join-room', room.id, function(error) {
+                if (error) return notyf.error(error);
+                document.getElementById('room').style.display = 'none';
+                document.getElementById('game').style.display = 'flex';
+            });
+        });
     });
 }
 

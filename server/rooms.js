@@ -80,6 +80,10 @@ const getRooms = () => {
     return rooms;
 }
 
+/**
+ * @description Reset a room
+ * @returns {undefined}
+ */
 const resetRoom = (id) => {
     const { grid, teams } = getRoom(id);
     grid = [
@@ -94,6 +98,14 @@ const resetRoom = (id) => {
             large: 3
         }
     });
+}
+
+/**
+ * @description Join a room
+ * @returns {}
+ */
+const joinRoom = (id) => {
+    
 }
 
 module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom };
