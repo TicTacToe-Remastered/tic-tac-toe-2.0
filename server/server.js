@@ -3,6 +3,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
 const { createUser, removeUser, getUser } = require('./users');
+const { createRoom, removeRoom, getRoom, getRooms, resetRoom } = require('./rooms');
 
 const app = express()
     .use(cors())
@@ -61,6 +62,8 @@ io.on('connection', socket => {
         const { error, user } = createUser({ id: socket.id, name });
 
         if (error) return callback(error);
+        createRoom(user.name);
+        socket.emit('receive-init-room', getRooms());
         callback();
     });
 

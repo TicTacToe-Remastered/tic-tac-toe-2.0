@@ -10,7 +10,8 @@ const createRoom = (name) => {
     if(!name) return { error: 'Username is required to create a room.' };
 
     const genRoomID = () => Math.random().toString(36).toUpperCase().substr(2, 6);
-    const genRoomName = (name) => `${name.charAt(0).toUpperCase() + name.toLowerCase()}'s room`;
+    /* const genRoomName = (name) => `${name.charAt(0).toUpperCase() + name.toLowerCase()}'s room`; */
+    const genRoomName = (name) => `${name}'s room`;
 
     const room = {
         id: genRoomID(),
@@ -71,6 +72,14 @@ const getRoom = (id) => {
     return rooms.find((room) => room.id === id)
 }
 
+/**
+ * @description Get all rooms
+ * @returns {array}
+ */
+const getRooms = () => {
+    return rooms;
+}
+
 const resetRoom = (id) => {
     const { grid, teams } = getRoom(id);
     grid = [
@@ -87,4 +96,4 @@ const resetRoom = (id) => {
     });
 }
 
-module.exports = { createRoom, removeRoom, getRoom, resetRoom };
+module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom };

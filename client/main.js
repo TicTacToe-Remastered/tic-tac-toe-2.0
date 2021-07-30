@@ -55,6 +55,10 @@ socket.on('receive-piece', (team, piecesData) => {
     });
 });
 
+socket.on('receive-init-room', rooms => {
+    initRoomList(rooms);
+});
+
 socket.on('receive-init', grid => {
     initGrid(grid);
 });
@@ -114,11 +118,25 @@ loginForm?.addEventListener('submit', e => {
     socket.emit('login', { name: username }, function (error) {
         if (error) return notyf.error(error);
         document.getElementById('login').style.display = 'none';
-        document.getElementById('game').style.display = 'flex';
+        document.getElementById('room').style.display = 'flex';
     });
 });
 
 /* FUNCTIONS */
+function initRoomList(rooms) {
+    const roomSelector = document.querySelector('.room-selector');
+    rooms.forEach(room => {
+        const slot = room.teams.filter(team => team.player !== null).length;
+        const roomItem = `
+        <li class="room-item" id="${room.id}">
+            <span class="room-title"></span><span class="room-slot">${slot}/2</span>
+        </li>
+        `;
+        roomSelector.innerHTML += roomItem;
+        document.getElementById(room.id).querySelector('.room-title').innerText = room.name;
+    });
+}
+
 function editTeams(teams) {
     Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
