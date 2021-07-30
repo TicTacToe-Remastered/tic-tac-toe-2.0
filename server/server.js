@@ -62,8 +62,14 @@ io.on('connection', socket => {
         const { error, user } = createUser({ id: socket.id, name });
 
         if (error) return callback(error);
-        createRoom(user.name);
         socket.emit('receive-init-room', getRooms());
+        callback();
+    });
+
+    socket.on('create-room', callback => {
+        const user = getUser(socket.id);
+        createRoom(user.name);
+        socket.emit('receive-init-room', getRooms()); //temp
         callback();
     });
 

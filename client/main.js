@@ -19,6 +19,7 @@ const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
 const loginForm = document.getElementById('login-form');
+const createRoomBtn = document.getElementById('create-room');
 
 /* CONNECTIONS */
 socket.on('connect', () => {
@@ -122,9 +123,18 @@ loginForm?.addEventListener('submit', e => {
     });
 });
 
+createRoomBtn?.addEventListener('click', e => {
+    e.preventDefault();
+    socket.emit('create-room', function() {
+        document.getElementById('room').style.display = 'none';
+        document.getElementById('game').style.display = 'flex';
+    });
+});
+
 /* FUNCTIONS */
 function initRoomList(rooms) {
     const roomSelector = document.querySelector('.room-selector');
+    roomSelector.innerHTML = '';
     rooms.forEach(room => {
         const slot = room.teams.filter(team => team.player !== null).length;
         const roomItem = `
