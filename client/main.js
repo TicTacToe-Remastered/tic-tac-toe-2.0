@@ -125,7 +125,8 @@ loginForm?.addEventListener('submit', e => {
 
 createRoomBtn?.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('create-room', function() {
+    socket.emit('create-room', function (error) {
+        if (error) return notyf.error(error);
         document.getElementById('room').style.display = 'none';
         document.getElementById('game').style.display = 'flex';
     });
@@ -147,7 +148,7 @@ function initRoomList(rooms) {
         roomItem.querySelector('.room-title').innerText = room.name;
         roomItem.addEventListener('click', e => {
             e.preventDefault();
-            socket.emit('join-room', room.id, function(error) {
+            socket.emit('join-room', room.id, function (error) {
                 if (error) return notyf.error(error);
                 document.getElementById('room').style.display = 'none';
                 document.getElementById('game').style.display = 'flex';

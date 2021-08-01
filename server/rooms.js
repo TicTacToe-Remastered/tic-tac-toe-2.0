@@ -7,7 +7,7 @@ const rooms = [];
  */
 const createRoom = (name) => {
 
-    if(!name) return { error: 'Username is required to create a room.' };
+    if (!name) return { error: 'Username is required to create a room.' };
 
     const genRoomID = () => Math.random().toString(36).toUpperCase().substr(2, 6);
     /* const genRoomName = (name) => `${name.charAt(0).toUpperCase() + name.toLowerCase()}'s room`; */
@@ -102,10 +102,20 @@ const resetRoom = (id) => {
 
 /**
  * @description Join a room
- * @returns {}
+ * @param  {string} id
+ * @param  {string} socket
+ * @returns {object}
  */
-const joinRoom = (id) => {
-    
+const joinRoom = (id, socket) => {
+    const { teams } = getRoom(id);
+    if (!teams) return { error: `Room <strong>${id}</strong> doesn't exist!` };
+
+    const getEmptySlot = (teams) => teams.find(team => team.player === null);
+    if (!getEmptySlot(teams)) return { error: 'Room is full!' };
+
+    socket.join(id);
+    getEmptySlot(teams).player = socket.id;
+    return { success: `${socket.id} successfully join!` };
 }
 
-module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom };
+module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom };

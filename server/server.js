@@ -3,7 +3,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
 const { createUser, removeUser, getUser } = require('./users');
-const { createRoom, removeRoom, getRoom, getRooms, resetRoom, isRoomFull } = require('./rooms');
+const { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom } = require('./rooms');
 
 const app = express()
     .use(cors())
@@ -69,17 +69,15 @@ io.on('connection', socket => {
     socket.on('create-room', callback => {
         const user = getUser(socket.id);
         const { error, room } = createRoom(user.name);
-
+        
         if (error) return callback(error);
-        socket.join(room.id);
+        joinRoom(room.id, socket);
         callback();
     });
 
     socket.on('join-room', (roomId, callback) => {
-        const room = getRoom(roomId);
-
-        if (!room) return callback(`Room <strong>${roomId}</strong> doesn't exist!`);
-        socket.join(room.id);
+        const { error, success } = joinRoom(roomId, socket)
+        if (error) return callback(error);
         callback();
     });
 
