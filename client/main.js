@@ -24,9 +24,9 @@ const createRoomBtn = document.getElementById('create-room');
 /* CONNECTIONS */
 socket.on('connect', () => {
     notyf.success(`You connected with id <b>${socket.id}</b>!`);
-    socket.emit('get-teams', editTeams);
+    /* socket.emit('get-teams', editTeams);
     socket.emit('get-grid', initGrid);
-    socket.emit('get-active', editActive);
+    socket.emit('get-active', editActive); */
     loader?.classList.add('loaded');
 });
 
@@ -76,8 +76,8 @@ socket.on('receive-equality', () => {
     notyf.success(`Equality!`);
 });
 
-socket.on('receive-edit-piece', teams => {
-    editPieceSelector(teams);
+socket.on('receive-edit-piece', players => {
+    editPieceSelector(players);
 });
 
 /* SEND */
@@ -89,14 +89,14 @@ boxes.forEach(box => {
     });
 });
 
-playerCards.forEach(card => {
+/* playerCards.forEach(card => {
     card.addEventListener('click', e => {
         e.preventDefault();
         socket.emit('join-team', socket.id, card.closest('.player-container').id, function (error) {
             notyf.error(error);
         });
     });
-});
+}); */
 
 resetButton?.addEventListener('click', e => {
     e.preventDefault();
@@ -107,7 +107,7 @@ resetButton?.addEventListener('click', e => {
 
 pieceSelectorItems.forEach(item => {
     item.addEventListener('click', e => {
-        socket.emit('select-piece', socket.id, item.closest('.player-container').id, item.id, function (error) {
+        socket.emit('select-piece', item.closest('.player-container').id, item.id, function (error) {
             notyf.error(error);
         });
     });
@@ -137,7 +137,7 @@ function initRoomList(rooms) {
     const roomSelector = document.querySelector('.room-selector');
     roomSelector.innerHTML = '';
     rooms.forEach(room => {
-        const slot = room.teams.filter(team => team.player !== null).length;
+        const slot = room.players.filter(player => player.id !== null).length;
         const roomItemHTML = `
         <li class="room-item" id="${room.id}">
             <span class="room-title"></span><span class="room-slot">${slot}/2</span>
@@ -158,13 +158,18 @@ function initRoomList(rooms) {
 }
 
 function editTeams(teams) {
-    Object.entries(teams).forEach(entry => {
-        const [key, value] = entry;
-        const el = document.getElementById(key);
+    teams.forEach(team => {
+        const el = document.getElementById(team.id);
         if (!el) return;
-        el.querySelector('.player-name').innerHTML = value.playerName ? value.playerName : 'Waiting for player...';
-        el.querySelector('.player-score').innerHTML = value.score;
+        socket.emit('get-username', team.player, function (username) {
+            el.querySelector('.player-name').innerHTML = username ? username : 'Waiting for player...';
+            el.querySelector('.player-score').innerHTML = team.score;
+        });
     });
+    /* Object.entries(teams).forEach(entry => {
+        const [key, value] = entry;
+        
+    }); */
 }
 
 function initGrid(grid) {
@@ -193,8 +198,18 @@ function play(boxID, team, size = 'medium') {
     box.insertAdjacentElement('afterbegin', span);
 }
 
-function editPieceSelector(teams) {
-    Object.entries(teams).forEach(entry => {
+function editPieceSelector(players) {
+    players.forEach(player => {
+        const el = document.querySelector(`#${player.team} .pieceSelector`);
+        if (!el) return;
+        el.querySelectorAll('.pieceItem').forEach(item => {
+            const span = item.querySelector('.piece-item-number');
+            span.innerHTML = `x${player.pieces[item.id]}`;
+            player.activePiece === item.id ? item.classList.add('active') : item.classList.remove('active');
+            if (player.pieces[item.id] <= 0) span.classList.add('disabled');
+        });
+    });
+    /* Object.entries(teams).forEach(entry => {
         const [key, value] = entry;
         const el = document.querySelector(`#${key} .pieceSelector`);
         if (!el) return;
@@ -204,5 +219,5 @@ function editPieceSelector(teams) {
             value.activePiece === item.id ? item.classList.add('active') : item.classList.remove('active');
             if (value.pieces[item.id] <= 0) span.classList.add('disabled');
         });
-    });
+    }); */
 }

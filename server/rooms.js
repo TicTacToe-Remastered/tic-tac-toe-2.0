@@ -1,3 +1,5 @@
+const { getUser } = require('./users');
+
 const rooms = [];
 
 /**
@@ -17,10 +19,10 @@ const createRoom = (name) => {
         id: genRoomID(),
         name: genRoomName(name),
         activeTeam: 'blue',
-        teams: [
+        players: [
             {
-                id: 'blue',
-                player: null,
+                id: null,
+                team: 'blue',
                 score: 0,
                 activePiece: 'medium',
                 pieces: {
@@ -30,8 +32,8 @@ const createRoom = (name) => {
                 }
             },
             {
-                id: 'red',
-                player: null,
+                id: null,
+                team: 'red',
                 score: 0,
                 activePiece: 'medium',
                 pieces: {
@@ -69,7 +71,7 @@ const removeRoom = (id) => {
  * @returns {object}
  */
 const getRoom = (id) => {
-    return rooms.find((room) => room.id === id)
+    return rooms.find((room) => room.id === id);
 }
 
 /**
@@ -85,19 +87,32 @@ const getRooms = () => {
  * @returns {undefined}
  */
 const resetRoom = (id) => {
-    const { grid, teams } = getRoom(id);
+    const { grid, players } = getRoom(id);
     grid = [
         [null, null], [null, null], [null, null],
         [null, null], [null, null], [null, null],
         [null, null], [null, null], [null, null]
     ];
-    teams.forEach(team => {
-        team.pieces = {
+    players.forEach(player => {
+        player.pieces = {
             small: 3,
             medium: 3,
             large: 3
         }
     });
+}
+
+/**
+ * @description Get player
+ * @param  {string} id Room id
+ * @param  {string} player Player id
+ * @returns {}
+ */
+ const getPlayer = (id, playerId) => {
+    const { players } = getRoom(id);
+    if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
+
+    return players.find(player => player.id === playerId);
 }
 
 /**
@@ -107,15 +122,27 @@ const resetRoom = (id) => {
  * @returns {object}
  */
 const joinRoom = (id, socket) => {
-    const { teams } = getRoom(id);
-    if (!teams) return { error: `Room <strong>${id}</strong> doesn't exist!` };
+    const { players } = getRoom(id);
+    if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
 
-    const getEmptySlot = (teams) => teams.find(team => team.player === null);
-    if (!getEmptySlot(teams)) return { error: 'Room is full!' };
+    const getEmptySlot = (players) => players.find(player => player.id === null);
+    if (!getEmptySlot(players)) return { error: 'Room is full!' };
 
     socket.join(id);
-    getEmptySlot(teams).player = socket.id;
+    getUser(socket.id).room = id;
+    getEmptySlot(players).id = socket.id;
     return { success: `${socket.id} successfully join!` };
 }
 
-module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom };
+/**
+ * @description Leave a room
+ * @param  {string} id Room id
+ * @param  {string} player Player id
+ * @returns {}
+ */
+const leaveRoom = (id, playerId) => {
+    const player = getPlayer(id, player);
+    if (player) player.id = null;
+}
+
+module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom, getPlayer, joinRoom, leaveRoom };

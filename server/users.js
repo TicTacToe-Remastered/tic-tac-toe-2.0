@@ -13,7 +13,7 @@ const createUser = ({ id, name }) => {
     if (!name) return { error: 'Username is required.' };
     if (existingUser) return { error: 'Username is taken.' };
 
-    const user = { id, name };
+    const user = { id, name, room: null };
 
     users.push(user);
 
