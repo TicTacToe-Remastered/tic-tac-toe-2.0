@@ -16,44 +16,6 @@ const io = require('socket.io')(app, {
     }
 });
 
-let teams = {
-    blue: {
-        id: 'blue',
-        count: 0,
-        player: '',
-        playerName: '',
-        score: 0,
-        activePiece: 'medium',
-        pieces: {
-            small: 3,
-            medium: 3,
-            large: 3
-        }
-    },
-    red: {
-        id: 'red',
-        count: 0,
-        player: '',
-        playerName: '',
-        score: 0,
-        activePiece: 'medium',
-        pieces: {
-            small: 3,
-            medium: 3,
-            large: 3
-        }
-    }
-};
-
-let grid = [
-    [null, null], [null, null], [null, null],
-    [null, null], [null, null], [null, null],
-    [null, null], [null, null], [null, null]
-];
-//Team - Size
-
-let activeTeam = teams.blue;
-
 io.on('connection', socket => {
     console.log('Client connected : ', socket.id);
     socket.broadcast.emit('receive-connection', socket.id);
@@ -143,20 +105,6 @@ io.on('connection', socket => {
         }
     });
 
-    /* socket.on('join-team', (user, teamName, callback) => {
-        if (isPlayer(socket.id)) return callback('You already joined a team!');
-        const t = findTeamByName(teamName);
-        if (t.count == 0) {
-            t.count = 1;
-            t.player = user;
-            t.playerName = getUser(user).name;
-            io.emit('receive-teams', teams);
-            console.log(`${getUser(user).name} join ${teamName} team!`);
-        } else {
-            callback(`<b>${teamName}</b> is full!`);
-        }
-    }); */
-
     socket.on('send-reset', (callback) => {
         const { error, player } = getPlayer(socket.id);
         if (error) return callback(error);
@@ -172,10 +120,6 @@ io.on('connection', socket => {
     });
 });
 
-/* function isPlayer(id) {
-    return getUser(id).room;
-} */
-
 function isFree(room, player, box) {
     boxContent = room.grid[box - 1][1];
     if (boxContent === null) return true;
@@ -183,10 +127,6 @@ function isFree(room, player, box) {
     else if (boxContent === 'medium' && player.activePiece === 'large') return true;
     else return false;
 }
-
-/* function findTeamByName(teamName) {
-    return teams[Object.keys(teams).find(key => key === teamName)];
-} */
 
 function toogleActiveTeam(room) {
     room.activeTeam = room.activeTeam === 'blue' ? 'red' : 'blue';
@@ -211,26 +151,6 @@ function checkWin(grid) {
         return false;
     }
 }
-
-/* function resetGrid() {
-    grid = [
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null]
-    ];
-    teams.blue.pieces = {
-        small: 3,
-        medium: 3,
-        large: 3
-    }
-    teams.red.pieces = {
-        small: 3,
-        medium: 3,
-        large: 3
-    }
-    io.emit('receive-init', grid);
-    io.emit('receive-edit-piece', teams);
-} */
 
 function isPieceAvailable(player) {
     return player.pieces[player.activePiece] > 0;
