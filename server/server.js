@@ -44,6 +44,7 @@ io.on('connection', socket => {
         if (error) return callback(error);
         io.to(roomId).emit('receive-teams', getRoom(roomId).players);
         io.to(roomId).emit('receive-active', getRoom(roomId).activeTeam);
+        io.to(roomId).emit('receive-edit-piece', getRoom(roomId).players);
         callback();
     });
 
