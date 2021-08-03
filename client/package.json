@@ -12,8 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@snowpack/plugin-dotenv": "^2.1.0",
-    "notyf": "^3.9.0",
-    "snowpack": "^3.5.5",
-    "socket.io-client": "^4.1.2"
+    "notyf": "^3.10.0",
+    "snowpack": "^3.8.3",
+    "socket.io-client": "^4.1.3"
   }
 }
