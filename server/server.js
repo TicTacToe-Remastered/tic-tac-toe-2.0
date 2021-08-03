@@ -51,11 +51,16 @@ io.on('connection', socket => {
     socket.on('get-username', (user, callback) => callback(getUser(user)?.name));
 
     socket.on('disconnect', () => {
-        const user = removeUser(socket.id);
+        const user = getUser(socket.id);
         if (!user) return;
-        leaveRoom(user.room, user.id);
         socket.broadcast.emit('receive-disconnect', socket.id);
-        user.room && io.to(user.room).emit('receive-teams', getRoom(user.room).players);
+        if (user.room) {
+            leaveRoom(socket.id);
+            const room = getRoom(user.room);
+            io.to(user.room).emit('receive-teams', room.players);
+            if(room.players.filter(player => player.id === null).length >= 2) removeRoom(user.room);
+        }
+        removeUser(socket.id);
         /* const t = teams[Object.keys(teams).find(key => teams[key].player === socket.id)];
         if (!t) return;
         t.count = 0;

@@ -61,7 +61,7 @@ const createRoom = (name) => {
  * @returns {array}
  */
 const removeRoom = (id) => {
-    const index = room.findIndex((room) => room.id === id);
+    const index = rooms.findIndex((room) => room.id === id);
     if (index !== -1) return rooms.splice(index, 1)[0];
 }
 
@@ -122,7 +122,7 @@ const getPlayer = (playerId) => {
 /**
  * @description Join a room
  * @param  {string} id
- * @param  {string} socket
+ * @param  {} socket
  * @returns {object}
  */
 const joinRoom = (id, socket) => {
@@ -147,7 +147,7 @@ const joinRoom = (id, socket) => {
 const leaveRoom = (playerId) => {
     const { error, player } = getPlayer(playerId);
     if (error) return;
-    
+
     player.id = null;
 }
 
