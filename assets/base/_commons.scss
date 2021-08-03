@@ -7,7 +7,7 @@
         background-color: $background-color;
         width: 1vmin;
     }
-    
+
     &::-webkit-scrollbar-thumb {
         border-radius: 1vmin;
         background: $text-color;
@@ -57,6 +57,31 @@ body {
                     h2 {
                         margin-left: 4.5vmin;
                         font-size: 4.5vmin;
+                    }
+                }
+
+                .room-button {
+                    display: flex;
+                    align-items: center;
+
+                    .btn-reload {
+                        background: none;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        margin-top: 2vmin;
+                        margin-left: 3vmin;
+                        transition: transform 0.3s ease;
+
+                        svg {
+                            width: 3.5vmin;
+                            height: 3.5vmin;
+                            color: $text-color;
+                        }
+
+                        &:hover {
+                            transform: scale(1.1);
+                        }
                     }
                 }
             }

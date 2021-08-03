@@ -20,6 +20,7 @@ const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
 const loginForm = document.getElementById('login-form');
 const createRoomBtn = document.getElementById('create-room');
+const reloadRoomBtn = document.querySelector('.btn-reload');
 
 /* CONNECTIONS */
 socket.on('connect', () => {
@@ -132,6 +133,13 @@ createRoomBtn?.addEventListener('click', e => {
     });
 });
 
+reloadRoomBtn?.addEventListener('click', e => {
+    e.preventDefault();
+    socket.emit('get-room', function (rooms) {
+        initRoomList(rooms)
+    });
+});
+
 /* FUNCTIONS */
 function initRoomList(rooms) {
     const roomSelector = document.querySelector('.room-selector');
@@ -205,15 +213,4 @@ function editPieceSelector(players) {
             if (player.pieces[item.id] <= 0) span.classList.add('disabled');
         });
     });
-    /* Object.entries(teams).forEach(entry => {
-        const [key, value] = entry;
-        const el = document.querySelector(`#${key} .pieceSelector`);
-        if (!el) return;
-        el.querySelectorAll('.pieceItem').forEach(item => {
-            const span = item.querySelector('.piece-item-number');
-            span.innerHTML = `x${value.pieces[item.id]}`;
-            value.activePiece === item.id ? item.classList.add('active') : item.classList.remove('active');
-            if (value.pieces[item.id] <= 0) span.classList.add('disabled');
-        });
-    }); */
 }

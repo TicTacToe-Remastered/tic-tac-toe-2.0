@@ -28,7 +28,7 @@ io.on('connection', socket => {
     socket.on('login', ({ name }, callback) => {
         const { error, user } = createUser({ id: socket.id, name });
         if (error) return callback(error);
-        
+
         socket.emit('receive-init-room', getRooms());
         callback();
 
@@ -47,6 +47,8 @@ io.on('connection', socket => {
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
     });
+
+    socket.on('get-room', (callback) => callback(getRooms()));
 
     socket.on('join-room', (roomId, callback) => {
         const { error, success } = joinRoom(roomId, socket);
