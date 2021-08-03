@@ -90,7 +90,7 @@ io.on('connection', socket => {
         if (!user) return;
         leaveRoom(user.room, user.id);
         socket.broadcast.emit('receive-disconnect', socket.id);
-        user && io.to(user.room).emit('receive-teams', getRoom(user.room).players);
+        user.room && io.to(user.room).emit('receive-teams', getRoom(user.room).players);
         /* const t = teams[Object.keys(teams).find(key => teams[key].player === socket.id)];
         if (!t) return;
         t.count = 0;

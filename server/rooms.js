@@ -108,8 +108,8 @@ const resetRoom = (id) => {
  * @param  {string} player Player id
  * @returns {}
  */
- const getPlayer = (id, playerId) => {
-    const { players } = getRoom(id);
+const getPlayer = (id, playerId) => {
+    const { players } = getRoom(id) || { players: null };
     if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
 
     return players.find(player => player.id === playerId);
@@ -122,7 +122,7 @@ const resetRoom = (id) => {
  * @returns {object}
  */
 const joinRoom = (id, socket) => {
-    const { players } = getRoom(id);
+    const { players } = getRoom(id) || { players: null };
     if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
 
     const getEmptySlot = (players) => players.find(player => player.id === null);
@@ -141,7 +141,7 @@ const joinRoom = (id, socket) => {
  * @returns {}
  */
 const leaveRoom = (id, playerId) => {
-    const player = getPlayer(id, player);
+    const player = getPlayer(id, playerId);
     if (player) player.id = null;
 }
 

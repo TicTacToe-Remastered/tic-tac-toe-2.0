@@ -157,19 +157,15 @@ function initRoomList(rooms) {
     });
 }
 
-function editTeams(teams) {
-    teams.forEach(team => {
-        const el = document.getElementById(team.id);
+function editTeams(players) {
+    players.forEach(player => {
+        const el = document.getElementById(player.team);
         if (!el) return;
-        socket.emit('get-username', team.player, function (username) {
+        socket.emit('get-username', player.id, function (username) {
             el.querySelector('.player-name').innerHTML = username ? username : 'Waiting for player...';
-            el.querySelector('.player-score').innerHTML = team.score;
+            el.querySelector('.player-score').innerHTML = player.score;
         });
     });
-    /* Object.entries(teams).forEach(entry => {
-        const [key, value] = entry;
-        
-    }); */
 }
 
 function initGrid(grid) {
