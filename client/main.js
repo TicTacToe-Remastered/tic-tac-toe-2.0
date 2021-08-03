@@ -15,7 +15,6 @@ const socket = io(__SNOWPACK_ENV__.SNOWPACK_PUBLIC_SERV_HOST || 'http://localhos
 const loader = document.querySelector('.loader');
 const boxes = document.querySelectorAll('.box');
 const playerContainers = document.querySelectorAll('.player-container');
-const playerCards = document.querySelectorAll('.player-card');
 const resetButton = document.querySelector('.btn-reset');
 const pieceSelectorItems = document.querySelectorAll('.pieceItem');
 const loginForm = document.getElementById('login-form');
@@ -25,9 +24,6 @@ const reloadRoomBtn = document.querySelector('.btn-reload');
 /* CONNECTIONS */
 socket.on('connect', () => {
     notyf.success(`You connected with id <b>${socket.id}</b>!`);
-    /* socket.emit('get-teams', editTeams);
-    socket.emit('get-grid', initGrid);
-    socket.emit('get-active', editActive); */
     loader?.classList.add('loaded');
 });
 
@@ -89,15 +85,6 @@ boxes.forEach(box => {
         });
     });
 });
-
-/* playerCards.forEach(card => {
-    card.addEventListener('click', e => {
-        e.preventDefault();
-        socket.emit('join-team', socket.id, card.closest('.player-container').id, function (error) {
-            notyf.error(error);
-        });
-    });
-}); */
 
 resetButton?.addEventListener('click', e => {
     e.preventDefault();
