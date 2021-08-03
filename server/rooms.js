@@ -84,22 +84,23 @@ const getRooms = () => {
 
 /**
  * @description Reset a room
- * @returns {undefined}
+ * @returns {object}
  */
 const resetRoom = (id) => {
-    const { grid, players } = getRoom(id);
-    grid = [
+    let room = getRoom(id);
+    room.grid = [
         [null, null], [null, null], [null, null],
         [null, null], [null, null], [null, null],
         [null, null], [null, null], [null, null]
     ];
-    players.forEach(player => {
+    room.players.forEach(player => {
         player.pieces = {
             small: 3,
             medium: 3,
             large: 3
         }
     });
+    return room;
 }
 
 /**
@@ -108,11 +109,14 @@ const resetRoom = (id) => {
  * @param  {string} player Player id
  * @returns {}
  */
-const getPlayer = (id, playerId) => {
-    const { players } = getRoom(id) || { players: null };
-    if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
+const getPlayer = (playerId) => {
+    const user = getUser(playerId);
+    if (!user) return { error: `User doesn't exit!` };
+    if (!user.room) return { error: `You're not a player!` };
+    const { players } = getRoom(user.room) || { players: null };
+    if (!players) return { error: `Room <strong>${user.room}</strong> doesn't exist!` };
 
-    return players.find(player => player.id === playerId);
+    return { player: players.find(player => player.id === playerId), room: getRoom(user.room) };
 }
 
 /**
@@ -140,9 +144,11 @@ const joinRoom = (id, socket) => {
  * @param  {string} player Player id
  * @returns {}
  */
-const leaveRoom = (id, playerId) => {
-    const player = getPlayer(id, playerId);
-    if (player) player.id = null;
+const leaveRoom = (playerId) => {
+    const { error, player } = getPlayer(playerId);
+    if (error) return;
+    
+    player.id = null;
 }
 
 module.exports = { createRoom, removeRoom, getRoom, getRooms, resetRoom, getPlayer, joinRoom, leaveRoom };

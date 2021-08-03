@@ -83,7 +83,7 @@ socket.on('receive-edit-piece', players => {
 /* SEND */
 boxes.forEach(box => {
     box.addEventListener('click', e => {
-        socket.emit('play', socket.id, box.id, function (error) {
+        socket.emit('play', box.id, function (error) {
             notyf.error(error);
         });
     });
@@ -100,7 +100,7 @@ boxes.forEach(box => {
 
 resetButton?.addEventListener('click', e => {
     e.preventDefault();
-    socket.emit('send-reset', socket.id, function (error) {
+    socket.emit('send-reset', function (error) {
         notyf.error(error);
     });
 });

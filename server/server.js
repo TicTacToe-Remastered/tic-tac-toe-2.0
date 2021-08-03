@@ -69,7 +69,7 @@ io.on('connection', socket => {
     socket.on('create-room', callback => {
         const user = getUser(socket.id);
         const { error, room } = createRoom(user.name);
-        
+
         if (error) return callback(error);
         joinRoom(room.id, socket);
         io.to(room.id).emit('receive-teams', room.players);
@@ -113,27 +113,31 @@ io.on('connection', socket => {
         callback(activeTeam.id);
     }); */
 
-    socket.on('play', (user, box, callback) => {
-        const team = isPlayer(socket.id);
-        if (!team) return callback("You're not a player!");
-        if (activeTeam != findTeamByName(team)) return callback("It's not your turn!");
-        if (!isPieceAvailable(activeTeam)) return callback(`You used all your ${activeTeam.activePiece} pieces!`);
-        if (isFree(box)) {
-            grid[box - 1][0] = team;
-            grid[box - 1][1] = activeTeam.activePiece;
-            activeTeam.pieces[activeTeam.activePiece]--;
-            io.emit('receive-play', box, team, activeTeam.activePiece);
-            io.emit('receive-edit-piece', teams)
-            if (checkWin()) {
-                io.emit('receive-win', activeTeam.id);
-                resetGrid();
-                findTeamByName(team).score++;
-                io.emit('receive-teams', teams);
-            } else if (checkEquality()) {
-                resetGrid();
-                io.emit('receive-equality');
+    socket.on('play', (box, callback) => {
+        const { error, player, room } = getPlayer(socket.id);
+        if (error) return callback(error);
+        if (player.team !== room.activeTeam) return callback("It's not your turn!");
+        if (!isPieceAvailable(player)) return callback(`You used all your ${player.activePiece} pieces!`);
+        if (isFree(room, player, box)) {
+            room.grid[box - 1][0] = player.team;
+            room.grid[box - 1][1] = player.activePiece;
+            player.pieces[player.activePiece]--;
+            io.to(room.id).emit('receive-play', box, player.team, player.activePiece);
+            io.to(room.id).emit('receive-edit-piece', room.players);
+            if (checkWin(room.grid)) {
+                io.to(room.id).emit('receive-win', player.team);
+                const newRoom = resetRoom(room.id);
+                player.score++;
+                io.to(room.id).emit('receive-teams', newRoom.players);
+                io.to(room.id).emit('receive-init', newRoom.grid);
+                io.to(room.id).emit('receive-edit-piece', newRoom.players);
+            } else if (checkEquality(room.grid)) {
+                io.to(room.id).emit('receive-equality');
+                const newRoom = resetRoom(room.id);
+                io.to(room.id).emit('receive-init', newRoom.grid);
+                io.to(room.id).emit('receive-edit-piece', newRoom.players);
             }
-            toogleActiveTeam();
+            toogleActiveTeam(room);
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
         }
@@ -153,48 +157,47 @@ io.on('connection', socket => {
         }
     }); */
 
-    socket.on('send-reset', (user, callback) => {
-        if (!isPlayer(socket.id)) return callback("You're not a player, you can't reset the grid!");
+    socket.on('send-reset', (callback) => {
+        const { error, player } = getPlayer(socket.id);
+        if (error) return callback(error);
         resetGrid();
     });
 
     socket.on('select-piece', (team, item, callback) => {
-        const user = isPlayer(socket.id);
-        if (!user) return callback("You're not a player!");
-        const room = getRoom(user);
-        const player = getPlayer(room.id, socket.id);
+        const { error, player, room } = getPlayer(socket.id);
+        if (error) return callback(error);
         if (player.team !== team) return;
         player.activePiece = item;
         io.to(room.id).emit('receive-edit-piece', room.players);
     });
 });
 
-function isPlayer(id) {
+/* function isPlayer(id) {
     return getUser(id).room;
-}
+} */
 
-function isFree(box) {
-    boxContent = grid[box - 1][1];
+function isFree(room, player, box) {
+    boxContent = room.grid[box - 1][1];
     if (boxContent === null) return true;
-    else if (boxContent === 'small' && (activeTeam.activePiece === 'medium' || activeTeam.activePiece === 'large')) return true;
-    else if (boxContent === 'medium' && activeTeam.activePiece === 'large') return true;
+    else if (boxContent === 'small' && (player.activePiece === 'medium' || player.activePiece === 'large')) return true;
+    else if (boxContent === 'medium' && player.activePiece === 'large') return true;
     else return false;
 }
 
-function findTeamByName(teamName) {
+/* function findTeamByName(teamName) {
     return teams[Object.keys(teams).find(key => key === teamName)];
-}
+} */
 
 function toogleActiveTeam(room) {
     room.activeTeam = room.activeTeam === 'blue' ? 'red' : 'blue';
-    io.emit('receive-active', room.activeTeam);
+    io.to(room.id).emit('receive-active', room.activeTeam);
 }
 
-function checkEquality() {
+function checkEquality(grid) {
     return grid.filter(g => g[0] !== null).length >= 9;
 }
 
-function checkWin() {
+function checkWin(grid) {
     if ((grid[0][0] !== null && grid[0][0] === grid[1][0] && grid[1][0] === grid[2][0]) ||
         (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
         (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
@@ -209,7 +212,7 @@ function checkWin() {
     }
 }
 
-function resetGrid() {
+/* function resetGrid() {
     grid = [
         [null, null], [null, null], [null, null],
         [null, null], [null, null], [null, null],
@@ -227,8 +230,8 @@ function resetGrid() {
     }
     io.emit('receive-init', grid);
     io.emit('receive-edit-piece', teams);
-}
+} */
 
-function isPieceAvailable(activeTeam) {
-    return activeTeam.pieces[activeTeam.activePiece] > 0;
+function isPieceAvailable(player) {
+    return player.pieces[player.activePiece] > 0;
 }
