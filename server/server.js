@@ -54,9 +54,11 @@ io.on('connection', socket => {
         const { error, success } = joinRoom(roomId, socket);
         if (error) return callback(error);
 
-        io.to(roomId).emit('receive-teams', getRoom(roomId).players);
-        io.to(roomId).emit('receive-active', getRoom(roomId).activeTeam);
-        io.to(roomId).emit('receive-edit-piece', getRoom(roomId).players);
+        const { activeTeam, grid, players} = getRoom(roomId);
+        io.to(roomId).emit('receive-init', grid);
+        io.to(roomId).emit('receive-teams', players);
+        io.to(roomId).emit('receive-active', activeTeam);
+        io.to(roomId).emit('receive-edit-piece', players);
         callback();
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
