@@ -73,6 +73,7 @@ io.on('connection', socket => {
         if (error) return callback(error);
         joinRoom(room.id, socket);
         io.to(room.id).emit('receive-teams', room.players);
+        io.to(room.id).emit('receive-active', room.activeTeam);
         callback();
     });
 
@@ -80,6 +81,7 @@ io.on('connection', socket => {
         const { error, success } = joinRoom(roomId, socket);
         if (error) return callback(error);
         io.to(roomId).emit('receive-teams', getRoom(roomId).players);
+        io.to(roomId).emit('receive-active', getRoom(roomId).activeTeam);
         callback();
     });
 
@@ -183,13 +185,9 @@ function findTeamByName(teamName) {
     return teams[Object.keys(teams).find(key => key === teamName)];
 }
 
-function toogleActiveTeam() {
-    if (activeTeam === teams.blue) {
-        activeTeam = teams.red;
-    } else {
-        activeTeam = teams.blue;
-    }
-    io.emit('receive-active', activeTeam.id);
+function toogleActiveTeam(room) {
+    room.activeTeam = room.activeTeam === 'blue' ? 'red' : 'blue';
+    io.emit('receive-active', room.activeTeam);
 }
 
 function checkEquality() {
