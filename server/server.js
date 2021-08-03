@@ -90,14 +90,10 @@ io.on('connection', socket => {
                 io.to(room.id).emit('receive-win', player.team);
                 const newRoom = resetRoom(room.id);
                 player.score++;
-                io.to(room.id).emit('receive-teams', newRoom.players);
-                io.to(room.id).emit('receive-init', newRoom.grid);
-                io.to(room.id).emit('receive-edit-piece', newRoom.players);
+                resetGrid(room);
             } else if (checkEquality(room.grid)) {
                 io.to(room.id).emit('receive-equality');
-                const newRoom = resetRoom(room.id);
-                io.to(room.id).emit('receive-init', newRoom.grid);
-                io.to(room.id).emit('receive-edit-piece', newRoom.players);
+                resetGrid(room);
             }
             toogleActiveTeam(room);
         } else {
@@ -106,9 +102,9 @@ io.on('connection', socket => {
     });
 
     socket.on('send-reset', (callback) => {
-        const { error, player } = getPlayer(socket.id);
+        const { error, player, room } = getPlayer(socket.id);
         if (error) return callback(error);
-        resetGrid();
+        resetGrid(room);
     });
 
     socket.on('select-piece', (team, item, callback) => {
@@ -119,6 +115,12 @@ io.on('connection', socket => {
         io.to(room.id).emit('receive-edit-piece', room.players);
     });
 });
+
+function resetGrid(room) {
+    const newRoom = resetRoom(room.id);
+    io.to(room.id).emit('receive-init', newRoom.grid);
+    io.to(room.id).emit('receive-edit-piece', newRoom.players);
+}
 
 function isFree(room, player, box) {
     boxContent = room.grid[box - 1][1];
