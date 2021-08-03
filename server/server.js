@@ -119,8 +119,8 @@ io.on('connection', socket => {
 
             if (checkWin(room.grid)) {
                 io.to(room.id).emit('receive-win', player.team);
-                const newRoom = resetRoom(room.id);
                 player.score++;
+                io.to(room.id).emit('receive-teams', room.players);
                 resetGrid(room);
             } else if (checkEquality(room.grid)) {
                 io.to(room.id).emit('receive-equality');
