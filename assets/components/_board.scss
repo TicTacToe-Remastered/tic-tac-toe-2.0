@@ -33,22 +33,22 @@
             }
 
             &.small {
-                height: 8vmin;
-                width: 8vmin;
+                height: 6vmin;
+                width: 6vmin;
 
                 &::after {
-                    height: calc(8vmin - 0.6vmin);
-                    width: calc(8vmin - 0.6vmin);
+                    height: calc(6vmin - 0.6vmin);
+                    width: calc(6vmin - 0.6vmin);
                 }
             }
 
             &.medium {
-                height: 10vmin;
-                width: 10vmin;
+                height: 9vmin;
+                width: 9vmin;
 
                 &::after {
-                    height: calc(10vmin - 0.6vmin);
-                    width: calc(10vmin - 0.6vmin);
+                    height: calc(9vmin - 0.6vmin);
+                    width: calc(9vmin - 0.6vmin);
                 }
             }
 
