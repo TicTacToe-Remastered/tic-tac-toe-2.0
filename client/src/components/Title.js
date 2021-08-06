@@ -17,7 +17,7 @@ const Title = () => {
                     </linearGradient>
                 </defs>
             </svg>
-            <h2>Tic Tac Toe 2.0</h2>
+            <h1>Tic Tac Toe 2.0</h1>
         </TitleContainer>
     );
 }
@@ -34,7 +34,7 @@ const TitleContainer = styled.div`
         height: 12vmin;
     }
 
-    h2 {
+    h1 {
         margin-left: 4.5vmin;
         font-size: 4.5vmin;
     }

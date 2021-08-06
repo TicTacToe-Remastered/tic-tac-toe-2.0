@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-const Button = ({ children, type, color}) => {
+const Button = ({ children, onClick, type, color}) => {
     return (
-        <Btn type={type} color={color}>{children}</Btn>
+        <Btn onClick={onClick} type={type} color={color}>{children}</Btn>
     );
 }
 
