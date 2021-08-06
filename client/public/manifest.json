@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "TicTacToe 2.0",
+  "name": "The TicTacToe new generation",
   "icons": [
     {
       "src": "favicon.ico",
