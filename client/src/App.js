@@ -11,7 +11,7 @@ const App = () => {
             <GlobalStyle />
             <BrowserRouter>
                 <Route path="/" exact component={Home} />
-                <Route path="/room" component={Room} />
+                <Route path="/room/:id?" component={Room} />
             </BrowserRouter>
         </Fragment>
     );
