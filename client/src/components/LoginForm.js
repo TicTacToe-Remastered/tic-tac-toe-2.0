@@ -9,15 +9,15 @@ import socket from '../connect';
 const LoginForm = () => {
     const [name, setName] = useState('');
     const history = useHistory();
-
-    function formSubmit(e) {
+    
+    const formSubmit = (e) => {
         e.preventDefault();
         
         socket.emit('login', { name }, function (error) {
             if (error) return;
             history.push('/room');
         });
-    }
+    };
 
     return (
         <Form onSubmit={formSubmit} id="login-form">

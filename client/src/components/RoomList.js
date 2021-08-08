@@ -1,18 +1,37 @@
+import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import styled from 'styled-components';
+import socket from '../connect';
 
-const RoomList = () => {
-    const roomId = 'ABC123';
-    const roomTitle = "MisterAzix's room";
-    const roomSlot = 0;
+const RoomList = forwardRef((props, ref) => {
+    const [list, setList] = useState(null);
+
+    const displayRoomList = () => {
+        socket.emit('get-room', function (rooms) {
+            console.log('oui');
+            setList(rooms);
+        });
+    };
+
+    useEffect(() => {
+        displayRoomList();
+    }, []);
+
+    useImperativeHandle(ref, () => {
+        return {
+            displayRoomList: displayRoomList
+        };
+    });
 
     return (
         <List>
-            <Item id={roomId}><span>{roomTitle}</span><span>{roomSlot}/2</span></Item>
-            <Item id={roomId}><span>{roomTitle}</span><span>{roomSlot}/2</span></Item>
-            <Item id={roomId}><span>{roomTitle}</span><span>{roomSlot}/2</span></Item>
+            {list?.map(room => {
+                const { id, name, players } = room;
+                const slot = players.filter(player => player.id !== null).length;
+                return <Item id={id}><span>{name}</span><span>{slot}/{players.length}</span></Item>
+            })}
         </List>
     );
-}
+});
 
 export default RoomList;
 

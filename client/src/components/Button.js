@@ -14,7 +14,7 @@ const Btn = styled.button`
     cursor: pointer;
     padding: 1vmin 3vmin;
     border-radius: 1vmin;
-    box-shadow: $box-shadow;
+    box-shadow: var(--box-shadow);
     font-size: 2vmin;
     font-weight: bold;
     transition: transform 0.3s ease;
