@@ -8,6 +8,8 @@ import Board from '../components/Board';
 import PlayerCard from '../components/PlayerCard';
 import PieceSelector from '../components/PieceSelector';
 
+import socket from '../connect';
+
 const Room = () => {
     const { id } = useParams();
 
