@@ -25,6 +25,8 @@ io.on('connection', socket => {
     console.log(consoleTimestamp(), 'Client connected : ', socket.id);
     socket.broadcast.emit('receive-connection', socket.id);
 
+    socket.on('is-logged', callback => callback(getUser(socket.id)));
+
     socket.on('login', ({ name }, callback) => {
         const { error, user } = createUser({ id: socket.id, name });
         if (error) return callback(error);

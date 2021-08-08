@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 import Title from '../components/Title';
@@ -8,8 +8,15 @@ import Board from '../components/Board';
 import PlayerCard from '../components/PlayerCard';
 import PieceSelector from '../components/PieceSelector';
 
+import socket from '../connect';
+
 const Room = () => {
     const { id } = useParams();
+    const history = useHistory();
+
+    socket.emit('is-logged', function(response) {
+        !response && history.push('/');
+    });
 
     const renderRoomList = () =>
         <Col>
