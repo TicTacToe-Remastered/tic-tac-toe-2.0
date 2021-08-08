@@ -1,13 +1,29 @@
+import { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 import Button from './Button';
 
+import socket from '../connect';
+
 const LoginForm = () => {
+    const [name, setName] = useState('');
+    const history = useHistory();
+
+    function formSubmit(e) {
+        e.preventDefault();
+        
+        socket.emit('login', { name }, function (error) {
+            if (error) return;
+            history.push('/room');
+        });
+    }
+
     return (
-        <Form id="login-form">
+        <Form onSubmit={formSubmit} id="login-form">
             <InputGroup>
                 <label htmlFor="username">Username</label>
-                <input type="text" id="username" placeholder="John Doe" required />
+                <input onChange={event => setName(event.target.value)} type="text" id="username" placeholder="John Doe" required />
             </InputGroup>
             <Button type="submit" color="primary">Login</Button>
         </Form>
