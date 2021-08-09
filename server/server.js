@@ -40,12 +40,12 @@ io.on('connection', socket => {
     socket.on('create-room', callback => {
         const user = getUser(socket.id);
         const { error, room } = createRoom(user.name);
-        if (error) return callback(error);
+        if (error) return callback({ error });
 
         joinRoom(room.id, socket);
         io.to(room.id).emit('receive-teams', room.players);
         io.to(room.id).emit('receive-active', room.activeTeam);
-        callback();
+        callback({ room });
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
     });
@@ -56,7 +56,7 @@ io.on('connection', socket => {
         const { error, success } = joinRoom(roomId, socket);
         if (error) return callback(error);
 
-        const { activeTeam, grid, players} = getRoom(roomId);
+        const { activeTeam, grid, players } = getRoom(roomId);
         io.to(roomId).emit('receive-init', grid);
         io.to(roomId).emit('receive-teams', players);
         io.to(roomId).emit('receive-active', activeTeam);

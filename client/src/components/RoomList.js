@@ -7,7 +7,6 @@ const RoomList = forwardRef((props, ref) => {
 
     const displayRoomList = () => {
         socket.emit('get-room', function (rooms) {
-            console.log('oui');
             setList(rooms);
         });
     };
