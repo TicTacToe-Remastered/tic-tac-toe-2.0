@@ -126,7 +126,7 @@ const getPlayer = (playerId) => {
  * @returns {object}
  */
 const joinRoom = (id, socket) => {
-    const { players } = getRoom(id) || { players: null };
+    const { players, ...room } = getRoom(id) || { players: null };
     if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
 
     const getEmptySlot = (players) => players.find(player => player.id === null);
@@ -135,7 +135,7 @@ const joinRoom = (id, socket) => {
     socket.join(id);
     getUser(socket.id).room = id;
     getEmptySlot(players).id = socket.id;
-    return { success: `${socket.id} successfully join!` };
+    return { room };
 }
 
 /**

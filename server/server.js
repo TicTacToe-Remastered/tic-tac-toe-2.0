@@ -53,15 +53,15 @@ io.on('connection', socket => {
     socket.on('get-room', (callback) => callback(getRooms()));
 
     socket.on('join-room', (roomId, callback) => {
-        const { error, success } = joinRoom(roomId, socket);
-        if (error) return callback(error);
+        const { error, room } = joinRoom(roomId, socket);
+        if (error) return callback({ error });
 
         const { activeTeam, grid, players } = getRoom(roomId);
         io.to(roomId).emit('receive-init', grid);
         io.to(roomId).emit('receive-teams', players);
         io.to(roomId).emit('receive-active', activeTeam);
         io.to(roomId).emit('receive-edit-piece', players);
-        callback();
+        callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
     });

@@ -1,9 +1,15 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import socket from '../connect';
 
 const RoomList = forwardRef((props, ref) => {
     const [list, setList] = useState(null);
+    const history = useHistory();
+    
+    useEffect(() => {
+        displayRoomList();
+    }, []);
 
     const displayRoomList = () => {
         socket.emit('get-room', function (rooms) {
@@ -11,9 +17,12 @@ const RoomList = forwardRef((props, ref) => {
         });
     };
 
-    useEffect(() => {
-        displayRoomList();
-    }, []);
+    const handleJoin = (e) => {
+        socket.emit('join-room', e.target.id, function({ error, room }) {
+            error && console.log(error);
+            room && history.push(`/room/${room.id}`);
+        });
+    }
 
     useImperativeHandle(ref, () => {
         return {
@@ -26,7 +35,7 @@ const RoomList = forwardRef((props, ref) => {
             {list?.map(room => {
                 const { id, name, players } = room;
                 const slot = players.filter(player => player.id !== null).length;
-                return <Item id={id}><span>{name}</span><span>{slot}/{players.length}</span></Item>
+                return <Item onClick={handleJoin} id={id} key={id}><span>{name}</span><span>{slot}/{players.length}</span></Item>
             })}
         </List>
     );
