@@ -39,12 +39,13 @@ io.on('connection', socket => {
 
     socket.on('create-room', callback => {
         const user = getUser(socket.id);
+        if (!user) return callback({ error: 'Cannot create a room has guest!' });
         const { error, room } = createRoom(user.name);
         if (error) return callback({ error });
 
         joinRoom(room.id, socket);
-        io.to(room.id).emit('receive-teams', room.players);
-        io.to(room.id).emit('receive-active', room.activeTeam);
+        /* io.to(room.id).emit('receive-teams', room.players);
+        io.to(room.id).emit('receive-active', room.activeTeam); */
         callback({ room });
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
@@ -56,11 +57,11 @@ io.on('connection', socket => {
         const { error, room } = joinRoom(roomId, socket);
         if (error) return callback({ error });
 
-        const { activeTeam, grid, players } = getRoom(roomId);
-        io.to(roomId).emit('receive-init', grid);
-        io.to(roomId).emit('receive-teams', players);
-        io.to(roomId).emit('receive-active', activeTeam);
-        io.to(roomId).emit('receive-edit-piece', players);
+        const { id, activeTeam, grid, players } = room;
+        io.to(id).emit('receive-init', grid);
+        io.to(id).emit('receive-teams', players);
+        io.to(id).emit('receive-active', activeTeam);
+        io.to(id).emit('receive-edit-piece', players);
         callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
@@ -94,18 +95,6 @@ io.on('connection', socket => {
         t.player = '';
         t.playerName = ''; */
     });
-
-    /* socket.on('get-teams', callback => {
-        callback(teams);
-    });
-
-    socket.on('get-grid', callback => {
-        callback(grid);
-    });
-
-    socket.on('get-active', callback => {
-        callback(activeTeam.id);
-    }); */
 
     socket.on('play', (box, callback) => {
         const { error, player, room } = getPlayer(socket.id);

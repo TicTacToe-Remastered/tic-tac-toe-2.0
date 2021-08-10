@@ -1,16 +1,42 @@
-import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 
-const PlayerCard = () => {
-    const index = 1;
-    const name = 'MisterAzix' || 'Waiting for player...';
-    const score = 0;
+import socket from '../connect';
+
+const PlayerCard = ({ player, isActive }) => {
+    const [name, setName] = useState('Waiting for player...');
+    const [score, setScore] = useState(0);
+
+    const index = player.team === 'blue' ? 1 : 2;
+
+    useEffect(() => {
+        async function getUsername() {
+            await new Promise(resolve => {
+                socket.emit('get-username', player.id, function (username) {
+                    resolve(username);
+                });
+            }).then(username => username ? setName(username) : setName('Waiting for player...'));
+        }
+        getUsername();
+    }, [player.id, name]);
+
+    useEffect(() => {
+        setScore(player.score)
+    }, [player.score, score]);
+
+    const displayActive = () => {
+        if (!isActive) return;
+        return (
+            <>
+                <i className="fas fa-chevron-right"></i>
+                <i className="fas fa-chevron-left"></i>
+            </>
+        )
+    }
 
     return (
-        <Card>
-            <div className="player-logo">
-                {/* <i className="fas fa-chevron-right"></i>
-                <i className="fas fa-chevron-left"></i> */}
-            </div>
+        <Card id={player.team}>
+            <div className="player-logo">{displayActive()}</div>
             <div className="player-number">Player {index}</div>
             <div className="player-name">{name}</div>
             <div className="player-score">{score}</div>
@@ -21,7 +47,14 @@ const PlayerCard = () => {
 export default PlayerCard;
 
 const Card = styled.div`
-    --gradient-color: linear-gradient(180deg, #00D2FF 0%, #3A7BD5 100%);
+    ${props => props.id === 'blue' && css`
+        --gradient-color: linear-gradient(180deg, #00D2FF 0%, #3A7BD5 100%);
+    `}
+
+    ${props => props.id === 'red' && css`
+        --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+    `}
+
     border-radius: 1rem;
     padding: 16px;
     box-shadow: var(--box-shadow);
@@ -38,6 +71,7 @@ const Card = styled.div`
         height: 6vmin;
         border-radius: 6vmin;
         margin-bottom: 2vmin;
+        box-shadow: var(--box-shadow);
         background: var(--gradient-color);
 
         i {

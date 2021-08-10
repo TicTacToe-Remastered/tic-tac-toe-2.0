@@ -135,7 +135,7 @@ const joinRoom = (id, socket) => {
     socket.join(id);
     getUser(socket.id).room = id;
     getEmptySlot(players).id = socket.id;
-    return { room };
+    return { room: { ...room, players } };
 }
 
 /**

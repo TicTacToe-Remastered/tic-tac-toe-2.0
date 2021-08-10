@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -16,21 +16,60 @@ const Room = () => {
     const history = useHistory();
     const roomListRef = useRef(null);
 
+    const [blue, setBlue] = useState([]);
+    const [red, setRed] = useState([]);
+    const [active, setActive] = useState('blue');
+    const [bluePieces, setBluePiece] = useState([]);
+    const [redPieces, setRedPiece] = useState([]);
+    /* const [grid, setGrid] = useState([]); */
+
     useEffect(() => {
-        socket.emit('is-logged', function(response) {
+        socket.emit('is-logged', function (response) {
             !response && history.push('/');
+        });
+
+        socket.on('receive-teams', (players) => {
+            editTeams(players);
+        });
+    
+        socket.on('receive-active', (activeTeam) => {
+            editActive(activeTeam);
+        });
+
+        socket.on('receive-edit-piece', (players) => {
+            editPiece(players);
         });
     }, [history]);
 
     const handleCreate = () => {
-        socket.emit('create-room', function({ error, room }) {
+        socket.emit('create-room', function ({ error, room }) {
             error && console.log(error);
-            room && history.push(`/room/${room.id}`);
+            if (room) {
+                history.push(`/room/${room.id}`);
+                const { activeTeam, players } = room;
+                editTeams(players);
+                editActive(activeTeam);
+                editPiece(players);
+            }
         });
     }
 
     const handleReload = () => {
         roomListRef.current.displayRoomList();
+    }
+
+    const editTeams = (players) => {
+        setBlue(players[0]);
+        setRed(players[1]);
+    }
+
+    const editActive = (activeTeam) => {
+        setActive(activeTeam);
+    }
+
+    const editPiece = (players) => {
+        setBluePiece(players[0]);
+        setRedPiece(players[1]);
     }
 
     const renderRoomList = () =>
@@ -52,15 +91,15 @@ const Room = () => {
     const renderRoomBoard = () =>
         <Col>
             <Row>
-                <PlayerCard />
-                <PieceSelector />
+                <PlayerCard player={blue} isActive={active === blue.team} />
+                <PieceSelector player={bluePieces} />
             </Row>
             <Row>
                 <Board />
             </Row>
             <Row>
-                <PlayerCard />
-                <PieceSelector />
+                <PlayerCard player={red} isActive={active === red.team} />
+                <PieceSelector player={redPieces} />
             </Row>
         </Col>;
 

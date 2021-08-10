@@ -68,5 +68,6 @@ const Item = styled.li`
     span {
         font-size: 2vmin;
         font-weight: bold;
+        pointer-events: none;
     }
 `;
