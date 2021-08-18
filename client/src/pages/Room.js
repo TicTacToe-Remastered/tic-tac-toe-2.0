@@ -21,7 +21,7 @@ const Room = () => {
     const [active, setActive] = useState('blue');
     const [bluePieces, setBluePiece] = useState([]);
     const [redPieces, setRedPiece] = useState([]);
-    /* const [grid, setGrid] = useState([]); */
+    const [grid, setGrid] = useState([]);
 
     useEffect(() => {
         socket.emit('is-logged', function (response) {
@@ -39,6 +39,10 @@ const Room = () => {
         socket.on('receive-edit-piece', (players) => {
             editPiece(players);
         });
+
+        socket.on('receive-init', (grid) => {
+            editGrid(grid);
+        });
     }, [history]);
 
     const handleCreate = () => {
@@ -46,10 +50,11 @@ const Room = () => {
             error && console.log(error);
             if (room) {
                 history.push(`/room/${room.id}`);
-                const { activeTeam, players } = room;
+                const { activeTeam, players, grid } = room;
                 editTeams(players);
                 editActive(activeTeam);
                 editPiece(players);
+                editGrid(grid)
             }
         });
     }
@@ -70,6 +75,10 @@ const Room = () => {
     const editPiece = (players) => {
         setBluePiece(players[0]);
         setRedPiece(players[1]);
+    }
+
+    const editGrid = (grid) => {
+        setGrid(grid);
     }
 
     const renderRoomList = () =>
@@ -95,7 +104,7 @@ const Room = () => {
                 <PieceSelector player={bluePieces} />
             </Row>
             <Row>
-                <Board />
+                <Board grid={grid} />
             </Row>
             <Row>
                 <PlayerCard player={red} isActive={active === red.team} />
@@ -155,7 +164,7 @@ const Reload = styled.button`
     svg {
         width: 3.5vmin;
         height: 3.5vmin;
-        color: $text-color;
+        color: var(--text-color);
     }
 
     &:hover {

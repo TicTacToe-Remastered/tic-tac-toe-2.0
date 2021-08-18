@@ -44,9 +44,9 @@ const createRoom = (name) => {
             }
         ],
         grid: [
-            [null, null], [null, null], [null, null],
-            [null, null], [null, null], [null, null],
-            [null, null], [null, null], [null, null]
+            [['blue', 'large'], ['red', 'medium'], ['blue', 'small']], [null], [null],
+            [null], [null], [null],
+            [null], [null], [null]
         ]
     }
 
@@ -89,9 +89,9 @@ const getRooms = () => {
 const resetRoom = (id) => {
     let room = getRoom(id);
     room.grid = [
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null]
+        [null], [null], [null],
+        [null], [null], [null],
+        [null], [null], [null]
     ];
     room.players.forEach(player => {
         player.pieces = {

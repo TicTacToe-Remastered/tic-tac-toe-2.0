@@ -89,11 +89,6 @@ io.on('connection', socket => {
             }
         }
         removeUser(socket.id);
-        /* const t = teams[Object.keys(teams).find(key => teams[key].player === socket.id)];
-        if (!t) return;
-        t.count = 0;
-        t.player = '';
-        t.playerName = ''; */
     });
 
     socket.on('play', (box, callback) => {
@@ -104,8 +99,9 @@ io.on('connection', socket => {
         if (!isPieceAvailable(player)) return callback(`You used all your ${player.activePiece} pieces!`);
 
         if (isFree(room, player, box)) {
-            room.grid[box - 1][0] = player.team;
-            room.grid[box - 1][1] = player.activePiece;
+            /* room.grid[box - 1][0] = player.team;
+            room.grid[box - 1][1] = player.activePiece; */
+            room.grid[box - 1].unshift([player.team, player.activePiece]);
             player.pieces[player.activePiece]--;
             io.to(room.id).emit('receive-play', box, player.team, player.activePiece);
             io.to(room.id).emit('receive-edit-piece', room.players);
@@ -150,7 +146,7 @@ function resetGrid(room) {
 }
 
 function isFree(room, player, box) {
-    boxContent = room.grid[box - 1][1];
+    boxContent = room.grid[box - 1][0][1];
     if (boxContent === null) return true;
     else if (boxContent === 'small' && (player.activePiece === 'medium' || player.activePiece === 'large')) return true;
     else if (boxContent === 'medium' && player.activePiece === 'large') return true;
@@ -163,18 +159,18 @@ function toogleActiveTeam(room) {
 }
 
 function checkEquality(grid) {
-    return grid.filter(g => g[0] !== null).length >= 9;
+    return grid.filter(g => g !== null).length >= 9;
 }
 
 function checkWin(grid) {
-    if ((grid[0][0] !== null && grid[0][0] === grid[1][0] && grid[1][0] === grid[2][0]) ||
-        (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
-        (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
-        (grid[0][0] !== null && grid[0][0] === grid[3][0] && grid[3][0] === grid[6][0]) ||
-        (grid[1][0] !== null && grid[1][0] === grid[4][0] && grid[4][0] === grid[7][0]) ||
-        (grid[2][0] !== null && grid[2][0] === grid[5][0] && grid[5][0] === grid[8][0]) ||
-        (grid[0][0] !== null && grid[0][0] === grid[4][0] && grid[4][0] === grid[8][0]) ||
-        (grid[2][0] !== null && grid[2][0] === grid[4][0] && grid[4][0] === grid[6][0])) {
+    if ((grid[0][0][0] !== null && grid[0][0][0] === grid[1][0][0] && grid[1][0][0] === grid[2][0][0]) ||
+        (grid[3][0][0] !== null && grid[3][0][0] === grid[4][0][0] && grid[4][0][0] === grid[5][0][0]) ||
+        (grid[6][0][0] !== null && grid[6][0][0] === grid[7][0][0] && grid[7][0][0] === grid[8][0][0]) ||
+        (grid[0][0][0] !== null && grid[0][0][0] === grid[3][0][0] && grid[3][0][0] === grid[6][0][0]) ||
+        (grid[1][0][0] !== null && grid[1][0][0] === grid[4][0][0] && grid[4][0][0] === grid[7][0][0]) ||
+        (grid[2][0][0] !== null && grid[2][0][0] === grid[5][0][0] && grid[5][0][0] === grid[8][0][0]) ||
+        (grid[0][0][0] !== null && grid[0][0][0] === grid[4][0][0] && grid[4][0][0] === grid[8][0][0]) ||
+        (grid[2][0][0] !== null && grid[2][0][0] === grid[4][0][0] && grid[4][0][0] === grid[6][0][0])) {
         return true;
     } else {
         return false;
