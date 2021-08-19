@@ -101,8 +101,6 @@ io.on('connection', socket => {
         if (isFree(room, player, box)) {
             room.grid[box].unshift([player.team, player.activePiece]);
             player.pieces[player.activePiece]--;
-            io.to(room.id).emit('receive-init', room.grid);
-            io.to(room.id).emit('receive-edit-piece', room.players);
 
             if (checkWin(room.grid)) {
                 io.to(room.id).emit('receive-win', player.team);
@@ -113,6 +111,9 @@ io.on('connection', socket => {
                 io.to(room.id).emit('receive-equality');
                 resetGrid(room);
             }
+            
+            io.to(room.id).emit('receive-init', room.grid);
+            io.to(room.id).emit('receive-edit-piece', room.players);
             toogleActiveTeam(room);
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
@@ -139,8 +140,8 @@ io.on('connection', socket => {
 
 function resetGrid(room) {
     const newRoom = resetRoom(room.id);
-    io.to(room.id).emit('receive-init', newRoom.grid);
-    io.to(room.id).emit('receive-edit-piece', newRoom.players);
+    /* io.to(room.id).emit('receive-init', newRoom.grid);
+    io.to(room.id).emit('receive-edit-piece', newRoom.players); */
 }
 
 function isFree(room, player, box) {
