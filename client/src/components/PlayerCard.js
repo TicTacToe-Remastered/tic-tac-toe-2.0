@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
+import ChevronRight from '../icons/ChevronRight';
+import ChevronLeft from '../icons/ChevronLeft';
+
 import socket from '../connect';
 
 const PlayerCard = ({ player, isActive }) => {
@@ -28,8 +31,8 @@ const PlayerCard = ({ player, isActive }) => {
         if (!isActive) return;
         return (
             <>
-                <i className="fas fa-chevron-right"></i>
-                <i className="fas fa-chevron-left"></i>
+                <ChevronRight />
+                <ChevronLeft />
             </>
         )
     }
@@ -74,10 +77,9 @@ const Card = styled.div`
         box-shadow: var(--box-shadow);
         background: var(--gradient-color);
 
-        i {
-            display: none;
+        svg {
             position: absolute;
-            font-size: 3vmin;
+            height: 3vmin;
             top: 50%;
             transform: translateY(-50%);
 
