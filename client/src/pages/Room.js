@@ -54,7 +54,7 @@ const Room = () => {
                 editTeams(players);
                 editActive(activeTeam);
                 editPiece(players);
-                editGrid(grid)
+                editGrid(grid);
             }
         });
     }

@@ -1,37 +1,28 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
+import socket from '../connect';
+
 const Board = (props) => {
     const [grid, setGrid] = useState([]);
-
+    
     useEffect(() => {
         setGrid(props.grid);
-    }, [props.grid]);
+    }, [props.grid, grid]);
 
     const handlePlay = (e) => {
-        console.log(e.target.id);
+        socket.emit('play', e.target.id, function (error) {
+            console.log(error);
+        });
     }
 
     return (
         <Grid>
             {grid?.map((box, index) => {
                 return <Box onClick={handlePlay} id={index} key={index}>
-                    {box?.map((circle, i) => <Circle size={circle?.[1]} team={circle?.[0]} key={i} />)}
+                    {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
                 </Box>
             })}
-            {/* <Box id="1">
-                <Circle size="large" team="blue" />
-                <Circle size="medium" team="red" />
-                <Circle size="small" team="blue" />
-            </Box>
-            <Box id="2"></Box>
-            <Box id="3"></Box>
-            <Box id="4"></Box>
-            <Box id="5"></Box>
-            <Box id="6"></Box>
-            <Box id="7"></Box>
-            <Box id="8"></Box>
-            <Box id="9"></Box> */}
         </Grid>
     );
 }
