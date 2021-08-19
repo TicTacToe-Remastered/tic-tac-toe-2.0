@@ -158,7 +158,7 @@ function toogleActiveTeam(room) {
 }
 
 function checkEquality(grid) {
-    return grid.filter(g => !g).length >= 9;
+    return grid.filter(g => g[0]).length >= 9 && grid.filter(g => g[0]?.[1] === 'large').length >= 6;
 }
 
 function checkWin(grid) {
