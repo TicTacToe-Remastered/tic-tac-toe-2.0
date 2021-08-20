@@ -1,18 +1,25 @@
-import { Fragment } from 'react';
-import { BrowserRouter, Route } from "react-router-dom";
+import { Fragment, useEffect, useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
-import Home from './pages/Home';
-import Room from './pages/Room';
+import Loader from './components/Loader';
+import Router from './components/Router';
+
+import socket from './connect';
 
 const App = () => {
+    const [connection, setConnection] = useState(false);
+
+    useEffect(() => {
+        socket.on('connect', () => {
+            console.log(`You connected with id ${socket.id}!`);
+            setConnection(true);
+        });
+    }, []);
+
     return (
         <Fragment>
             <GlobalStyle />
-            <BrowserRouter>
-                <Route path="/" exact component={Home} />
-                <Route path="/room/:id?" component={Room} />
-            </BrowserRouter>
+            {connection ? <Router /> : <Loader />}
         </Fragment>
     );
 }
