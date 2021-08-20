@@ -93,7 +93,11 @@ const PieceItem = styled.li`
         font-weight: bold;
         pointer-events: none;
     }
-
+    
+    .piece-item-size {
+        text-transform: capitalize;
+    }
+    
     .piece-item-number {
         margin-left: auto;
     }
