@@ -121,7 +121,7 @@ const getPlayer = (playerId) => {
 
 /**
  * @description Join a room
- * @param  {string} id
+ * @param  {string} id Room id
  * @param  {} socket
  * @returns {object}
  */
@@ -141,13 +141,14 @@ const joinRoom = (id, socket) => {
 /**
  * @description Leave a room
  * @param  {string} id Room id
- * @param  {string} player Player id
+ * @param  {string} socket
  * @returns {}
  */
-const leaveRoom = (playerId) => {
-    const { error, player } = getPlayer(playerId);
+const leaveRoom = (id, socket) => {
+    const { error, player } = getPlayer(socket.id);
     if (error) return;
 
+    socket.join(id);
     player.id = null;
 }
 

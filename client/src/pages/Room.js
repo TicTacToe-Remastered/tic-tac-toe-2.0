@@ -31,6 +31,10 @@ const Room = forwardRef((props, ref) => {
         socket.on('receive-init', (grid) => {
             editGrid(grid);
         });
+
+        return () => {
+            socket.emit('leave-room');
+        }
     }, []);
 
     const editTeams = (players) => {

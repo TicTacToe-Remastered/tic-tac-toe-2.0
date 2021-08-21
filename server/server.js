@@ -67,6 +67,8 @@ io.on('connection', socket => {
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
     });
 
+    socket.on('leave-room', () => leave(getUser(socket.id)?.room, socket));
+
     socket.on('get-username', (user, callback) => callback(getUser(user)?.name));
 
     socket.on('disconnect', () => {
@@ -77,17 +79,7 @@ io.on('connection', socket => {
 
         socket.broadcast.emit('receive-disconnect', socket.id);
 
-        if (user.room) {
-            leaveRoom(socket.id);
-            const room = getRoom(user.room);
-            io.to(user.room).emit('receive-teams', room.players);
-
-            if (room.players.filter(player => player.id === null).length >= 2) {
-                console.log(consoleTimestamp(), `Room ${room.id} has been deleted (no more players)`);
-
-                removeRoom(user.room);
-            }
-        }
+        leave(user.room, socket);
         removeUser(socket.id);
     });
 
@@ -137,6 +129,20 @@ io.on('connection', socket => {
         io.to(room.id).emit('receive-edit-piece', room.players);
     });
 });
+
+function leave(id, socket) {
+    if (id) {
+        leaveRoom(id, socket);
+        const room = getRoom(id);
+        io.to(id).emit('receive-teams', room.players);
+
+        if (room.players.filter(player => player.id === null).length >= 2) {
+            console.log(consoleTimestamp(), `Room ${room.id} has been deleted (no more players)`);
+
+            removeRoom(id);
+        }
+    }
+}
 
 function resetGrid(room) {
     const newRoom = resetRoom(room.id);

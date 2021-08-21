@@ -19,24 +19,18 @@ const RoomRouter = () => {
     }, [history]);
 
     const editTeams = (players) => {
-        /* setBlue(players[0]);
-        setRed(players[1]); */
         roomRef.current.editTeams(players);
     }
 
     const editActive = (activeTeam) => {
-        /* setActive(activeTeam); */
         roomRef.current.editActive(activeTeam);
     }
 
     const editPiece = (players) => {
-        /* setBluePiece(players[0]);
-        setRedPiece(players[1]); */
         roomRef.current.editPiece(players);
     }
 
     const editGrid = (grid) => {
-        /* setGrid(grid); */
         roomRef.current.editGrid(grid);
     }
 
