@@ -1,13 +1,18 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Board from '../components/Board';
 import PlayerCard from '../components/PlayerCard';
 import PieceSelector from '../components/PieceSelector';
 
+import BackArrow from '../icons/BackArrow';
+
 import socket from '../connect';
 
 const Room = forwardRef((props, ref) => {
+    const history = useHistory();
+
     const [blue, setBlue] = useState([]);
     const [red, setRed] = useState([]);
     const [active, setActive] = useState('blue');
@@ -36,6 +41,10 @@ const Room = forwardRef((props, ref) => {
             socket.emit('leave-room');
         }
     }, []);
+
+    const handleBack = () => {
+        history.push('/room');
+    }
 
     const editTeams = (players) => {
         setBlue(players[0]);
@@ -66,6 +75,7 @@ const Room = forwardRef((props, ref) => {
 
     return (
         <Col>
+            <Back onClick={handleBack}><BackArrow /></Back>
             <Row>
                 <PlayerCard player={blue} isActive={active === blue.team} />
                 <PieceSelector player={bluePieces} />
@@ -98,4 +108,27 @@ const Row = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+`;
+
+const Back = styled.button`
+    position: fixed;
+    top: 3vmin;
+    left: 3vmin;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: 2vmin;
+    margin-left: 3vmin;
+    transition: transform 0.3s ease;
+
+    svg {
+        width: 3.5vmin;
+        height: 3.5vmin;
+        color: var(--text-color);
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
 `;
