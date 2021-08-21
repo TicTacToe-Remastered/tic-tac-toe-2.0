@@ -3,15 +3,15 @@ import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 import socket from '../connect';
 
-const RoomList = forwardRef((props, ref) => {
+const RoomSelector = forwardRef((props, ref) => {
     const [list, setList] = useState(null);
     const history = useHistory();
     
     useEffect(() => {
-        displayRoomList();
+        displayRoomSelector();
     }, []);
 
-    const displayRoomList = () => {
+    const displayRoomSelector = () => {
         socket.emit('get-room', function (rooms) {
             setList(rooms);
         });
@@ -26,7 +26,7 @@ const RoomList = forwardRef((props, ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            displayRoomList: displayRoomList
+            displayRoomSelector: displayRoomSelector
         };
     });
 
@@ -41,7 +41,7 @@ const RoomList = forwardRef((props, ref) => {
     );
 });
 
-export default RoomList;
+export default RoomSelector;
 
 
 const List = styled.ul`
