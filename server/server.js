@@ -57,14 +57,21 @@ io.on('connection', socket => {
         const { error, room } = joinRoom(roomId, socket);
         if (error) return callback({ error });
 
-        const { id, activeTeam, grid, players } = room;
-        io.to(id).emit('receive-init', grid);
-        io.to(id).emit('receive-teams', players);
-        io.to(id).emit('receive-active', activeTeam);
-        io.to(id).emit('receive-edit-piece', players);
+        /* const { id, activeTeam, grid, players } = room; */
         callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
+    });
+
+    socket.on('init-room', () => {
+        const user = getUser(socket.id);
+        if (!user || !user.room) return;
+        const { id, activeTeam, grid, players } = getRoom(user.room);
+
+        io.to(id).emit('receive-grid', grid);
+        io.to(id).emit('receive-teams', players);
+        io.to(id).emit('receive-active', activeTeam);
+        io.to(id).emit('receive-edit-piece', players);
     });
 
     socket.on('leave-room', () => leave(getUser(socket.id)?.room, socket));
@@ -104,7 +111,7 @@ io.on('connection', socket => {
                 resetGrid(room);
             }
 
-            io.to(room.id).emit('receive-init', room.grid);
+            io.to(room.id).emit('receive-grid', room.grid);
             io.to(room.id).emit('receive-edit-piece', room.players);
             toogleActiveTeam(room);
         } else {
@@ -148,7 +155,7 @@ function leave(id, socket) {
 
 function resetGrid(room) {
     const newRoom = resetRoom(room.id);
-    /* io.to(room.id).emit('receive-init', newRoom.grid);
+    /* io.to(room.id).emit('receive-grid', newRoom.grid);
     io.to(room.id).emit('receive-edit-piece', newRoom.players); */
 }
 

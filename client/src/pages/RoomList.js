@@ -8,21 +8,14 @@ import Button from '../components/Button';
 
 import socket from '../connect';
 
-const RoomList = ({ setTeam, setActive, setPiece, setGrid }) => {
+const RoomList = () => {
     const history = useHistory();
     const RoomSelectorRef = useRef(null);
 
     const handleCreate = () => {
         socket.emit('create-room', function ({ error, room }) {
             error && console.log(error);
-            if (room) {
-                history.push(`/room/${room.id}`);
-                const { activeTeam, players, grid } = room;
-                setTeam(players);
-                setActive(activeTeam);
-                setPiece(players);
-                setGrid(grid);
-            }
+            if (room) history.push(`/room/${room.id}`);
         });
     }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,7 +10,7 @@ import BackArrow from '../icons/BackArrow';
 
 import socket from '../connect';
 
-const Room = forwardRef((props, ref) => {
+const Room = () => {
     const history = useHistory();
 
     const [blue, setBlue] = useState([]);
@@ -21,6 +21,8 @@ const Room = forwardRef((props, ref) => {
     const [grid, setGrid] = useState([]);
 
     useEffect(() => {
+        socket.emit('init-room');
+
         socket.on('receive-teams', (players) => {
             editTeams(players);
         });
@@ -28,12 +30,12 @@ const Room = forwardRef((props, ref) => {
         socket.on('receive-active', (activeTeam) => {
             editActive(activeTeam);
         });
-
+    
         socket.on('receive-edit-piece', (players) => {
             editPiece(players);
         });
-
-        socket.on('receive-init', (grid) => {
+    
+        socket.on('receive-grid', (grid) => {
             editGrid(grid);
         });
 
@@ -64,15 +66,6 @@ const Room = forwardRef((props, ref) => {
         setGrid(grid);
     }
 
-    useImperativeHandle(ref, () => {
-        return {
-            editTeams: editTeams,
-            editActive: editActive,
-            editPiece: editPiece,
-            editGrid: editGrid
-        };
-    });
-
     return (
         <Col>
             <Back onClick={handleBack}><BackArrow /></Back>
@@ -89,7 +82,7 @@ const Room = forwardRef((props, ref) => {
             </Row>
         </Col>
     );
-});
+}
 
 export default Room;
 
