@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
@@ -10,7 +10,6 @@ import socket from '../connect';
 const RoomRouter = () => {
     const { id } = useParams();
     const history = useHistory();
-    const roomRef = useRef(null);
 
     useEffect(() => {
         socket.emit('is-logged', function (response) {
@@ -18,25 +17,9 @@ const RoomRouter = () => {
         });
     }, [history]);
 
-    const editTeams = (players) => {
-        roomRef.current.editTeams(players);
-    }
-
-    const editActive = (activeTeam) => {
-        roomRef.current.editActive(activeTeam);
-    }
-
-    const editPiece = (players) => {
-        roomRef.current.editPiece(players);
-    }
-
-    const editGrid = (grid) => {
-        roomRef.current.editGrid(grid);
-    }
-
     return (
         <Container>
-            {id ? <Room ref={roomRef} /> : <RoomList setTeam={editTeams} setActive={editActive} setPiece={editPiece} setGrid={editGrid} />}
+            {id ? <Room /> : <RoomList />}
         </Container>
     );
 }
