@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 const { createUser, removeUser, getUser } = require('./users');
 const { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom, leaveRoom, getPlayer } = require('./rooms');
@@ -25,6 +25,8 @@ io.on('connection', socket => {
     console.log(consoleTimestamp(), 'Client connected : ', socket.id);
     socket.broadcast.emit('receive-connection', socket.id);
 
+    socket.on('is-logged', callback => callback(getUser(socket.id)));
+
     socket.on('login', ({ name }, callback) => {
         const { error, user } = createUser({ id: socket.id, name });
         if (error) return callback(error);
@@ -37,13 +39,14 @@ io.on('connection', socket => {
 
     socket.on('create-room', callback => {
         const user = getUser(socket.id);
+        if (!user) return callback({ error: 'Cannot create a room has guest!' });
         const { error, room } = createRoom(user.name);
-        if (error) return callback(error);
+        if (error) return callback({ error });
 
         joinRoom(room.id, socket);
-        io.to(room.id).emit('receive-teams', room.players);
-        io.to(room.id).emit('receive-active', room.activeTeam);
-        callback();
+        /* io.to(room.id).emit('receive-teams', room.players);
+        io.to(room.id).emit('receive-active', room.activeTeam); */
+        callback({ room });
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
     });
@@ -51,18 +54,20 @@ io.on('connection', socket => {
     socket.on('get-room', (callback) => callback(getRooms()));
 
     socket.on('join-room', (roomId, callback) => {
-        const { error, success } = joinRoom(roomId, socket);
-        if (error) return callback(error);
+        const { error, room } = joinRoom(roomId, socket);
+        if (error) return callback({ error });
 
-        const { activeTeam, grid, players} = getRoom(roomId);
-        io.to(roomId).emit('receive-init', grid);
-        io.to(roomId).emit('receive-teams', players);
-        io.to(roomId).emit('receive-active', activeTeam);
-        io.to(roomId).emit('receive-edit-piece', players);
-        callback();
+        const { id, activeTeam, grid, players } = room;
+        io.to(id).emit('receive-init', grid);
+        io.to(id).emit('receive-teams', players);
+        io.to(id).emit('receive-active', activeTeam);
+        io.to(id).emit('receive-edit-piece', players);
+        callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
     });
+
+    socket.on('leave-room', () => leave(getUser(socket.id)?.room, socket));
 
     socket.on('get-username', (user, callback) => callback(getUser(user)?.name));
 
@@ -74,36 +79,9 @@ io.on('connection', socket => {
 
         socket.broadcast.emit('receive-disconnect', socket.id);
 
-        if (user.room) {
-            leaveRoom(socket.id);
-            const room = getRoom(user.room);
-            io.to(user.room).emit('receive-teams', room.players);
-
-            if (room.players.filter(player => player.id === null).length >= 2) {
-                console.log(consoleTimestamp(), `Room ${room.id} has been deleted (no more players)`);
-
-                removeRoom(user.room);
-            }
-        }
+        leave(user.room, socket);
         removeUser(socket.id);
-        /* const t = teams[Object.keys(teams).find(key => teams[key].player === socket.id)];
-        if (!t) return;
-        t.count = 0;
-        t.player = '';
-        t.playerName = ''; */
     });
-
-    /* socket.on('get-teams', callback => {
-        callback(teams);
-    });
-
-    socket.on('get-grid', callback => {
-        callback(grid);
-    });
-
-    socket.on('get-active', callback => {
-        callback(activeTeam.id);
-    }); */
 
     socket.on('play', (box, callback) => {
         const { error, player, room } = getPlayer(socket.id);
@@ -113,11 +91,8 @@ io.on('connection', socket => {
         if (!isPieceAvailable(player)) return callback(`You used all your ${player.activePiece} pieces!`);
 
         if (isFree(room, player, box)) {
-            room.grid[box - 1][0] = player.team;
-            room.grid[box - 1][1] = player.activePiece;
+            room.grid[box].unshift([player.team, player.activePiece]);
             player.pieces[player.activePiece]--;
-            io.to(room.id).emit('receive-play', box, player.team, player.activePiece);
-            io.to(room.id).emit('receive-edit-piece', room.players);
 
             if (checkWin(room.grid)) {
                 io.to(room.id).emit('receive-win', player.team);
@@ -128,6 +103,9 @@ io.on('connection', socket => {
                 io.to(room.id).emit('receive-equality');
                 resetGrid(room);
             }
+            
+            io.to(room.id).emit('receive-init', room.grid);
+            io.to(room.id).emit('receive-edit-piece', room.players);
             toogleActiveTeam(room);
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
@@ -152,15 +130,29 @@ io.on('connection', socket => {
     });
 });
 
+function leave(id, socket) {
+    if (id) {
+        leaveRoom(id, socket);
+        const room = getRoom(id);
+        io.to(id).emit('receive-teams', room.players);
+
+        if (room.players.filter(player => player.id === null).length >= 2) {
+            console.log(consoleTimestamp(), `Room ${room.id} has been deleted (no more players)`);
+
+            removeRoom(id);
+        }
+    }
+}
+
 function resetGrid(room) {
     const newRoom = resetRoom(room.id);
-    io.to(room.id).emit('receive-init', newRoom.grid);
-    io.to(room.id).emit('receive-edit-piece', newRoom.players);
+    /* io.to(room.id).emit('receive-init', newRoom.grid);
+    io.to(room.id).emit('receive-edit-piece', newRoom.players); */
 }
 
 function isFree(room, player, box) {
-    boxContent = room.grid[box - 1][1];
-    if (boxContent === null) return true;
+    boxContent = room.grid[box][0]?.[1];
+    if (!boxContent) return true;
     else if (boxContent === 'small' && (player.activePiece === 'medium' || player.activePiece === 'large')) return true;
     else if (boxContent === 'medium' && player.activePiece === 'large') return true;
     else return false;
@@ -172,18 +164,18 @@ function toogleActiveTeam(room) {
 }
 
 function checkEquality(grid) {
-    return grid.filter(g => g[0] !== null).length >= 9;
+    return grid.filter(g => g[0]).length >= 9 && grid.filter(g => g[0]?.[1] === 'large').length >= 6;
 }
 
 function checkWin(grid) {
-    if ((grid[0][0] !== null && grid[0][0] === grid[1][0] && grid[1][0] === grid[2][0]) ||
-        (grid[3][0] !== null && grid[3][0] === grid[4][0] && grid[4][0] === grid[5][0]) ||
-        (grid[6][0] !== null && grid[6][0] === grid[7][0] && grid[7][0] === grid[8][0]) ||
-        (grid[0][0] !== null && grid[0][0] === grid[3][0] && grid[3][0] === grid[6][0]) ||
-        (grid[1][0] !== null && grid[1][0] === grid[4][0] && grid[4][0] === grid[7][0]) ||
-        (grid[2][0] !== null && grid[2][0] === grid[5][0] && grid[5][0] === grid[8][0]) ||
-        (grid[0][0] !== null && grid[0][0] === grid[4][0] && grid[4][0] === grid[8][0]) ||
-        (grid[2][0] !== null && grid[2][0] === grid[4][0] && grid[4][0] === grid[6][0])) {
+    if ((grid[0][0] && grid[0][0]?.[0] === grid[1][0]?.[0] && grid[1][0]?.[0] === grid[2][0]?.[0]) ||
+        (grid[3][0] && grid[3][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[5][0]?.[0]) ||
+        (grid[6][0] && grid[6][0]?.[0] === grid[7][0]?.[0] && grid[7][0]?.[0] === grid[8][0]?.[0]) ||
+        (grid[0][0] && grid[0][0]?.[0] === grid[3][0]?.[0] && grid[3][0]?.[0] === grid[6][0]?.[0]) ||
+        (grid[1][0] && grid[1][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[7][0]?.[0]) ||
+        (grid[2][0] && grid[2][0]?.[0] === grid[5][0]?.[0] && grid[5][0]?.[0] === grid[8][0]?.[0]) ||
+        (grid[0][0] && grid[0][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[8][0]?.[0]) ||
+        (grid[2][0] && grid[2][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[6][0]?.[0])) {
         return true;
     } else {
         return false;

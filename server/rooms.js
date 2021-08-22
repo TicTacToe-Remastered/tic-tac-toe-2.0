@@ -44,9 +44,9 @@ const createRoom = (name) => {
             }
         ],
         grid: [
-            [null, null], [null, null], [null, null],
-            [null, null], [null, null], [null, null],
-            [null, null], [null, null], [null, null]
+            [], [], [],
+            [], [], [],
+            [], [], []
         ]
     }
 
@@ -89,9 +89,9 @@ const getRooms = () => {
 const resetRoom = (id) => {
     let room = getRoom(id);
     room.grid = [
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null],
-        [null, null], [null, null], [null, null]
+        [], [], [],
+        [], [], [],
+        [], [], []
     ];
     room.players.forEach(player => {
         player.pieces = {
@@ -121,12 +121,12 @@ const getPlayer = (playerId) => {
 
 /**
  * @description Join a room
- * @param  {string} id
+ * @param  {string} id Room id
  * @param  {} socket
  * @returns {object}
  */
 const joinRoom = (id, socket) => {
-    const { players } = getRoom(id) || { players: null };
+    const { players, ...room } = getRoom(id) || { players: null };
     if (!players) return { error: `Room <strong>${id}</strong> doesn't exist!` };
 
     const getEmptySlot = (players) => players.find(player => player.id === null);
@@ -135,19 +135,20 @@ const joinRoom = (id, socket) => {
     socket.join(id);
     getUser(socket.id).room = id;
     getEmptySlot(players).id = socket.id;
-    return { success: `${socket.id} successfully join!` };
+    return { room: { ...room, players } };
 }
 
 /**
  * @description Leave a room
  * @param  {string} id Room id
- * @param  {string} player Player id
+ * @param  {string} socket
  * @returns {}
  */
-const leaveRoom = (playerId) => {
-    const { error, player } = getPlayer(playerId);
+const leaveRoom = (id, socket) => {
+    const { error, player } = getPlayer(socket.id);
     if (error) return;
 
+    socket.join(id);
     player.id = null;
 }
 
