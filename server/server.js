@@ -103,7 +103,7 @@ io.on('connection', socket => {
                 io.to(room.id).emit('receive-equality');
                 resetGrid(room);
             }
-            
+
             io.to(room.id).emit('receive-init', room.grid);
             io.to(room.id).emit('receive-edit-piece', room.players);
             toogleActiveTeam(room);
@@ -134,6 +134,8 @@ function leave(id, socket) {
     if (id) {
         leaveRoom(id, socket);
         const room = getRoom(id);
+        if (!room) return;
+
         io.to(id).emit('receive-teams', room.players);
 
         if (room.players.filter(player => player.id === null).length >= 2) {
