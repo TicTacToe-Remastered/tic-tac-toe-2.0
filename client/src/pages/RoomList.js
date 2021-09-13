@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
+import { motion } from "framer-motion";
 
 import Title from '../components/Title';
 import RoomSelector from '../components/RoomSelector';
@@ -24,7 +25,12 @@ const RoomList = () => {
     }
 
     return (
-        <Col>
+        <Col
+            initial={{ x: -500, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 500, opacity: 0 }}
+            transition={{ duration: 0.3, type: "spring" }}
+        >
             <Row>
                 <Title />
                 <RoomSelector ref={RoomSelectorRef} />
@@ -44,7 +50,7 @@ const RoomList = () => {
 export default RoomList;
 
 
-const Col = styled.div`
+const Col = styled(motion.div)`
     display: flex;
     justify-content: center;
     width: 100%;

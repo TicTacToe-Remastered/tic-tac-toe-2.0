@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { BrowserRouter } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
 import Loader from './components/Loader';
@@ -19,7 +20,7 @@ const App = () => {
     return (
         <Fragment>
             <GlobalStyle />
-            {connection ? <Router /> : <Loader />}
+            {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
         </Fragment>
     );
 }

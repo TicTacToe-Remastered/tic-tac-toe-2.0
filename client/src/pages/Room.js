@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 import Board from '../components/Board';
 import PlayerCard from '../components/PlayerCard';
@@ -26,15 +27,15 @@ const Room = () => {
         socket.on('receive-teams', (players) => {
             editTeams(players);
         });
-    
+
         socket.on('receive-active', (activeTeam) => {
             editActive(activeTeam);
         });
-    
+
         socket.on('receive-edit-piece', (players) => {
             editPiece(players);
         });
-    
+
         socket.on('receive-grid', (grid) => {
             editGrid(grid);
         });
@@ -67,7 +68,12 @@ const Room = () => {
     }
 
     return (
-        <Col>
+        <Col
+            initial={{ x: -500, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 500, opacity: 0 }}
+            transition={{ duration: 0.3, type: "spring" }}
+        >
             <Back onClick={handleBack}><BackArrow /></Back>
             <Row>
                 <PlayerCard player={blue} isActive={active === blue.team} />
@@ -86,7 +92,7 @@ const Room = () => {
 
 export default Room;
 
-const Col = styled.div`
+const Col = styled(motion.div)`
     display: flex;
     justify-content: center;
     width: 100%;
