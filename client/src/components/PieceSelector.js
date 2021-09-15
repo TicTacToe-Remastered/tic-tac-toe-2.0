@@ -89,16 +89,16 @@ const PieceItem = styled.li`
         position: relative;
         width: 3vmin;
         height: 3vmin;
+        padding: 0.3vmin;
         border-radius: 50%;
         margin-right: 1.5vmin;
         box-shadow: var(--box-shadow);
-        pointer-events: none;
         background: var(--gradient-color);
-        padding: 0.3vmin;
         mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: destination-out;
+        pointer-events: none;
     }
-    
+
     /* .piece-item-circle {
         position: relative;
         width: 3vmin;
