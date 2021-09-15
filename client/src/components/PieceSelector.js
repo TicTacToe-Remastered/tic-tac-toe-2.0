@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { motion, AnimateSharedLayout } from 'framer-motion';
 
 import socket from '../connect';
 
@@ -15,22 +16,27 @@ const PieceSelector = ({ player }) => {
     }, [player]);
 
     const handlePiece = (e) => {
-        socket.emit('select-piece', team, e.target.id, function(error) {
+        socket.emit('select-piece', team, e.target.id, function (error) {
             error && console.log(error);
         });
     }
 
     return (
         <Selector id={team}>
-            {pieces && Object.keys(pieces).map((key) => {
-                return (
+            <AnimateSharedLayout>
+                {pieces && Object.keys(pieces).map((key) => (
                     <PieceItem onClick={handlePiece} className={key === activePiece && 'active'} id={key} key={key}>
                         <div className="piece-item-circle"></div>
                         <div className="piece-item-size">{key}</div>
                         <div className="piece-item-number">x{pieces[key]}</div>
+                        {key === activePiece && (
+                            <SelectedPiece
+                                layoutId="selected"
+                            />
+                        )}
                     </PieceItem>
-                )
-            })}
+                ))}
+            </AnimateSharedLayout>
         </Selector>
     );
 }
@@ -47,7 +53,19 @@ const Selector = styled.ul`
     `}
 `;
 
+const SelectedPiece = styled(motion.div)`
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background: var(--background-color-active);
+`;
+
 const PieceItem = styled.li`
+    position: relative;
     border-radius: 1rem;
     padding: 16px 24px;
     box-shadow: var(--box-shadow);
@@ -57,7 +75,7 @@ const PieceItem = styled.li`
     margin: 16px 0;
     cursor: pointer;
 
-    &.active {
+    /* &.active {
         background: var(--background-color-active);
 
         .piece-item-circle {
@@ -65,9 +83,23 @@ const PieceItem = styled.li`
                 background: var(--background-color-active);
             }
         }
-    }
+    } */
 
     .piece-item-circle {
+        position: relative;
+        width: 3vmin;
+        height: 3vmin;
+        border-radius: 50%;
+        margin-right: 1.5vmin;
+        box-shadow: var(--box-shadow);
+        pointer-events: none;
+        background: var(--gradient-color);
+        padding: 0.3vmin;
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask-composite: destination-out;
+    }
+    
+    /* .piece-item-circle {
         position: relative;
         width: 3vmin;
         height: 3vmin;
@@ -85,7 +117,7 @@ const PieceItem = styled.li`
             margin: 0.3vmin;
             border-radius: 3vmin;
         }
-    }
+    } */
 
     .piece-item-size,
     .piece-item-number {
