@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import Board from '../components/Board';
 import PlayerCard from '../components/PlayerCard';
 import PieceSelector from '../components/PieceSelector';
+import Notification from '../components/Notification';
 
 import BackArrow from '../icons/BackArrow';
 
@@ -20,6 +21,8 @@ const Room = () => {
     const [bluePieces, setBluePiece] = useState([]);
     const [redPieces, setRedPiece] = useState([]);
     const [grid, setGrid] = useState([]);
+
+    const [notif, setNotif] = useState('');
 
     useEffect(() => {
         socket.emit('init-room');
@@ -40,10 +43,22 @@ const Room = () => {
             editGrid(grid);
         });
 
+        socket.on('receive-win', (player) => {
+            setNotif(`${player} won the game!`);
+        });
+
+        socket.on('receive-equality', () => {
+            setNotif('Equality!');
+        });
+
         return () => {
             socket.emit('leave-room');
         }
     }, []);
+
+    useEffect(() => {
+        setTimeout(() => setNotif(''), 1000);
+    }, [notif]);
 
     const handleBack = () => {
         history.push('/room');
@@ -67,26 +82,37 @@ const Room = () => {
         setGrid(grid);
     }
 
+    /* const handleNotif = () => {
+        setNotif(true);
+        setTimeout(() => {
+            setNotif(false);
+        }, 1000);
+    } */
+
     return (
-        <Col
-            initial={{ x: -500, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 500, opacity: 0 }}
-            transition={{ duration: 0.3, type: "spring" }}
-        >
+        <>
+            <AnimatePresence>{notif && <Notification>{notif}</Notification>}</AnimatePresence>
             <Back onClick={handleBack}><BackArrow /></Back>
-            <Row>
-                <PlayerCard player={blue} isActive={active === blue.team} />
-                <PieceSelector player={bluePieces} />
-            </Row>
-            <Row>
-                <Board grid={grid} />
-            </Row>
-            <Row>
-                <PlayerCard player={red} isActive={active === red.team} />
-                <PieceSelector player={redPieces} />
-            </Row>
-        </Col>
+            <Col
+                initial={{ x: -500, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 500, opacity: 0 }}
+                transition={{ duration: 0.3, type: "spring" }}
+            >
+                <Row>
+                    <PlayerCard player={blue} isActive={active === blue.team} />
+                    <PieceSelector player={bluePieces} />
+                </Row>
+                <Row>
+                    <Board grid={grid} />
+                    {/* <button onClick={handleNotif}>SEND NOTIF</button> */}
+                </Row>
+                <Row>
+                    <PlayerCard player={red} isActive={active === red.team} />
+                    <PieceSelector player={redPieces} />
+                </Row>
+            </Col>
+        </>
     );
 }
 
