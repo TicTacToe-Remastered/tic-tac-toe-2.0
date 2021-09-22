@@ -4,7 +4,7 @@ const Footer = () => {
     return (
         <Foot>
             <a href="mailto:bug@tictactoe-remastered.com">Report bug</a>
-            <span>Made by <a href="https://github.com/misterazix">MisterAzix</a></span>
+            <span>Made by <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
         </Foot>
     );
 }
