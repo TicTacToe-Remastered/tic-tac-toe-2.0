@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Footer = () => {
     return (
         <Foot>
-            <a href="mailto:bug@tictactoe-remastered.com">Report bug</a>
+            <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">Report bug</a>
             <span>Made by <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
         </Foot>
     );
