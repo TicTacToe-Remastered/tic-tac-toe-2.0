@@ -25,7 +25,7 @@ const ResponsiveModal = () => {
 export default ResponsiveModal;
 
 const Modal = styled.div`
-    z-index: 100;
+    z-index: 101;
     position: fixed;
     top: 0;
     left: 0;
