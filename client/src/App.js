@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 
 import Loader from './components/Loader';
 import Router from './components/Router';
+import Footer from './components/Footer';
 
 import socket from './connect';
 
@@ -20,6 +21,7 @@ const App = () => {
         <Fragment>
             <GlobalStyle />
             {connection ? <Router /> : <Loader />}
+            <Footer />
         </Fragment>
     );
 }
