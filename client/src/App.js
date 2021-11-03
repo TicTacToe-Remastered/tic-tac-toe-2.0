@@ -1,13 +1,17 @@
 import { Fragment, useEffect, useState } from 'react';
+import { BrowserRouter } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
 import Loader from './components/Loader';
 import Router from './components/Router';
+import Footer from './components/Footer';
+import ResponsiveModal from './components/ResponsiveModal';
 
 import socket from './connect';
 
 const App = () => {
     const [connection, setConnection] = useState(false);
+    const [responsive, setResponsive] = useState(true);
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -16,10 +20,22 @@ const App = () => {
         });
     }, []);
 
+    useEffect(() => {
+        const resize = () => {
+            if (window.innerWidth <= (window.innerHeight * 1.4).toFixed() && responsive === false) setResponsive(true);
+            if (window.innerWidth > (window.innerHeight * 1.4).toFixed() && responsive === true) setResponsive(false);
+        }
+
+        window.addEventListener('load', resize);
+        window.addEventListener('resize', resize);
+    }, [responsive]);
+
     return (
         <Fragment>
             <GlobalStyle />
-            {connection ? <Router /> : <Loader />}
+            {responsive && <ResponsiveModal />}
+            {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
+            <Footer />
         </Fragment>
     );
 }

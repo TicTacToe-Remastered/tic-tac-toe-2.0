@@ -49,47 +49,26 @@ const Box = styled.li`
 const Circle = styled.span`
     position: absolute;
     border-radius: 50%;
+    padding: 0.3vmin;
+    background: var(--gradient-color);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: destination-out;
     user-select: none;
     pointer-events: none;
-
-    &::after {
-        content: '';
-        position: absolute;
-        border-radius: 50%;
-        height: calc(10vmin - 0.6vmin);
-        width: calc(10vmin - 0.6vmin);
-        margin: 0.3vmin;
-        background: var(--background-color);
-    }
 
     ${props => props.size === 'small' && css`
         height: 6vmin;
         width: 6vmin;
-
-        &::after {
-            height: calc(6vmin - 0.6vmin);
-            width: calc(6vmin - 0.6vmin);
-        }
     `}
 
     ${props => props.size === 'medium' && css`
         height: 9vmin;
         width: 9vmin;
-
-        &::after {
-            height: calc(9vmin - 0.6vmin);
-            width: calc(9vmin - 0.6vmin);
-        }
     `}
 
     ${props => props.size === 'large' && css`
         height: 12vmin;
         width: 12vmin;
-
-        &::after {
-            height: calc(12vmin - 0.6vmin);
-            width: calc(12vmin - 0.6vmin);
-        }
     `}
 
     ${props => props.team === 'blue' && css`
