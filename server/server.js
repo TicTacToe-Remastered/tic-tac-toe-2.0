@@ -102,8 +102,8 @@ io.on('connection', socket => {
             player.pieces[player.activePiece]--;
 
             if (checkWin(room.grid)) {
-                io.to(room.id).emit('receive-win', player.team);
                 player.score++;
+                io.to(room.id).emit('receive-win', getUser(socket.id).name);
                 io.to(room.id).emit('receive-teams', room.players);
                 resetGrid(room);
             } else if (checkEquality(room.grid)) {
