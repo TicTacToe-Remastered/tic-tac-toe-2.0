@@ -1,9 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const PORT = process.env.PORT || 5000;
 
 const { createUser, removeUser, getUser } = require('./users');
 const { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom, leaveRoom, getPlayer } = require('./rooms');
+const { joinWebhook, roomCreateWebhook, roomJoinWebhook, roomDeleteWebhook, winWebhook } = require('./webhooks');
 
 const consoleTimestamp = function () {
     const date = new Date();
@@ -35,6 +37,7 @@ io.on('connection', socket => {
         callback();
 
         console.log(consoleTimestamp(), `${socket.id} logged in with the username : ${user.name}`);
+        joinWebhook(socket, user);
     });
 
     socket.on('create-room', callback => {
@@ -49,6 +52,7 @@ io.on('connection', socket => {
         callback({ room });
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
+        roomCreateWebhook(socket, user, room);
     });
 
     socket.on('get-room', (callback) => callback(getRooms()));
@@ -61,6 +65,7 @@ io.on('connection', socket => {
         callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
+        roomJoinWebhook(socket, getUser(socket.id), room);
     });
 
     socket.on('init-room', () => {
@@ -104,6 +109,7 @@ io.on('connection', socket => {
             if (checkWin(room.grid)) {
                 player.score++;
                 io.to(room.id).emit('receive-win', getUser(socket.id).name);
+                winWebhook(socket, getUser(socket.id), room);
                 io.to(room.id).emit('receive-teams', room.players);
                 resetGrid(room);
             } else if (checkEquality(room.grid)) {
@@ -147,6 +153,7 @@ function leave(id, socket) {
 
         if (room.players.filter(player => player.id === null).length >= 2) {
             console.log(consoleTimestamp(), `Room ${room.id} has been deleted (no more players)`);
+            roomDeleteWebhook(room);
 
             removeRoom(id);
         }
