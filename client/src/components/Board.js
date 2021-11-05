@@ -19,7 +19,8 @@ const Board = (props) => {
     return (
         <Grid>
             {grid?.map((box, index) => {
-                return <Box onClick={handlePlay} id={index} key={index}>
+                let isWin = box?.[2];
+                return <Box onClick={handlePlay} id={index} key={index} active={isWin}>
                     {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
                 </Box>
             })}
@@ -44,6 +45,10 @@ const Box = styled.li`
     cursor: pointer;
     box-shadow: var(--box-shadow);
     border-radius: 1rem;
+
+    ${props => props.active && css`
+        background-color: var(--background-color-active);
+    `}
 `;
 
 const Circle = styled.span`

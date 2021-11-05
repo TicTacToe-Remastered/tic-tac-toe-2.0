@@ -47,8 +47,6 @@ io.on('connection', socket => {
         if (error) return callback({ error });
 
         joinRoom(room.id, socket);
-        /* io.to(room.id).emit('receive-teams', room.players);
-        io.to(room.id).emit('receive-active', room.activeTeam); */
         callback({ room });
 
         console.log(consoleTimestamp(), `${user.name} (${socket.id}) create a new room (${room.id})`);
@@ -61,7 +59,6 @@ io.on('connection', socket => {
         const { error, room } = joinRoom(roomId, socket);
         if (error) return callback({ error });
 
-        /* const { id, activeTeam, grid, players } = room; */
         callback({ room });
 
         console.log(consoleTimestamp(), `${getUser(socket.id).name} (${socket.id}) join a room (${roomId})`);
@@ -106,20 +103,31 @@ io.on('connection', socket => {
             room.grid[box].unshift([player.team, player.activePiece]);
             player.pieces[player.activePiece]--;
 
+            const editBoard = () => {
+                io.to(room.id).emit('receive-grid', room.grid);
+                io.to(room.id).emit('receive-edit-piece', room.players);
+            }
+
             if (checkWin(room.grid)) {
                 player.score++;
                 io.to(room.id).emit('receive-win', getUser(socket.id).name);
-                winWebhook(socket, getUser(socket.id), room);
                 io.to(room.id).emit('receive-teams', room.players);
-                resetGrid(room);
+                winWebhook(socket, getUser(socket.id), room);
+                setTimeout(() => {
+                    resetGrid(room);
+                    editBoard();
+                }, 2000);
             } else if (checkEquality(room.grid)) {
                 io.to(room.id).emit('receive-equality');
-                resetGrid(room);
+                setTimeout(() => {
+                    resetGrid(room);
+                    editBoard();
+                }, 2000);
             }
 
-            io.to(room.id).emit('receive-grid', room.grid);
-            io.to(room.id).emit('receive-edit-piece', room.players);
+            editBoard();
             toogleActiveTeam(room);
+
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
         }
@@ -162,8 +170,6 @@ function leave(id, socket) {
 
 function resetGrid(room) {
     const newRoom = resetRoom(room.id);
-    /* io.to(room.id).emit('receive-grid', newRoom.grid);
-    io.to(room.id).emit('receive-edit-piece', newRoom.players); */
 }
 
 function isFree(room, player, box) {
@@ -184,14 +190,45 @@ function checkEquality(grid) {
 }
 
 function checkWin(grid) {
-    if ((grid[0][0] && grid[0][0]?.[0] === grid[1][0]?.[0] && grid[1][0]?.[0] === grid[2][0]?.[0]) ||
-        (grid[3][0] && grid[3][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[5][0]?.[0]) ||
-        (grid[6][0] && grid[6][0]?.[0] === grid[7][0]?.[0] && grid[7][0]?.[0] === grid[8][0]?.[0]) ||
-        (grid[0][0] && grid[0][0]?.[0] === grid[3][0]?.[0] && grid[3][0]?.[0] === grid[6][0]?.[0]) ||
-        (grid[1][0] && grid[1][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[7][0]?.[0]) ||
-        (grid[2][0] && grid[2][0]?.[0] === grid[5][0]?.[0] && grid[5][0]?.[0] === grid[8][0]?.[0]) ||
-        (grid[0][0] && grid[0][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[8][0]?.[0]) ||
-        (grid[2][0] && grid[2][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[6][0]?.[0])) {
+    if (grid[0][0] && grid[0][0]?.[0] === grid[1][0]?.[0] && grid[1][0]?.[0] === grid[2][0]?.[0]) {
+        grid[0][2] = true;
+        grid[1][2] = true;
+        grid[2][2] = true;
+        return true;
+    } else if (grid[3][0] && grid[3][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[5][0]?.[0]) {
+        grid[3][2] = true;
+        grid[4][2] = true;
+        grid[5][2] = true;
+        return true;
+    } else if (grid[6][0] && grid[6][0]?.[0] === grid[7][0]?.[0] && grid[7][0]?.[0] === grid[8][0]?.[0]) {
+        grid[6][2] = true;
+        grid[7][2] = true;
+        grid[8][2] = true;
+        return true;
+    } else if (grid[0][0] && grid[0][0]?.[0] === grid[3][0]?.[0] && grid[3][0]?.[0] === grid[6][0]?.[0]) {
+        grid[0][2] = true;
+        grid[3][2] = true;
+        grid[6][2] = true;
+        return true;
+    } else if (grid[1][0] && grid[1][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[7][0]?.[0]) {
+        grid[1][2] = true;
+        grid[4][2] = true;
+        grid[7][2] = true;
+        return true;
+    } else if (grid[2][0] && grid[2][0]?.[0] === grid[5][0]?.[0] && grid[5][0]?.[0] === grid[8][0]?.[0]) {
+        grid[2][2] = true;
+        grid[5][2] = true;
+        grid[8][2] = true;
+        return true;
+    } else if (grid[0][0] && grid[0][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[8][0]?.[0]) {
+        grid[0][2] = true;
+        grid[4][2] = true;
+        grid[8][2] = true;
+        return true;
+    } else if (grid[2][0] && grid[2][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[6][0]?.[0]) {
+        grid[2][2] = true;
+        grid[4][2] = true;
+        grid[6][2] = true;
         return true;
     } else {
         return false;
