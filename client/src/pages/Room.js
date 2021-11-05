@@ -57,7 +57,7 @@ const Room = () => {
     }, []);
 
     useEffect(() => {
-        setTimeout(() => setNotif(''), 1000);
+        setTimeout(() => setNotif(''), 2000);
     }, [notif]);
 
     const handleBack = () => {
