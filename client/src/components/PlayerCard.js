@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import ChevronRight from '../icons/ChevronRight';
 import ChevronLeft from '../icons/ChevronLeft';
@@ -7,7 +7,7 @@ import ChevronLeft from '../icons/ChevronLeft';
 import socket from '../connect';
 
 const PlayerCard = ({ player, isActive }) => {
-    const [name, setName] = useState('Waiting for player...');
+    const [name, setName] = useState('');
     const [score, setScore] = useState(0);
 
     const index = player.team === 'blue' ? 1 : 2;
@@ -18,7 +18,7 @@ const PlayerCard = ({ player, isActive }) => {
                 socket.emit('get-username', player.id, function (username) {
                     resolve(username);
                 });
-            }).then(username => username ? setName(username) : setName('Waiting for player...'));
+            }).then(username => username ? setName(username) : setName(''));
         }
         getUsername();
     }, [player.id, name]);
@@ -41,13 +41,20 @@ const PlayerCard = ({ player, isActive }) => {
         <Card id={player.team}>
             <div className="player-logo">{displayActive()}</div>
             <div className="player-number">Player {index}</div>
-            <div className="player-name">{name}</div>
+            <div className={`player-name ${!name && 'active'}`}>{name ? name : 'Waiting for player'}</div>
             <div className="player-score">{score}</div>
         </Card>
     );
 }
 
 export default PlayerCard;
+
+const loadAnimation = keyframes`
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+`;
 
 const Card = styled.div`
     ${props => props.id === 'blue' && css`
@@ -103,6 +110,13 @@ const Card = styled.div`
         font-size: 2.5vmin;
         font-weight: bold;
         margin: 1.5vmin 0;
+
+        &.active {
+            &::after {
+                content: '';
+                animation: ${loadAnimation} 3s infinite;
+            }
+        }
     }
 
     .player-score {
