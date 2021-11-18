@@ -65,7 +65,7 @@ const Card = styled.div`
         --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
     `}
 
-    border-radius: 1rem;
+    border-radius: 2vmin;
     padding: 16px;
     box-shadow: var(--box-shadow);
     display: flex;

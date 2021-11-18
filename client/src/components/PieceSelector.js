@@ -56,7 +56,7 @@ const Selector = styled.ul`
 const SelectedPiece = styled(motion.div)`
     width: 100%;
     height: 100%;
-    border-radius: 1rem;
+    border-radius: 2vmin;
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +66,7 @@ const SelectedPiece = styled(motion.div)`
 
 const PieceItem = styled.li`
     position: relative;
-    border-radius: 1rem;
+    border-radius: 2vmin;
     padding: 16px 24px;
     box-shadow: var(--box-shadow);
     display: flex;
