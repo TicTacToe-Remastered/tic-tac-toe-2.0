@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 
 import Home from '../pages/Home';
 import RoomRouter from '../pages/RoomRouter';
+import Tutorial from "../pages/Tutorial";
 
 const Router = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const Router = () => {
             <Switch location={location} key={location.pathname}>
                 <Route path="/" exact component={Home} />
                 <Route path="/room/:id?" component={RoomRouter} />
+                <Route path="/tutorial" component={Tutorial} />
             </Switch>
         </AnimatePresence>
     );
