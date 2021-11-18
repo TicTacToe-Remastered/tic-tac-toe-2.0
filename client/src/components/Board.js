@@ -34,7 +34,7 @@ const Grid = styled.ul`
     display: grid;
     grid-template-columns: repeat(3, 16vmin);
     grid-template-rows: repeat(3, 16vmin);
-    gap: 1rem;
+    gap: 2vmin;
 `;
 
 const Box = styled.li`
@@ -44,7 +44,7 @@ const Box = styled.li`
     align-items: center;
     cursor: pointer;
     box-shadow: var(--box-shadow);
-    border-radius: 1rem;
+    border-radius: 2vmin;
 
     ${props => props.active && css`
         background-color: var(--background-color-active);
