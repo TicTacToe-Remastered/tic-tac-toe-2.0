@@ -19,7 +19,7 @@ const Board = (props) => {
     return (
         <Grid>
             {grid?.map((box, index) => {
-                let isWin = box?.[2];
+                let isWin = box?.[0]?.[2];
                 return <Box onClick={handlePlay} id={index} key={index} active={isWin}>
                     {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
                 </Box>
