@@ -54,7 +54,7 @@ const Tutorial = () => {
                                 <p>{currentData?.content}</p>
                                 <ButtonContainer>
                                     {index !== 0 && <Button onClick={decrement}>Previous</Button>}
-                                    {index !== (data.tutorial.length - 1) && <Button onClick={increment} color="primary">Next</Button>}
+                                    {index !== (data.tutorial.length - 1) ? <Button onClick={increment} color="primary">Next</Button> : <Button onClick={handleBack} color="primary">Play</Button>}
                                 </ButtonContainer>
                             </Content>
                         </Card>
