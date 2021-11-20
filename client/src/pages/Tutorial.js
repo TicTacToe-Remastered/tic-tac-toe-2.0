@@ -7,20 +7,33 @@ import Button from '../components/Button';
 import BackArrow from '../icons/BackArrow';
 import { useEffect, useState } from 'react';
 
+import data from '../data/tutorial.json';
+
 const Tutorial = () => {
     const history = useHistory();
     const [grid, setGrid] = useState([]);
+    const [index, setIndex] = useState(0);
+    const [currentData, setCurrentData] = useState();
 
     useEffect(() => {
-        setGrid([
-            [], [['red','large']], [['blue','large']],
-            [], [['blue','large']], [],
-            [['red','large']], [], [['blue','large']]
-        ]);
-    }, []);
+        setCurrentData(data.tutorial[index]);
+        
+    }, [index]);
+
+    useEffect(() => {
+        setGrid(currentData?.grid);
+    }, [currentData]);
 
     const handleBack = () => {
         history.push('/room');
+    }
+
+    const increment = () => {
+        setIndex((index + 1) % data.tutorial.length);
+    }
+
+    const decrement = () => {
+        setIndex((index - 1) % data.tutorial.length);
     }
 
     return (
@@ -37,28 +50,18 @@ const Tutorial = () => {
                         <Card>
                             <Grid>
                                 {grid?.map((box, index) => {
-                                    let isWin = box?.[2];
+                                    let isWin = box?.[0]?.[2];
                                     return <Box key={index} active={isWin}>
                                         {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
                                     </Box>
                                 })}
                             </Grid>
                             <Content>
-                                <h2>Tutorial - The principle</h2>
-                                <p>
-                                    Like the original version, the goal of TicTacToe 2.0 is to line up 3 symbols horizontally,
-                                    vertically or diagonally before your opponent,
-                                    but the first thing that changes here is that you don't have to line up 3 identical symbols,
-                                    but 3 symbols of the same color.
-                                    <br /><br />
-                                    Each player plays with circles and each has his own color,
-                                    for example: blue for one and red for the other.
-                                    The game ends when one of the players has aligned 3 symbols
-                                    or when no more combinations are possible. Then it’s a tie.
-                                </p>
+                                <h2>Tutorial - {currentData?.title}</h2>
+                                <p>{currentData?.content}</p>
                                 <ButtonContainer>
-                                    <Button>Previous</Button>
-                                    <Button color="primary">Next</Button>
+                                    {index !== 0 && <Button onClick={decrement}>Previous</Button>}
+                                    {index !== (data.tutorial.length - 1) && <Button onClick={increment} color="primary">Next</Button>}
                                 </ButtonContainer>
                             </Content>
                         </Card>
@@ -195,6 +198,7 @@ const Content = styled.div`
     }
 
     p {
+        white-space: pre-line;
         font-size: 2vmin;
         max-height: 40vmin;
         overflow-y: scroll;

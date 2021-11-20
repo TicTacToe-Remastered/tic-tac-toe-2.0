@@ -1,0 +1,116 @@
+{
+    "tutorial": [
+        {
+            "title": "The principle",
+            "demo_type": "grid",
+            "content": "Like the original version, the goal of TicTacToe 2.0 is to line up 3 symbols horizontally, vertically or diagonally before your opponent, but the first thing that changes here is that you don't have to line up 3 identical symbols, but 3 symbols of the same color. \n\nEach player plays with circles and each has his own color, for example: blue for one and red for the other. The game ends when one of the players has aligned 3 symbols or when no more combinations are possible. Then it’s a tie.",
+            "grid": [
+                [],
+                [["red", "large"]],
+                [["blue", "large"]],
+                [],
+                [["blue", "large"]],
+                [],
+                [["red", "large"]],
+                [],
+                [["blue", "large"]]
+            ]
+        },
+        {
+            "title": "Win",
+            "demo_type": "grid",
+            "content": "The first player to line up 3 circles of the same color wins the game. Attention, the player who starts the game has always an advantage. This is why it is in alternation. \n\nThe victory of a player will be marked by a change of color of the squares corresponding to the winning line.",
+            "grid": [
+                [["blue", "large", true]],
+                [["red", "large"]],
+                [["blue", "large"]],
+                [],
+                [["blue", "large", true]],
+                [["red", "large"]],
+                [["red", "large"]],
+                [],
+                [["blue", "large", true]]
+            ]
+        },
+        {
+            "title": "Only circles? Why?",
+            "demo_type": "grid",
+            "content": "You can only play with circles and not with crosses and circles for a simple reason. In this TicTacToe 2.0, you have several sizes of circles: small, medium, large. \n\nYou can use a medium circle on top of a small one and a large circle on top of a medium or small one. \n\nIt will then be the biggest circle of the square that \"wins\" this square.",
+            "grid": [
+                [],
+                [],
+                [["red", "large"]],
+                [
+                    ["blue", "large"],
+                    ["red", "medium"]
+                ],
+                [],
+                [
+                    ["red", "large"],
+                    ["blue", "small"]
+                ],
+                [],
+                [["blue", "small"]],
+                []
+            ]
+        },
+        {
+            "title": "Select circle size",
+            "demo_type": "selector",
+            "content": "You can choose the size of your circle using the size selector. The size selector also shows you how many circles of each size you have left. \n\nIt is with this information that you begin to understand the subtlety of the game. Indeed, what would be the point if you had an infinite number of large circles? We would be back on a classic TicTacToe. \n\nTips: It is therefore essential to save your large circles because it is these that allow you to completely block a square.",
+            "grid": []
+        },
+        {
+            "title": "Have fun!",
+            "demo_type": "grid",
+            "content": "Now you know how to play TicTacToe 2.0 and it's time for you to apply all its new rules by challenging a friend. \n\nHave fun and don't hesitate to give me feedback!",
+            "grid": [
+                [
+                    ["red", "large"],
+                    ["blue", "medium"],
+                    ["red", "small"]
+                ],
+                [
+                    ["blue", "large"],
+                    ["red", "medium"],
+                    ["blue", "small"]
+                ],
+                [
+                    ["red", "large"],
+                    ["blue", "medium"],
+                    ["red", "small"]
+                ],
+                [
+                    ["blue", "large"],
+                    ["red", "medium"],
+                    ["blue", "small"]
+                ],
+                [
+                    ["red", "large"],
+                    ["blue", "medium"],
+                    ["red", "small"]
+                ],
+                [
+                    ["blue", "large"],
+                    ["red", "medium"],
+                    ["blue", "small"]
+                ],
+                [
+                    ["red", "large"],
+                    ["blue", "medium"],
+                    ["red", "small"]
+                ],
+                [
+                    ["blue", "large"],
+                    ["red", "medium"],
+                    ["blue", "small"]
+                ],
+                [
+                    ["red", "large"],
+                    ["blue", "medium"],
+                    ["red", "small"]
+                ]
+            ]
+        }
+    ]
+}
