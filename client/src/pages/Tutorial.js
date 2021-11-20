@@ -58,6 +58,7 @@ const Tutorial = () => {
                                 </ButtonContainer>
                             </Content>
                         </Card>
+                        <Page>{index + 1}/{data.tutorial.length}</Page>
                     </Row>
                 </Col>
             </Container>
@@ -157,4 +158,10 @@ const ButtonContainer = styled.div`
     gap: 2vmin;
     margin-top: auto;
     margin-left: auto;
+`;
+
+const Page = styled.span`
+    font-size: 2vmin;
+    font-weight: bold;
+    margin-top: 3vmin;
 `;
