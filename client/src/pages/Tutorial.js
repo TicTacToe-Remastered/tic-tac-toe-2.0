@@ -1,8 +1,10 @@
 import { useHistory } from 'react-router';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
 import Button from '../components/Button';
+import Board from '../components/Board';
+import PieceSelector from '../components/PieceSelector';
 
 import BackArrow from '../icons/BackArrow';
 import { useEffect, useState } from 'react';
@@ -11,18 +13,14 @@ import data from '../data/tutorial.json';
 
 const Tutorial = () => {
     const history = useHistory();
-    const [grid, setGrid] = useState([]);
+
     const [index, setIndex] = useState(0);
     const [currentData, setCurrentData] = useState();
 
     useEffect(() => {
         setCurrentData(data.tutorial[index]);
-        
-    }, [index]);
 
-    useEffect(() => {
-        setGrid(currentData?.grid);
-    }, [currentData]);
+    }, [index]);
 
     const handleBack = () => {
         history.push('/room');
@@ -48,14 +46,9 @@ const Tutorial = () => {
                 <Col>
                     <Row>
                         <Card>
-                            <Grid>
-                                {grid?.map((box, index) => {
-                                    let isWin = box?.[0]?.[2];
-                                    return <Box key={index} active={isWin}>
-                                        {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
-                                    </Box>
-                                })}
-                            </Grid>
+                            <Demo>
+                                {currentData?.demo_type && (currentData.demo_type === 'grid' ? <Board grid={currentData.grid} disabled={true} /> : <PieceSelector player={currentData.player} disabled={true} />)}
+                            </Demo>
                             <Content>
                                 <h2>Tutorial - {currentData?.title}</h2>
                                 <p>{currentData?.content}</p>
@@ -131,67 +124,21 @@ const Card = styled.div`
     border-radius: 2vmin;
 `;
 
-const Grid = styled.ul`
-    display: grid;
-    grid-template-columns: repeat(3, 16vmin);
-    grid-template-rows: repeat(3, 16vmin);
-    gap: 2vmin;
-`;
-
-const Box = styled.li`
-    position: relative;
+const Demo = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--box-shadow);
-    border-radius: 2vmin;
-
-    ${props => props.active && css`
-        background-color: var(--background-color-active);
-    `}
-`;
-
-const Circle = styled.span`
-    position: absolute;
-    border-radius: 50%;
-    padding: 0.3vmin;
-    background: var(--gradient-color);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: destination-out;
-    user-select: none;
-    pointer-events: none;
-
-    ${props => props.size === 'small' && css`
-        height: 6vmin;
-        width: 6vmin;
-    `}
-
-    ${props => props.size === 'medium' && css`
-        height: 9vmin;
-        width: 9vmin;
-    `}
-
-    ${props => props.size === 'large' && css`
-        height: 12vmin;
-        width: 12vmin;
-    `}
-
-    ${props => props.team === 'blue' && css`
-        background: var(--gradient-blue);
-    `}
-
-    ${props => props.team === 'red' && css`
-        background: var(--gradient-red);
-    `}
+    width: 52vmin;
+    height: 52vmin;
 `;
 
 const Content = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 2vmin;
-    width: 52vmin;
     justify-content: flex-start;
     align-items: flex-start;
+    gap: 2vmin;
+    width: 52vmin;
 
     h2 {
         font-size: 3.2vmin;

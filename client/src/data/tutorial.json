@@ -58,7 +58,15 @@
             "title": "Select circle size",
             "demo_type": "selector",
             "content": "You can choose the size of your circle using the size selector. The size selector also shows you how many circles of each size you have left. \n\nIt is with this information that you begin to understand the subtlety of the game. Indeed, what would be the point if you had an infinite number of large circles? We would be back on a classic TicTacToe. \n\nTips: It is therefore essential to save your large circles because it is these that allow you to completely block a square.",
-            "grid": []
+            "player": {
+                "team": "blue",
+                "activePiece": "medium",
+                "pieces": {
+                    "small": 3,
+                    "medium": 3,
+                    "large": 3
+                }
+            }
         },
         {
             "title": "Have fun!",

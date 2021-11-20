@@ -20,7 +20,7 @@ const Board = (props) => {
         <Grid>
             {grid?.map((box, index) => {
                 let isWin = box?.[0]?.[2];
-                return <Box onClick={handlePlay} id={index} key={index} active={isWin}>
+                return <Box onClick={handlePlay} id={index} key={index} active={isWin} disabled={props?.disabled}>
                     {box?.map((circle, i) => circle && <Circle size={circle[1]} team={circle[0]} key={i} />)}
                 </Box>
             })}
@@ -48,6 +48,10 @@ const Box = styled.li`
 
     ${props => props.active && css`
         background-color: var(--background-color-active);
+    `}
+
+    ${props => props.disabled && css`
+        pointer-events: none;
     `}
 `;
 
