@@ -13,7 +13,9 @@ const Btn = styled.button`
     outline: none;
     cursor: pointer;
     padding: 1vmin 3vmin;
+    margin-top: 2vmin;
     border-radius: 1vmin;
+    background: var(--background-color);
     box-shadow: var(--box-shadow);
     font-size: 2vmin;
     font-weight: bold;
@@ -26,6 +28,5 @@ const Btn = styled.button`
     ${props => props.color === 'primary' && css`
         background: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
         color: hsl(210, 33%, 99%);
-        margin-top: 2vmin;
     `}
 `

@@ -7,6 +7,8 @@ import Title from '../components/Title';
 import RoomSelector from '../components/RoomSelector';
 import Button from '../components/Button';
 
+import InfoIcon from "../icons/InfoIcon";
+
 import socket from '../connect';
 
 const RoomList = () => {
@@ -24,7 +26,13 @@ const RoomList = () => {
         RoomSelectorRef.current.displayRoomSelector();
     }
 
+    const handleInfo = () => {
+        history.push('/tutorial');
+    }
+
     return (
+        <>
+        <Info onClick={handleInfo}><InfoIcon /></Info>
         <Col
             initial={{ x: -500, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -44,6 +52,7 @@ const RoomList = () => {
                 </ButtonContainer>
             </Row>
         </Col>
+        </>
     );
 }
 
@@ -84,6 +93,29 @@ const Reload = styled.button`
     svg {
         width: 3.5vmin;
         height: 3.5vmin;
+        color: var(--text-color);
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+`;
+
+const Info = styled.button`
+    position: fixed;
+    top: 3vmin;
+    right: 3vmin;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-top: 2vmin;
+    margin-right: 3vmin;
+    transition: transform 0.3s ease;
+
+    svg {
+        width: 4vmin;
+        height: 4vmin;
         color: var(--text-color);
     }
 

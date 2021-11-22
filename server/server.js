@@ -191,44 +191,44 @@ function checkEquality(grid) {
 
 function checkWin(grid) {
     if (grid[0][0] && grid[0][0]?.[0] === grid[1][0]?.[0] && grid[1][0]?.[0] === grid[2][0]?.[0]) {
-        grid[0][2] = true;
-        grid[1][2] = true;
-        grid[2][2] = true;
+        grid[0][0][2] = true;
+        grid[1][0][2] = true;
+        grid[2][0][2] = true;
         return true;
     } else if (grid[3][0] && grid[3][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[5][0]?.[0]) {
-        grid[3][2] = true;
-        grid[4][2] = true;
-        grid[5][2] = true;
+        grid[3][0][2] = true;
+        grid[4][0][2] = true;
+        grid[5][0][2] = true;
         return true;
     } else if (grid[6][0] && grid[6][0]?.[0] === grid[7][0]?.[0] && grid[7][0]?.[0] === grid[8][0]?.[0]) {
-        grid[6][2] = true;
-        grid[7][2] = true;
-        grid[8][2] = true;
+        grid[6][0][2] = true;
+        grid[7][0][2] = true;
+        grid[8][0][2] = true;
         return true;
     } else if (grid[0][0] && grid[0][0]?.[0] === grid[3][0]?.[0] && grid[3][0]?.[0] === grid[6][0]?.[0]) {
-        grid[0][2] = true;
-        grid[3][2] = true;
-        grid[6][2] = true;
+        grid[0][0][2] = true;
+        grid[3][0][2] = true;
+        grid[6][0][2] = true;
         return true;
     } else if (grid[1][0] && grid[1][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[7][0]?.[0]) {
-        grid[1][2] = true;
-        grid[4][2] = true;
-        grid[7][2] = true;
+        grid[1][0][2] = true;
+        grid[4][0][2] = true;
+        grid[7][0][2] = true;
         return true;
     } else if (grid[2][0] && grid[2][0]?.[0] === grid[5][0]?.[0] && grid[5][0]?.[0] === grid[8][0]?.[0]) {
-        grid[2][2] = true;
-        grid[5][2] = true;
-        grid[8][2] = true;
+        grid[2][0][2] = true;
+        grid[5][0][2] = true;
+        grid[8][0][2] = true;
         return true;
     } else if (grid[0][0] && grid[0][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[8][0]?.[0]) {
-        grid[0][2] = true;
-        grid[4][2] = true;
-        grid[8][2] = true;
+        grid[0][0][2] = true;
+        grid[4][0][2] = true;
+        grid[8][0][2] = true;
         return true;
     } else if (grid[2][0] && grid[2][0]?.[0] === grid[4][0]?.[0] && grid[4][0]?.[0] === grid[6][0]?.[0]) {
-        grid[2][2] = true;
-        grid[4][2] = true;
-        grid[6][2] = true;
+        grid[2][0][2] = true;
+        grid[4][0][2] = true;
+        grid[6][0][2] = true;
         return true;
     } else {
         return false;

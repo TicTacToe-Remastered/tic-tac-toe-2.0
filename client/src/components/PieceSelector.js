@@ -4,7 +4,7 @@ import { motion, AnimateSharedLayout } from 'framer-motion';
 
 import socket from '../connect';
 
-const PieceSelector = ({ player }) => {
+const PieceSelector = ({ player, disabled }) => {
     const [team, setTeam] = useState('blue');
     const [pieces, setPieces] = useState({});
     const [activePiece, setActivePiece] = useState('medium');
@@ -25,7 +25,7 @@ const PieceSelector = ({ player }) => {
         <Selector id={team}>
             <AnimateSharedLayout>
                 {pieces && Object.keys(pieces).map((key) => (
-                    <PieceItem onClick={handlePiece} className={key === activePiece && 'active'} id={key} key={key}>
+                    <PieceItem onClick={handlePiece} className={key === activePiece && 'active'} id={key} key={key} disabled={disabled}>
                         <div className="piece-item-circle"></div>
                         <div className="piece-item-size">{key}</div>
                         <div className="piece-item-number">x{pieces[key]}</div>
@@ -56,7 +56,7 @@ const Selector = styled.ul`
 const SelectedPiece = styled(motion.div)`
     width: 100%;
     height: 100%;
-    border-radius: 1rem;
+    border-radius: 2vmin;
     position: absolute;
     top: 0;
     left: 0;
@@ -66,7 +66,7 @@ const SelectedPiece = styled(motion.div)`
 
 const PieceItem = styled.li`
     position: relative;
-    border-radius: 1rem;
+    border-radius: 2vmin;
     padding: 16px 24px;
     box-shadow: var(--box-shadow);
     display: flex;
@@ -74,6 +74,10 @@ const PieceItem = styled.li`
     width: 32vmin;
     margin: 16px 0;
     cursor: pointer;
+
+    ${props => props.disabled && css`
+        pointer-events: none;
+    `}
 
     /* &.active {
         background: var(--background-color-active);
