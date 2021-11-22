@@ -1,9 +1,21 @@
-import styled from 'styled-components';
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 const Footer = () => {
+    const [language, setLanguage] = useState('en');
+    
+    const handleClick = (lang) => {
+        setLanguage(lang);
+    }
+
     return (
         <Foot>
             <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">Report bug</a>
+            <div>
+                <LanguageBtn active={language === 'en'} onClick={() => handleClick('en')}>EN</LanguageBtn>
+                /
+                <LanguageBtn active={language === 'fr'} onClick={() => handleClick('fr')}>FR</LanguageBtn>
+            </div>
             <span>Made by <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
         </Foot>
     );
@@ -25,4 +37,16 @@ const Foot = styled.footer`
     a {
         color: var(--text-color);
     }
+`;
+
+const LanguageBtn = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin: 0 4px;
+
+    ${props => props.active && css`
+        font-weight: bold;
+    `}
 `;
