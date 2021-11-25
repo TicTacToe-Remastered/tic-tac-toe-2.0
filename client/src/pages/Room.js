@@ -31,34 +31,36 @@ const Room = () => {
     }, [navigate]);
 
     useEffect(() => {
+        let isMounted = true;
         socket.emit('init-room');
 
         socket.on('receive-teams', (players) => {
-            editTeams(players);
+            isMounted && editTeams(players);
         });
 
         socket.on('receive-active', (activeTeam) => {
-            editActive(activeTeam);
+            isMounted && editActive(activeTeam);
         });
 
         socket.on('receive-edit-piece', (players) => {
-            editPiece(players);
+            isMounted && editPiece(players);
         });
 
         socket.on('receive-grid', (grid) => {
-            editGrid(grid);
+            isMounted && editGrid(grid);
         });
 
         socket.on('receive-win', (player) => {
-            setNotif(`${player} won the game!`);
+            isMounted && setNotif(`${player} won the game!`);
         });
 
         socket.on('receive-equality', () => {
-            setNotif('Equality!');
+            isMounted && setNotif('Equality!');
         });
 
         return () => {
             socket.emit('leave-room');
+            isMounted = false;
         }
     }, []);
 
