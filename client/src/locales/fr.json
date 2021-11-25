@@ -8,11 +8,13 @@
         "username": "Nom d'utilisateur",
         "bug": "Signaler un bug",
         "copyrights": "Créé par",
-        "create_room": "Créer une partie"
+        "create_room": "Créer une partie",
+        "responsive": "Tournez votre écran ou agrandissez votre fenêtre !",
+        "connection_server": "Connexion au serveur"
     },
     "room": {
         "player": "Joueur",
-        "waiting_player": "En attente de joueur",
+        "waiting_player": "Attente de joueur",
         "small": "Petit",
         "medium": "Moyen",
         "large": "Grand",

@@ -1,12 +1,16 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useHistory } from "react-router-dom";
 import styled from 'styled-components';
 
 import Button from './Button';
 
+import { LanguageContext } from '../libs/context';
+
 import socket from '../connect';
 
 const LoginForm = () => {
+    const { language } = useContext(LanguageContext);
+
     const [name, setName] = useState('');
     const history = useHistory();
     
@@ -22,10 +26,10 @@ const LoginForm = () => {
     return (
         <Form onSubmit={formSubmit} id="login-form">
             <InputGroup>
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">{language.general.username}</label>
                 <input onChange={event => setName(event.target.value)} type="text" id="username" placeholder="John Doe" required />
             </InputGroup>
-            <Button type="submit" color="primary">Login</Button>
+            <Button type="submit" color="primary">{language.general.login}</Button>
         </Form>
     );
 }

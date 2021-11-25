@@ -8,7 +8,9 @@
         "username": "Username",
         "bug": "Report bug",
         "copyrights": "Made by",
-        "create_room": "Create Room"
+        "create_room": "Create Room",
+        "responsive": "Turn your screen or enlarge your window!",
+        "connection_server": "Connecting to the server"
     },
     "room": {
         "player": "Player",

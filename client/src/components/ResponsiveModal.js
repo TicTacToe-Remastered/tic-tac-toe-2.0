@@ -1,6 +1,11 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
 
+import { LanguageContext } from '../libs/context';
+
 const ResponsiveModal = () => {
+    const { language } = useContext(LanguageContext);
+
     return (
         <Modal>
             <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +22,7 @@ const ResponsiveModal = () => {
                     </linearGradient>
                 </defs>
             </svg>
-            <span>Turn your screen or enlarge your window!</span>
+            <span>{language.general.create_room}</span>
         </Modal>
     );
 }
