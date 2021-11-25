@@ -1,13 +1,13 @@
+import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
-import useLanguage from '../libs/useLanguage';
+import { LanguageContext } from '../libs/context';
 
 const Footer = () => {
-    const [language, setLanguage] = useLanguage('en');
+    const { language, setLanguage } = useContext(LanguageContext);
     
     const handleClick = (lang) => {
         setLanguage(lang);
-        console.log(language);
     }
 
     return (

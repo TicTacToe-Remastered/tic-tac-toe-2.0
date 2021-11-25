@@ -7,23 +7,24 @@ import Board from '../components/Board';
 import PieceSelector from '../components/PieceSelector';
 
 import BackArrow from '../icons/BackArrow';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import data from '../locales/en.json';
+import { LanguageContext } from '../libs/context';
 
 const Tutorial = () => {
     const history = useHistory();
+    const { language } = useContext(LanguageContext);
 
     const [index, setIndex] = useState(0);
     const [currentData, setCurrentData] = useState();
 
     useEffect(() => {
-        setCurrentData(data.tutorial[index]);
-    }, [index]);
+        setCurrentData(language.tutorial[index]);
+    }, [index, language]);
 
     const handleBack = () => history.push('/room');
-    const increment = () => setIndex((index + 1) % data.tutorial.length);
-    const decrement = () => setIndex((index - 1) % data.tutorial.length);
+    const increment = () => setIndex((index + 1) % language.tutorial.length);
+    const decrement = () => setIndex((index - 1) % language.tutorial.length);
 
     return (
         <>
@@ -38,17 +39,17 @@ const Tutorial = () => {
                                 <PieceSelector player={currentData.player} disabled={true} />)}
                             </Demo>
                             <Content>
-                                <h2>Tutorial - {currentData?.title}</h2>
+                                <h2>{language.general.tutorial} - {currentData?.title}</h2>
                                 <p>{currentData?.content}</p>
                                 <ButtonContainer>
-                                    {index !== 0 && <Button onClick={decrement}>Previous</Button>}
-                                    {index !== (data.tutorial.length - 1) ? 
-                                    <Button onClick={increment} color="primary">Next</Button> : 
-                                    <Button onClick={handleBack} color="primary">Play</Button>}
+                                    {index !== 0 && <Button onClick={decrement}>{language.general.previous}</Button>}
+                                    {index !== (language.tutorial.length - 1) ? 
+                                    <Button onClick={increment} color="primary">{language.general.next}</Button> : 
+                                    <Button onClick={handleBack} color="primary">{language.general.play}</Button>}
                                 </ButtonContainer>
                             </Content>
                         </Card>
-                        <Page>{index + 1}/{data.tutorial.length}</Page>
+                        <Page>{index + 1}/{language.tutorial.length}</Page>
                     </Row>
                 </Col>
             </Container>
