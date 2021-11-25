@@ -1,22 +1,24 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
+import useLanguage from '../libs/useLanguage';
+
 const Footer = () => {
-    const [language, setLanguage] = useState('en');
+    const [language, setLanguage] = useLanguage('en');
     
     const handleClick = (lang) => {
         setLanguage(lang);
+        console.log(language);
     }
 
     return (
         <Foot>
-            <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">Report bug</a>
+            <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">{language.general.bug}</a>
             <div>
-                <LanguageBtn active={language === 'en'} onClick={() => handleClick('en')}>EN</LanguageBtn>
+                <LanguageBtn active={language.general.play === 'Play'} onClick={() => handleClick('en')}>EN</LanguageBtn>
                 /
-                <LanguageBtn active={language === 'fr'} onClick={() => handleClick('fr')}>FR</LanguageBtn>
+                <LanguageBtn active={language.general.play === 'Jouer'} onClick={() => handleClick('fr')}>FR</LanguageBtn>
             </div>
-            <span>Made by <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
+            <span>{language.general.copyrights} <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
         </Foot>
     );
 }

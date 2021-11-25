@@ -9,7 +9,7 @@ import PieceSelector from '../components/PieceSelector';
 import BackArrow from '../icons/BackArrow';
 import { useEffect, useState } from 'react';
 
-import data from '../data/tutorial.json';
+import data from '../locales/en.json';
 
 const Tutorial = () => {
     const history = useHistory();
@@ -19,42 +19,32 @@ const Tutorial = () => {
 
     useEffect(() => {
         setCurrentData(data.tutorial[index]);
-
     }, [index]);
 
-    const handleBack = () => {
-        history.push('/room');
-    }
-
-    const increment = () => {
-        setIndex((index + 1) % data.tutorial.length);
-    }
-
-    const decrement = () => {
-        setIndex((index - 1) % data.tutorial.length);
-    }
+    const handleBack = () => history.push('/room');
+    const increment = () => setIndex((index + 1) % data.tutorial.length);
+    const decrement = () => setIndex((index - 1) % data.tutorial.length);
 
     return (
         <>
             <Back onClick={handleBack}><BackArrow /></Back>
-            <Container
-                initial={{ x: -500, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 500, opacity: 0 }}
-                transition={{ duration: 0.3, type: "spring" }}
-            >
+            <Container>
                 <Col>
                     <Row>
                         <Card>
                             <Demo>
-                                {currentData?.demo_type && (currentData.demo_type === 'grid' ? <Board grid={currentData.grid} disabled={true} /> : <PieceSelector player={currentData.player} disabled={true} />)}
+                                {currentData?.demo_type && (currentData.demo_type === 'grid' ? 
+                                <Board grid={currentData.grid} disabled={true} /> : 
+                                <PieceSelector player={currentData.player} disabled={true} />)}
                             </Demo>
                             <Content>
                                 <h2>Tutorial - {currentData?.title}</h2>
                                 <p>{currentData?.content}</p>
                                 <ButtonContainer>
                                     {index !== 0 && <Button onClick={decrement}>Previous</Button>}
-                                    {index !== (data.tutorial.length - 1) ? <Button onClick={increment} color="primary">Next</Button> : <Button onClick={handleBack} color="primary">Play</Button>}
+                                    {index !== (data.tutorial.length - 1) ? 
+                                    <Button onClick={increment} color="primary">Next</Button> : 
+                                    <Button onClick={handleBack} color="primary">Play</Button>}
                                 </ButtonContainer>
                             </Content>
                         </Card>
