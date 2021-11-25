@@ -1,11 +1,11 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import socket from '../connect';
 
 const RoomSelector = forwardRef((props, ref) => {
     const [list, setList] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate();
     
     useEffect(() => {
         displayRoomSelector();
@@ -20,7 +20,7 @@ const RoomSelector = forwardRef((props, ref) => {
     const handleJoin = (e) => {
         socket.emit('join-room', e.target.id, function({ error, room }) {
             error && console.log(error);
-            room && history.push(`/room/${room.id}`);
+            room && navigate(`/room/${room.id}`);
         });
     }
 

@@ -68,7 +68,8 @@ io.on('connection', socket => {
     socket.on('init-room', () => {
         const user = getUser(socket.id);
         if (!user || !user.room) return;
-        const { id, activeTeam, grid, players } = getRoom(user.room);
+        const { id, activeTeam, grid, players } = getRoom(user.room) || {};
+        if (!id) return;
 
         io.to(id).emit('receive-grid', grid);
         io.to(id).emit('receive-teams', players);

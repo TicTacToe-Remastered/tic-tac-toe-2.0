@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import data from '../data/tutorial.json';
 
 const Tutorial = () => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const [index, setIndex] = useState(0);
     const [currentData, setCurrentData] = useState();
@@ -23,7 +23,7 @@ const Tutorial = () => {
     }, [index]);
 
     const handleBack = () => {
-        history.push('/room');
+        navigate('/room');
     }
 
     const increment = () => {

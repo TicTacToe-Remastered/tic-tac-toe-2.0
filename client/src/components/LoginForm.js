@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 import Button from './Button';
@@ -8,14 +8,14 @@ import socket from '../connect';
 
 const LoginForm = () => {
     const [name, setName] = useState('');
-    const history = useHistory();
+    const navigate = useNavigate();
     
     const formSubmit = (e) => {
         e.preventDefault();
         
         socket.emit('login', { name }, function (error) {
             if (error) return;
-            history.push('/room');
+            navigate('/room');
         });
     };
 
