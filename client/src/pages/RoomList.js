@@ -1,4 +1,4 @@
-import { useRef, useEffect, useRef } from "react";
+import { useRef, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 import { motion } from "framer-motion";
