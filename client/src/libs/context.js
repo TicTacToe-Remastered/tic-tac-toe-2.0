@@ -15,6 +15,7 @@ const LanguageProvider = ({ children }) => {
 
     const handleSetLanguage = (lang) => {
         setLanguage(translations[lang] || translations['en']);
+        document.documentElement.lang = lang || 'en';
     }
 
     const value = useMemo(
