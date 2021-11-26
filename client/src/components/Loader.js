@@ -1,6 +1,11 @@
+import { useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
 
+import { LanguageContext } from '../libs/context';
+
 const Loader = () => {
+    const { language } = useContext(LanguageContext);
+
     return (
         <Load>
             <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +23,7 @@ const Loader = () => {
                 </defs>
             </svg>
             <h1>Tic Tac Toe 2.0</h1>
-            <div>Connecting to the server</div>
+            <div>{language.general.connection_server}</div>
         </Load>
     );
 }

@@ -1,10 +1,24 @@
-import styled from 'styled-components';
+import { useContext } from 'react';
+import styled, { css } from 'styled-components';
+
+import { LanguageContext } from '../libs/context';
 
 const Footer = () => {
+    const { language, setLanguage } = useContext(LanguageContext);
+    
+    const handleClick = (lang) => {
+        setLanguage(lang);
+    }
+
     return (
         <Foot>
-            <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">Report bug</a>
-            <span>Made by <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
+            <a target="_blank" rel="noreferrer" href="https://github.com/MisterAzix/tic-tac-toe-2.0/issues">{language.general.bug}</a>
+            <div>
+                <LanguageBtn active={language.general.play === 'Play'} onClick={() => handleClick('en')}>EN</LanguageBtn>
+                /
+                <LanguageBtn active={language.general.play === 'Jouer'} onClick={() => handleClick('fr')}>FR</LanguageBtn>
+            </div>
+            <span>{language.general.copyrights} <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
         </Foot>
     );
 }
@@ -25,4 +39,16 @@ const Foot = styled.footer`
     a {
         color: var(--text-color);
     }
+`;
+
+const LanguageBtn = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    margin: 0 4px;
+
+    ${props => props.active && css`
+        font-weight: bold;
+    `}
 `;

@@ -1,9 +1,31 @@
 {
+    "general": {
+        "play": "Jouer",
+        "previous": "Précédent",
+        "next": "Suivant",
+        "tutorial": "Tutoriel",
+        "login": "Connexion",
+        "username": "Nom d'utilisateur",
+        "bug": "Signaler un bug",
+        "copyrights": "Créé par",
+        "create_room": "Créer une partie",
+        "responsive": "Tournez votre écran ou agrandissez votre fenêtre !",
+        "connection_server": "Connexion au serveur"
+    },
+    "room": {
+        "player": "Joueur",
+        "waiting_player": "Attente de joueur",
+        "small": "Petit",
+        "medium": "Moyen",
+        "large": "Grand",
+        "win": "a gagné la partie",
+        "equality": "Egalité"
+    },
     "tutorial": [
         {
-            "title": "The principle",
+            "title": "Le principe",
             "demo_type": "grid",
-            "content": "Like the original version, the goal of TicTacToe 2.0 is to line up 3 symbols horizontally, vertically or diagonally before your opponent, but the first thing that changes here is that you don't have to line up 3 identical symbols, but 3 symbols of the same color. \n\nEach player plays with circles and each has his own color, for example: blue for one and red for the other. The game ends when one of the players has aligned 3 symbols or when no more combinations are possible. Then it’s a tie.",
+            "content": "Comme la version originale, le but de TicTacToe 2.0 est d'aligner 3 symboles horizontalement, verticalement ou en diagonale avant votre adversaire, mais la première chose qui change ici est que vous ne devez pas aligner 3 symboles identiques, mais 3 symboles de la même couleur. \n\nChaque joueur joue avec des cercles et chacun a sa propre couleur, par exemple : bleu pour l'un et rouge pour l'autre. Le jeu se termine quand l'un des joueurs a aligné 3 symboles ou quand plus aucune combinaison n'est possible. Dans ce cas, il y a égalité.",
             "grid": [
                 [],
                 [["red", "large"]],
@@ -17,9 +39,9 @@
             ]
         },
         {
-            "title": "Win",
+            "title": "Victoire",
             "demo_type": "grid",
-            "content": "The first player to line up 3 circles of the same color wins the game. Attention, the player who starts the game has always an advantage. This is why it is in alternation. \n\nThe victory of a player will be marked by a change of color of the squares corresponding to the winning line.",
+            "content": "Le premier joueur qui aligne 3 cercles de la même couleur gagne la partie. Attention, le joueur qui commence la partie a toujours un avantage. C'est pourquoi elle se déroule en alternance. \n\nLa victoire d'un joueur sera marquée par un changement de couleur des cases correspondant à la ligne gagnante.",
             "grid": [
                 [["blue", "large", true]],
                 [["red", "large"]],
@@ -33,9 +55,9 @@
             ]
         },
         {
-            "title": "Only circles? Why?",
+            "title": "Seulement des cercles ? Pourquoi ?",
             "demo_type": "grid",
-            "content": "You can only play with circles and not with crosses and circles for a simple reason. In this TicTacToe 2.0, you have several sizes of circles: small, medium, large. \n\nYou can use a medium circle on top of a small one and a large circle on top of a medium or small one. \n\nIt will then be the biggest circle of the square that \"wins\" this square.",
+            "content": "Vous ne pouvez jouer qu'avec des cercles et non avec des croix et des ronds pour une raison simple. Dans ce TicTacToe 2.0, vous posséder plusieurs tailles de cercles : petit, moyen, grand. \n\nVous pouvez utilisez un cercle moyen au dessus d'un petit et un grand cercle au dessus d'un moyen ou d'un petit. \n\nCe sera alors le cercle le plus grand de la case qui \"remporte\" cette case.",
             "grid": [
                 [],
                 [],
@@ -55,9 +77,9 @@
             ]
         },
         {
-            "title": "Select circle size",
+            "title": "Selectionner la taille des cercles",
             "demo_type": "selector",
-            "content": "You can choose the size of your circle using the size selector. The size selector also shows you how many circles of each size you have left. \n\nIt is with this information that you begin to understand the subtlety of the game. Indeed, what would be the point if you had an infinite number of large circles? We would be back on a classic TicTacToe. \n\nTips: It is therefore essential to save your large circles because it is these that allow you to completely block a square.",
+            "content": "Vous pouvez choisir la taille de votre cercle à l'aide du sélecteur de taille. Ce dernier vous indique également le nombre de cercles de chaque taille qu'il vous reste. \n\nC'est donc avec cette information que vous commencer à comprendre la subtilité du jeu. En effet, quel serait l'intérêt si l'ont possédait un infinité de grand cercle. On reviendrai sur un TicTacToe classique. \n\nTips : Il vous est donc primordial d'économiser vos grands cercles car ce sont ces derniers qui permettent de totalement bloquer une case.",
             "player": {
                 "team": "blue",
                 "activePiece": "medium",
@@ -71,7 +93,7 @@
         {
             "title": "Have fun!",
             "demo_type": "grid",
-            "content": "Now you know how to play TicTacToe 2.0 and it's time for you to apply all its new rules by challenging a friend. \n\nHave fun and don't hesitate to give me feedback!",
+            "content": "Vous savez maintenant comment jouer au TicTacToe 2.0 et il est grand temps pour vous d'appliquer toutes ses nouvelles règles en défiant un ami. \n\nAmusez-vous bien et n'hésitez pas à me faire des retours !",
             "grid": [
                 [
                     ["red", "large"],

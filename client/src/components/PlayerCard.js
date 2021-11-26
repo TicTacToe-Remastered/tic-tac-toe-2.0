@@ -1,12 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import ChevronRight from '../icons/ChevronRight';
 import ChevronLeft from '../icons/ChevronLeft';
 
+import { LanguageContext } from '../libs/context';
+
 import socket from '../connect';
 
 const PlayerCard = ({ player, isActive }) => {
+    const { language } = useContext(LanguageContext);
+
     const [name, setName] = useState('');
     const [score, setScore] = useState(0);
 
@@ -40,8 +44,8 @@ const PlayerCard = ({ player, isActive }) => {
     return (
         <Card id={player.team}>
             <div className="player-logo">{displayActive()}</div>
-            <div className="player-number">Player {index}</div>
-            <div className={`player-name ${!name && 'active'}`}>{name ? name : 'Waiting for player'}</div>
+            <div className="player-number">{language.room.player} {index}</div>
+            <div className={`player-name ${!name && 'active'}`}>{name ? name : language.room.waiting_player}</div>
             <div className="player-score">{score}</div>
         </Card>
     );
