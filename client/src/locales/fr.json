@@ -1,5 +1,6 @@
 {
     "general": {
+        "home": "Accueil",
         "play": "Jouer",
         "previous": "Précédent",
         "next": "Suivant",
@@ -10,7 +11,8 @@
         "copyrights": "Créé par",
         "create_room": "Créer une partie",
         "responsive": "Tournez votre écran ou agrandissez votre fenêtre !",
-        "connection_server": "Connexion au serveur"
+        "connection_server": "Connexion au serveur",
+        "not_found": "La page que vous recherchez n'existe pas !"
     },
     "room": {
         "player": "Joueur",

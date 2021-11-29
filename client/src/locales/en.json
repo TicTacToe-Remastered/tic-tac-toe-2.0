@@ -1,5 +1,6 @@
 {
     "general": {
+        "home": "Home",
         "play": "Play",
         "previous": "Previous",
         "next": "Next",
@@ -10,7 +11,8 @@
         "copyrights": "Made by",
         "create_room": "Create Room",
         "responsive": "Turn your screen or enlarge your window!",
-        "connection_server": "Connecting to the server"
+        "connection_server": "Connecting to the server",
+        "not_found": "The page you’re looking for doesn’t exist!"
     },
     "room": {
         "player": "Player",
