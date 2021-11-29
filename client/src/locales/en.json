@@ -1,4 +1,28 @@
 {
+    "general": {
+        "home": "Home",
+        "play": "Play",
+        "previous": "Previous",
+        "next": "Next",
+        "tutorial": "Tutorial",
+        "login": "Login",
+        "username": "Username",
+        "bug": "Report bug",
+        "copyrights": "Made by",
+        "create_room": "Create Room",
+        "responsive": "Turn your screen or enlarge your window!",
+        "connection_server": "Connecting to the server",
+        "not_found": "The page you’re looking for doesn’t exist!"
+    },
+    "room": {
+        "player": "Player",
+        "waiting_player": "Waiting for player",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large",
+        "win": "won the game",
+        "equality": "Equality"
+    },
     "tutorial": [
         {
             "title": "The principle",

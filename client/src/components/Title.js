@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const Title = () => {
+const Title = (props) => {
     return (
         <TitleContainer>
-            <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {!props.disableLogo && <svg width="140" height="140" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="64" cy="64" r="62" stroke="url(#paint0_linear)" strokeWidth="4" />
                 <circle cx="108" cy="108" r="30" stroke="url(#paint1_linear)" strokeWidth="4" />
                 <defs>
@@ -16,7 +16,7 @@ const Title = () => {
                         <stop offset="1" stopColor="#DD2476" />
                     </linearGradient>
                 </defs>
-            </svg>
+            </svg>}
             <h1>Tic Tac Toe 2.0</h1>
         </TitleContainer>
     );

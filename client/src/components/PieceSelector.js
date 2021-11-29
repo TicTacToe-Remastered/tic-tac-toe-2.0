@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, AnimateSharedLayout } from 'framer-motion';
+
+import { LanguageContext } from '../libs/languageContext';
 
 import socket from '../connect';
 
 const PieceSelector = ({ player, disabled }) => {
+    const { language } = useContext(LanguageContext);
+
     const [team, setTeam] = useState('blue');
     const [pieces, setPieces] = useState({});
     const [activePiece, setActivePiece] = useState('medium');
@@ -27,7 +31,7 @@ const PieceSelector = ({ player, disabled }) => {
                 {pieces && Object.keys(pieces).map((key) => (
                     <PieceItem onClick={handlePiece} className={key === activePiece && 'active'} id={key} key={key} disabled={disabled}>
                         <div className="piece-item-circle"></div>
-                        <div className="piece-item-size">{key}</div>
+                        <div className="piece-item-size">{(key === 'small' && language.room.small) || (key === 'medium' && language.room.medium) || (key === 'large' && language.room.large)}</div>
                         <div className="piece-item-number">x{pieces[key]}</div>
                         {key === activePiece && (
                             <SelectedPiece

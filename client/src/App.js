@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BrowserRouter } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
@@ -6,6 +6,9 @@ import Loader from './components/Loader';
 import Router from './components/Router';
 import Footer from './components/Footer';
 import ResponsiveModal from './components/ResponsiveModal';
+import Tutorial from './components/Tutorial';
+
+import LanguageProvider from './libs/languageContext';
 
 import socket from './connect';
 
@@ -31,12 +34,13 @@ const App = () => {
     }, [responsive]);
 
     return (
-        <Fragment>
+        <LanguageProvider>
             <GlobalStyle />
+            <Tutorial />
             {responsive && <ResponsiveModal />}
             {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
             <Footer />
-        </Fragment>
+        </LanguageProvider>
     );
 }
 
@@ -75,4 +79,4 @@ const GlobalStyle = createGlobalStyle`
         font-family: Montserrat, Helvetica, sans-serif;
         overflow-x: hidden; 
     }
-`
+`;
