@@ -6,8 +6,9 @@ import Loader from './components/Loader';
 import Router from './components/Router';
 import Footer from './components/Footer';
 import ResponsiveModal from './components/ResponsiveModal';
+import Tutorial from './components/Tutorial';
 
-import LanguageProvider from './libs/context';
+import LanguageProvider from './libs/languageContext';
 
 import socket from './connect';
 
@@ -35,6 +36,7 @@ const App = () => {
     return (
         <LanguageProvider>
             <GlobalStyle />
+            <Tutorial />
             {responsive && <ResponsiveModal />}
             {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
             <Footer />
@@ -77,4 +79,4 @@ const GlobalStyle = createGlobalStyle`
         font-family: Montserrat, Helvetica, sans-serif;
         overflow-x: hidden; 
     }
-`
+`;

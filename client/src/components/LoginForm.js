@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 
-import { LanguageContext } from '../libs/context';
+import { LanguageContext } from '../libs/languageContext';
 
 import socket from '../connect';
 

@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 import ChevronRight from '../icons/ChevronRight';
 import ChevronLeft from '../icons/ChevronLeft';
 
-import { LanguageContext } from '../libs/context';
+import { LanguageContext } from '../libs/languageContext';
 
 import socket from '../connect';
 

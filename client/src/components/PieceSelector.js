@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 
-import { LanguageContext } from '../libs/context';
+import { LanguageContext } from '../libs/languageContext';
 
 import socket from '../connect';
 

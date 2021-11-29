@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 
-import { LanguageContext } from '../libs/context';
+import { LanguageContext } from '../libs/languageContext';
 
 const ResponsiveModal = () => {
     const { language } = useContext(LanguageContext);
