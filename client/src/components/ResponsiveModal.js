@@ -22,7 +22,7 @@ const ResponsiveModal = () => {
                     </linearGradient>
                 </defs>
             </svg>
-            <span>{language.general.create_room}</span>
+            <span>{language.general.responsive}</span>
         </Modal>
     );
 }
