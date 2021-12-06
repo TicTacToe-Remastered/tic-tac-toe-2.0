@@ -19,6 +19,8 @@ const Footer = () => {
                 <LanguageBtn active={language.general.play === 'Play'} onClick={() => handleClick('en')}>EN</LanguageBtn>
                 /
                 <LanguageBtn active={language.general.play === 'Jouer'} onClick={() => handleClick('fr')}>FR</LanguageBtn>
+                /
+                <LanguageBtn active={language.general.play === 'Lancar'} onClick={() => handleClick('es')}>ES</LanguageBtn>
             </div>
             <div className="right">
                 <span>{language.general.copyrights} <a target="_blank" rel="noreferrer" href="https://github.com/misterazix">MisterAzix</a></span>
