@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 const ResponsiveModal = () => {
     const { language } = useContext(LanguageContext);
@@ -36,7 +36,7 @@ const Modal = styled.div`
     left: 0;
     right: 0;
     height: 100vh;
-    background: var(--background-color);
+    background: ${({ theme }) => theme.body};
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 import socket from '../connect';
 
@@ -62,7 +62,7 @@ const InputGroup = styled.div`
         border: none;
         outline: none;
         border-radius: 1.5vmin;
-        background: var(--background-color);
-        box-shadow: var(--box-shadow);
+        background: ${({ theme }) => theme.cardBackground};
+        box-shadow: ${({ theme }) => theme.boxShadow};
     }
 `;

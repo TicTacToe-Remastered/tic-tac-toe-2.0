@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 import socket from '../connect';
 
@@ -49,11 +49,11 @@ export default PieceSelector;
 
 const Selector = styled.ul`
     ${props => props.id === 'blue' && css`
-        --gradient-color: linear-gradient(180deg, #00D2FF 0%, #3A7BD5 100%);
+        --gradient-color: ${({ theme }) => theme.gradientBlue};
     `}
 
     ${props => props.id === 'red' && css`
-        --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+        --gradient-color: ${({ theme }) => theme.gradientRed};
     `}
 `;
 
@@ -65,14 +65,15 @@ const SelectedPiece = styled(motion.div)`
     top: 0;
     left: 0;
     z-index: -1;
-    background: var(--background-color-active);
+    background:${({ theme }) => theme.cardBackgroundActive};
 `;
 
 const PieceItem = styled.li`
     position: relative;
     border-radius: 2vmin;
     padding: 16px 24px;
-    box-shadow: var(--box-shadow);
+    background-color: ${({ theme }) => theme.cardBackground};
+    box-shadow: ${({ theme }) => theme.boxShadow};
     display: flex;
     align-items: center;
     width: 32vmin;
@@ -100,7 +101,7 @@ const PieceItem = styled.li`
         padding: 0.3vmin;
         border-radius: 50%;
         margin-right: 1.5vmin;
-        box-shadow: var(--box-shadow);
+        box-shadow: ${({ theme }) => theme.boxShadow};
         background: var(--gradient-color);
         mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: destination-out;

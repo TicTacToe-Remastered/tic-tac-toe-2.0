@@ -9,7 +9,7 @@ import PieceSelector from '../components/PieceSelector';
 import InfoIcon from '../icons/InfoIcon';
 import Cross from '../icons/Cross';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 const Tutorial = () => {
     const { language } = useContext(LanguageContext);
@@ -34,7 +34,7 @@ const Tutorial = () => {
         <>
             <Info onClick={handleInfo}><InfoIcon /></Info>
             <AnimatePresence exitBeforeEnter>
-            {tutorial &&
+                {tutorial &&
                     <Background
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -68,7 +68,7 @@ const Tutorial = () => {
                             </CardBody>
                         </Card>
                     </Background>}
-                </AnimatePresence>
+            </AnimatePresence>
         </>
     );
 }
@@ -79,7 +79,7 @@ const Background = styled(motion.div)`
     z-index: 101;
     position: fixed;
     inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${({ theme }) => theme.overlay};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -87,9 +87,9 @@ const Background = styled(motion.div)`
 
 const Card = styled(motion.div)`
     padding: 8vmin;
-    box-shadow: var(--box-shadow);
+    box-shadow: ${({ theme }) => theme.boxShadow};
     border-radius: 2vmin;
-    background: var(--background-color);
+    background: ${({ theme }) => theme.body};
 `;
 
 const CardBody = styled.div`
@@ -158,7 +158,7 @@ const Info = styled.button`
     svg {
         width: 4vmin;
         height: 4vmin;
-        color: var(--text-color);
+        color: ${({ theme }) => theme.text};
     }
 
     &:hover {
@@ -179,7 +179,10 @@ const CrossButton = styled.button`
     svg {
         width: 2.5vmin;
         height: 2.5vmin;
-        color: var(--text-color);
+
+        path {
+            fill: ${({ theme }) => theme.text};
+        }
     }
 
     &:hover {

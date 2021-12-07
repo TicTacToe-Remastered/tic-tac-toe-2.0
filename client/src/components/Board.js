@@ -43,11 +43,12 @@ const Box = styled.li`
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: var(--box-shadow);
+    background-color: ${({ theme }) => theme.cardBackground};
+    box-shadow: ${({ theme }) => theme.boxShadow};;
     border-radius: 2vmin;
 
     ${props => props.active && css`
-        background-color: var(--background-color-active);
+        background-color: ${({ theme }) => theme.cardBackgroundActive};
     `}
 
     ${props => props.disabled && css`
@@ -59,7 +60,7 @@ const Circle = styled.span`
     position: absolute;
     border-radius: 50%;
     padding: 0.3vmin;
-    background: var(--gradient-color);
+    background: ${({ theme }) => theme.text};
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: destination-out;
     user-select: none;
@@ -81,10 +82,10 @@ const Circle = styled.span`
     `}
 
     ${props => props.team === 'blue' && css`
-        background: var(--gradient-blue);
+        background: ${({ theme }) => theme.gradientBlue};
     `}
 
     ${props => props.team === 'red' && css`
-        background: var(--gradient-red);
+        background: ${({ theme }) => theme.gradientRed};
     `}
 `;

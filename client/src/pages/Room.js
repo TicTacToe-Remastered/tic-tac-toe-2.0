@@ -173,7 +173,7 @@ const Back = styled.button`
     svg {
         width: 3.5vmin;
         height: 3.5vmin;
-        color: var(--text-color);
+        color: ${({ theme }) => theme.text};
     }
 
     &:hover {
