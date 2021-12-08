@@ -168,12 +168,13 @@ const Back = styled.button`
     cursor: pointer;
     margin-top: 2vmin;
     margin-left: 3vmin;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition};
 
     svg {
         width: 3.5vmin;
         height: 3.5vmin;
         color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 
     &:hover {

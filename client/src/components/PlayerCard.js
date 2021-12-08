@@ -79,6 +79,7 @@ const Card = styled.div`
     align-items: center;
     width: 32vmin;
     text-align: center;
+    transition: background-color ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     .player-logo {
         position: relative;
@@ -88,6 +89,7 @@ const Card = styled.div`
         margin-bottom: 2vmin;
         box-shadow: ${({ theme }) => theme.boxShadow};
         background: var(--gradient-color);
+        transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
         svg {
             position: absolute;

@@ -64,6 +64,7 @@ const Item = styled.li`
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     span {
         font-size: 2vmin;

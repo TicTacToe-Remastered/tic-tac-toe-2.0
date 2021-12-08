@@ -41,6 +41,7 @@ const Modal = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition: background ${({ theme }) => theme.transition};
 
     svg {
         height: 25vmin;

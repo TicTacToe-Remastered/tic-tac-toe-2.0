@@ -83,13 +83,15 @@ const Background = styled(motion.div)`
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: background-color ${({ theme }) => theme.transition};
 `;
 
 const Card = styled(motion.div)`
     padding: 8vmin;
-    box-shadow: ${({ theme }) => theme.boxShadow};
     border-radius: 2vmin;
-    background: ${({ theme }) => theme.body};
+    box-shadow: ${({ theme }) => theme.boxShadow};
+    background: ${({ theme }) => theme.body};  
+    transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 `;
 
 const CardBody = styled.div`
@@ -153,12 +155,13 @@ const Info = styled.button`
     cursor: pointer;
     margin-top: 2vmin;
     margin-right: 3vmin;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition};
 
     svg {
         width: 4vmin;
         height: 4vmin;
         color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 
     &:hover {
@@ -174,7 +177,7 @@ const CrossButton = styled.button`
     border: none;
     outline: none;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition};
 
     svg {
         width: 2.5vmin;

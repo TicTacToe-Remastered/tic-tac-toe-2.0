@@ -66,6 +66,7 @@ const SelectedPiece = styled(motion.div)`
     left: 0;
     z-index: -1;
     background:${({ theme }) => theme.cardBackgroundActive};
+    transition: background ${({ theme }) => theme.transition};
 `;
 
 const PieceItem = styled.li`
@@ -79,6 +80,7 @@ const PieceItem = styled.li`
     width: 32vmin;
     margin: 16px 0;
     cursor: pointer;
+    transition: background-color ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     ${props => props.disabled && css`
         pointer-events: none;
@@ -106,6 +108,7 @@ const PieceItem = styled.li`
         mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: destination-out;
         pointer-events: none;
+        transition: box-shadow ${({ theme }) => theme.transition};
     }
 
     /* .piece-item-circle {

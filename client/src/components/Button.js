@@ -20,7 +20,8 @@ const Btn = styled.button`
     color: ${({ theme }) => theme.text};
     font-size: 2vmin;
     font-weight: bold;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition};
+    transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     &:hover {
         transform: scale(1.1);

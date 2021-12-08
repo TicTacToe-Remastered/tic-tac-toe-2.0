@@ -47,6 +47,7 @@ const Background = styled(motion.div)`
     inset: 0;
     background: ${({ theme }) => theme.text};
     opacity: 0.5;
+    transition: background ${({ theme }) => theme.transition};
 `;
 
 const Notif = styled.div`
@@ -79,4 +80,5 @@ const Message = styled(motion.div)`
     font-size: 4vmin;
     font-weight: bold;
     color: ${({ theme }) => theme.body};
+    transition: color ${({ theme }) => theme.transition};
 `;

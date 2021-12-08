@@ -58,6 +58,7 @@ const Foot = styled.footer`
     
     a {
         color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 `;
 
@@ -68,6 +69,7 @@ const LanguageBtn = styled.button`
     outline: none;
     margin: 0 4px;
     color: ${({ theme }) => theme.text};
+    transition: color ${({ theme }) => theme.transition};
 
     ${props => props.active && css`
         font-weight: bold;

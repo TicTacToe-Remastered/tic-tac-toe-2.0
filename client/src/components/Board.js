@@ -44,8 +44,9 @@ const Box = styled.li`
     align-items: center;
     cursor: pointer;
     background-color: ${({ theme }) => theme.cardBackground};
-    box-shadow: ${({ theme }) => theme.boxShadow};;
+    box-shadow: ${({ theme }) => theme.boxShadow};
     border-radius: 2vmin;
+    transition: background-color ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     ${props => props.active && css`
         background-color: ${({ theme }) => theme.cardBackgroundActive};
@@ -65,6 +66,7 @@ const Circle = styled.span`
     mask-composite: destination-out;
     user-select: none;
     pointer-events: none;
+    transition: background ${({ theme }) => theme.transition};
 
     ${props => props.size === 'small' && css`
         height: 6vmin;

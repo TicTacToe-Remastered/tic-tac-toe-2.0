@@ -22,6 +22,6 @@ export const GlobalStyles = createGlobalStyle`
         color: ${({ theme }) => theme.text};
         font-family: Montserrat, Helvetica, sans-serif;
         overflow-x: hidden;
-        transition: all 0.3s ease;
+        transition: background-color ${({ theme }) => theme.transition}, color ${({ theme }) => theme.transition};
     }
 `;

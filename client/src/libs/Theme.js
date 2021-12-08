@@ -9,6 +9,7 @@ export const lightTheme = {
     gradientBlueRight: 'linear-gradient(270deg, #00D2FF 0%, #3A7BD5 100%)',
     gradientRed: 'linear-gradient(180deg, #FF512F 0%, #DD2476 100%)',
     gradientRedRight: 'linear-gradient(270deg, #FF512F 0%, #DD2476 100%)',
+    transition: '0.3s ease',
 }
 
 export const darkTheme = {
@@ -22,4 +23,5 @@ export const darkTheme = {
     gradientBlueRight: 'linear-gradient(270deg, #00D2FF 0%, #3A7BD5 100%)',
     gradientRed: 'linear-gradient(180deg, #FF512F 0%, #DD2476 100%)',
     gradientRedRight: 'linear-gradient(270deg, #FF512F 0%, #DD2476 100%)',
+    transition: '0.3s ease',
 }

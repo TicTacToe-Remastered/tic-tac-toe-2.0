@@ -64,5 +64,6 @@ const InputGroup = styled.div`
         border-radius: 1.5vmin;
         background: ${({ theme }) => theme.cardBackground};
         box-shadow: ${({ theme }) => theme.boxShadow};
+        transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
     }
 `;
