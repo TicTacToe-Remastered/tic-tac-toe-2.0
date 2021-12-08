@@ -104,6 +104,7 @@ const Reload = styled.button`
         width: 3.5vmin;
         height: 3.5vmin;
         color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 
     &:hover {
