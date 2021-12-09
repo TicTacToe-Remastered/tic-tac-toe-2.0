@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
 
         &::-webkit-scrollbar {
-            background-color: ${({ theme }) => theme.body};
+            background-color: transparent;
             width: 1vmin;
         }
 
