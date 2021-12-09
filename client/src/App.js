@@ -6,7 +6,7 @@ import Loader from './components/Loader';
 import Router from './components/Router';
 import Footer from './components/Footer';
 import ResponsiveModal from './components/ResponsiveModal';
-import Tutorial from './components/Tutorial';
+import Settings from './components/Settings';
 
 import LanguageProvider from './libs/context/languageContext';
 import { GlobalStyles } from './libs/GlobalStyles';
@@ -43,7 +43,7 @@ const App = () => {
         <ThemeProvider theme={themeMode}>
             <LanguageProvider>
                 <GlobalStyles />
-                <Tutorial />
+                <Settings />
                 <button onClick={themeToggler}>Toggle darkmode</button>
                 {responsive && <ResponsiveModal />}
                 {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
