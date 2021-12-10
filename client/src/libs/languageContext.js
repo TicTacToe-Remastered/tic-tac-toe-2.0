@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useMemo, useState } from "react";
 
 const translations = {
     en: require('../locales/en.json'),
@@ -15,6 +15,7 @@ const LanguageProvider = ({ children }) => {
     const [language, setLanguage] = useState(translations['en']);
 
     const handleSetLanguage = (lang) => {
+        window.localStorage.setItem('language', lang);
         setLanguage(translations[lang] || translations['en']);
         document.documentElement.lang = lang || 'en';
     }
@@ -23,6 +24,11 @@ const LanguageProvider = ({ children }) => {
         () => ({ language, setLanguage: handleSetLanguage }),
         [language]
     );
+
+    useEffect(() => {
+        const localTheme = window.localStorage.getItem('language');
+        localTheme ? handleSetLanguage(localTheme) : handleSetLanguage('en');
+    }, []);
 
     return (
         <LanguageContext.Provider value={value}>
