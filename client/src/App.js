@@ -43,8 +43,7 @@ const App = () => {
         <ThemeProvider theme={themeMode}>
             <LanguageProvider>
                 <GlobalStyles />
-                <Settings />
-                <button onClick={themeToggler}>Toggle darkmode</button>
+                <Settings themeToggler={themeToggler} />
                 {responsive && <ResponsiveModal />}
                 {connection ? <BrowserRouter><Router /></BrowserRouter> : <Loader />}
                 <Footer />
