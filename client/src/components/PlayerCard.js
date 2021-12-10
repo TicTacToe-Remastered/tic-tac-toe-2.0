@@ -114,6 +114,7 @@ const Card = styled.div`
         font-size: 2.5vmin;
         font-weight: bold;
         margin: 1.5vmin 0;
+        white-space: nowrap;
 
         &.active {
             &::after {
