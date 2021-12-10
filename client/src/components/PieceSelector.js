@@ -38,6 +38,7 @@ const PieceSelector = ({ player, disabled }) => {
                                 layoutId="selected"
                             />
                         )}
+                        <BackgroundPiece />
                     </PieceItem>
                 ))}
             </AnimateSharedLayout>
@@ -69,32 +70,33 @@ const SelectedPiece = styled(motion.div)`
     transition: background ${({ theme }) => theme.transition};
 `;
 
+const BackgroundPiece = styled(motion.div)`
+    width: 100%;
+    height: 100%;
+    border-radius: 2vmin;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -3;
+    background:${({ theme }) => theme.cardBackground};
+    transition: background ${({ theme }) => theme.transition};
+`;
+
 const PieceItem = styled.li`
     position: relative;
     border-radius: 2vmin;
     padding: 16px 24px;
-    background-color: ${({ theme }) => theme.cardBackground};
     box-shadow: ${({ theme }) => theme.boxShadow};
     display: flex;
     align-items: center;
     width: 32vmin;
     margin: 16px 0;
     cursor: pointer;
-    transition: background-color ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
+    transition: box-shadow ${({ theme }) => theme.transition};
 
     ${props => props.disabled && css`
         pointer-events: none;
     `}
-
-    /* &.active {
-        background: var(--background-color-active);
-
-        .piece-item-circle {
-            &::after {
-                background: var(--background-color-active);
-            }
-        }
-    } */
 
     .piece-item-circle {
         position: relative;
@@ -110,27 +112,7 @@ const PieceItem = styled.li`
         pointer-events: none;
         transition: box-shadow ${({ theme }) => theme.transition};
     }
-
-    /* .piece-item-circle {
-        position: relative;
-        width: 3vmin;
-        height: 3vmin;
-        border-radius: 3vmin;
-        margin-right: 1.5vmin;
-        box-shadow: var(--box-shadow);
-        background: var(--gradient-color);
-        pointer-events: none;
-
-        &::after {
-            content: "";
-            position: absolute;
-            background: var(--background-color);
-            inset: 0;
-            margin: 0.3vmin;
-            border-radius: 3vmin;
-        }
-    } */
-
+    
     .piece-item-size,
     .piece-item-number {
         font-size: 2vmin;
