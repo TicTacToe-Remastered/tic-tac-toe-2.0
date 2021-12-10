@@ -15,18 +15,21 @@ const Btn = styled.button`
     padding: 1vmin 3vmin;
     margin-top: 2vmin;
     border-radius: 1vmin;
-    background: var(--background-color);
-    box-shadow: var(--box-shadow);
+    background: ${({ theme }) => theme.cardBackground};
+    box-shadow: ${({ theme }) => theme.boxShadow};
+    color: ${({ theme }) => theme.text};
     font-size: 2vmin;
     font-weight: bold;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition}, 
+                background ${({ theme }) => theme.transition}, 
+                box-shadow ${({ theme }) => theme.transition};
 
     &:hover {
         transform: scale(1.1);
     }
 
     ${props => props.color === 'primary' && css`
-        background: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+        background: ${({ theme }) => theme.gradientRedRight};
         color: hsl(210, 33%, 99%);
     `}
 `

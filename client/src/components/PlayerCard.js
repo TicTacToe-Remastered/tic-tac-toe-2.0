@@ -4,7 +4,7 @@ import styled, { css, keyframes } from 'styled-components';
 import ChevronRight from '../icons/ChevronRight';
 import ChevronLeft from '../icons/ChevronLeft';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 import socket from '../connect';
 
@@ -62,22 +62,24 @@ const loadAnimation = keyframes`
 
 const Card = styled.div`
     ${props => props.id === 'blue' && css`
-        --gradient-color: linear-gradient(180deg, #00D2FF 0%, #3A7BD5 100%);
+        --gradient-color: ${({ theme }) => theme.gradientBlue};
     `}
 
     ${props => props.id === 'red' && css`
-        --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+        --gradient-color: ${({ theme }) => theme.gradientRed};
     `}
 
     border-radius: 2vmin;
     padding: 16px;
-    box-shadow: var(--box-shadow);
+    background-color: ${({ theme }) => theme.cardBackground};
+    box-shadow: ${({ theme }) => theme.boxShadow};
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 32vmin;
     text-align: center;
+    transition: background-color ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     .player-logo {
         position: relative;
@@ -85,8 +87,9 @@ const Card = styled.div`
         height: 6vmin;
         border-radius: 6vmin;
         margin-bottom: 2vmin;
-        box-shadow: var(--box-shadow);
+        box-shadow: ${({ theme }) => theme.boxShadow};
         background: var(--gradient-color);
+        transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
         svg {
             position: absolute;

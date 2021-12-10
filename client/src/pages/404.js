@@ -7,7 +7,7 @@ import Title from '../components/Title';
 import Icon404 from '../icons/Icon404';
 import Button from '../components/Button';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 const NotFound = () => {
     const { language } = useContext(LanguageContext);
