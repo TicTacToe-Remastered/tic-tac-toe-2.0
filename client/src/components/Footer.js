@@ -67,6 +67,7 @@ const LanguageBtn = styled.button`
     cursor: pointer;
     outline: none;
     margin: 0 4px;
+    font-size: 2vmin;
 
     ${props => props.active && css`
         font-weight: bold;
