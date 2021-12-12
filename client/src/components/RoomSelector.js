@@ -58,12 +58,13 @@ const Item = styled.li`
     border: none;
     outline: none;
     border-radius: 1.5vmin;
-    background: var(--background-color);
-    box-shadow: var(--box-shadow);
+    background: ${({ theme }) => theme.cardBackground};
+    box-shadow: ${({ theme }) => theme.boxShadow};
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    transition: background ${({ theme }) => theme.transition}, box-shadow ${({ theme }) => theme.transition};
 
     span {
         font-size: 2vmin;

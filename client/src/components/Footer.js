@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 const Footer = () => {
     const { language, setLanguage } = useContext(LanguageContext);
@@ -57,7 +57,8 @@ const Foot = styled.footer`
     }
     
     a {
-        color: var(--text-color);
+        color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 `;
 
@@ -68,6 +69,8 @@ const LanguageBtn = styled.button`
     outline: none;
     margin: 0 4px;
     font-size: 2vmin;
+    color: ${({ theme }) => theme.text};
+    transition: color ${({ theme }) => theme.transition};
 
     ${props => props.active && css`
         font-weight: bold;

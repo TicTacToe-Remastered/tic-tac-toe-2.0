@@ -7,7 +7,7 @@ import Title from '../components/Title';
 import RoomSelector from '../components/RoomSelector';
 import Button from '../components/Button';
 
-import { LanguageContext } from "../libs/languageContext";
+import { LanguageContext } from '../libs/context/languageContext';
 
 import socket from '../connect';
 
@@ -98,12 +98,13 @@ const Reload = styled.button`
     cursor: pointer;
     margin-top: 2vmin;
     margin-left: 3vmin;
-    transition: transform 0.3s ease;
+    transition: transform ${({ theme }) => theme.transition};
 
     svg {
         width: 3.5vmin;
         height: 3.5vmin;
-        color: var(--text-color);
+        color: ${({ theme }) => theme.text};
+        transition: color ${({ theme }) => theme.transition};
     }
 
     &:hover {

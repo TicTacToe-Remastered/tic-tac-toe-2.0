@@ -102,7 +102,7 @@ io.on('connection', socket => {
 
         if (isFree(room, player, box)) {
             room.grid[box].unshift([player.team, player.activePiece]);
-            player.pieces[player.activePiece]--;
+            toogleActiveTeam(room);
 
             const editBoard = () => {
                 io.to(room.id).emit('receive-grid', room.grid);
@@ -118,7 +118,7 @@ io.on('connection', socket => {
                     resetGrid(room);
                     editBoard();
                 }, 2000);
-            } else if (checkEquality(room.grid)) {
+            } else if (checkEquality(room)) {
                 io.to(room.id).emit('receive-equality');
                 setTimeout(() => {
                     resetGrid(room);
@@ -126,8 +126,8 @@ io.on('connection', socket => {
                 }, 2000);
             }
 
+            player.pieces[player.activePiece]--;
             editBoard();
-            toogleActiveTeam(room);
 
         } else {
             callback(`You can't play on <b>box ${box}</b>!`);
@@ -186,8 +186,37 @@ function toogleActiveTeam(room) {
     io.to(room.id).emit('receive-active', room.activeTeam);
 }
 
-function checkEquality(grid) {
-    return grid.filter(g => g[0]).length >= 9 && grid.filter(g => g[0]?.[1] === 'large').length >= 6;
+function checkEquality({ grid, players, activeTeam }) {
+    const sizeConverter = (size) => {
+        switch (size) {
+            case 'small':
+                return 1;
+            case 'medium':
+                return 2;
+            case 'large':
+                return 3;
+            default:
+                return 0;
+        }
+    }
+
+    let player = players.find(p => p.team === activeTeam);
+    let tempGridValue = [...grid].map(g => sizeConverter(g[0]?.[1]));
+    let maxValue = Math.min(...tempGridValue);
+
+    switch (maxValue) {
+        case 3:
+            return false;
+        case 2:
+            if (player.pieces.large > 0) return false;
+            break;
+        case 1:
+            if (player.pieces.large > 0 || player.pieces.medium > 0) return false;
+            break;
+        default:
+            return false;
+    }
+    return true;
 }
 
 function checkWin(grid) {

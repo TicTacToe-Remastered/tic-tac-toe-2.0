@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, AnimateSharedLayout } from 'framer-motion';
 
-import { LanguageContext } from '../libs/languageContext';
+import { LanguageContext } from '../libs/context/languageContext';
 
 import socket from '../connect';
 
@@ -38,6 +38,7 @@ const PieceSelector = ({ player, disabled }) => {
                                 layoutId="selected"
                             />
                         )}
+                        <BackgroundPiece />
                     </PieceItem>
                 ))}
             </AnimateSharedLayout>
@@ -49,11 +50,11 @@ export default PieceSelector;
 
 const Selector = styled.ul`
     ${props => props.id === 'blue' && css`
-        --gradient-color: linear-gradient(180deg, #00D2FF 0%, #3A7BD5 100%);
+        --gradient-color: ${({ theme }) => theme.gradientBlue};
     `}
 
     ${props => props.id === 'red' && css`
-        --gradient-color: linear-gradient(180deg, #FF512F 0%, #DD2476 100%);
+        --gradient-color: ${({ theme }) => theme.gradientRed};
     `}
 `;
 
@@ -65,33 +66,37 @@ const SelectedPiece = styled(motion.div)`
     top: 0;
     left: 0;
     z-index: -1;
-    background: var(--background-color-active);
+    background:${({ theme }) => theme.cardBackgroundActive};
+    transition: background ${({ theme }) => theme.transition};
+`;
+
+const BackgroundPiece = styled(motion.div)`
+    width: 100%;
+    height: 100%;
+    border-radius: 2vmin;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -3;
+    background:${({ theme }) => theme.cardBackground};
+    transition: background ${({ theme }) => theme.transition};
 `;
 
 const PieceItem = styled.li`
     position: relative;
     border-radius: 2vmin;
     padding: 16px 24px;
-    box-shadow: var(--box-shadow);
+    box-shadow: ${({ theme }) => theme.boxShadow};
     display: flex;
     align-items: center;
     width: 32vmin;
     margin: 16px 0;
     cursor: pointer;
+    transition: box-shadow ${({ theme }) => theme.transition};
 
     ${props => props.disabled && css`
         pointer-events: none;
     `}
-
-    /* &.active {
-        background: var(--background-color-active);
-
-        .piece-item-circle {
-            &::after {
-                background: var(--background-color-active);
-            }
-        }
-    } */
 
     .piece-item-circle {
         position: relative;
@@ -100,33 +105,14 @@ const PieceItem = styled.li`
         padding: 0.3vmin;
         border-radius: 50%;
         margin-right: 1.5vmin;
-        box-shadow: var(--box-shadow);
+        box-shadow: ${({ theme }) => theme.boxShadow};
         background: var(--gradient-color);
         mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
         mask-composite: destination-out;
         pointer-events: none;
+        transition: box-shadow ${({ theme }) => theme.transition};
     }
-
-    /* .piece-item-circle {
-        position: relative;
-        width: 3vmin;
-        height: 3vmin;
-        border-radius: 3vmin;
-        margin-right: 1.5vmin;
-        box-shadow: var(--box-shadow);
-        background: var(--gradient-color);
-        pointer-events: none;
-
-        &::after {
-            content: "";
-            position: absolute;
-            background: var(--background-color);
-            inset: 0;
-            margin: 0.3vmin;
-            border-radius: 3vmin;
-        }
-    } */
-
+    
     .piece-item-size,
     .piece-item-number {
         font-size: 2vmin;
