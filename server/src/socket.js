@@ -1,27 +1,15 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const PORT = process.env.PORT || 5000;
+const { Server } = require('socket.io');
 
-const { createUser, removeUser, getUser } = require('./users');
-const { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom, leaveRoom, getPlayer } = require('./rooms');
-const { joinWebhook, roomCreateWebhook, roomJoinWebhook, roomDeleteWebhook, winWebhook } = require('./webhooks');
+const { createUser, removeUser, getUser } = require('./utils/users');
+const { createRoom, removeRoom, getRoom, getRooms, resetRoom, joinRoom, leaveRoom, getPlayer } = require('./utils/rooms');
+const { joinWebhook, roomCreateWebhook, roomJoinWebhook, roomDeleteWebhook, winWebhook } = require('./utils/webhooks');
 
 const consoleTimestamp = function () {
     const date = new Date();
     return `[${date.getHours() < 10 ? '0' : '' + date.getHours()}:${date.getMinutes() < 10 ? '0' : '' + date.getMinutes()}]`;
 }
 
-const app = express()
-    .use(cors())
-    .use((req, res) => res.end('Hello world!'))
-    .listen(PORT, () => console.log(consoleTimestamp(), `>>> Server is running & listening on ${PORT} <<<`));
-
-const io = require('socket.io')(app, {
-    cors: {
-        origin: "*"
-    }
-});
+const io = new Server();
 
 io.on('connection', socket => {
     console.log(consoleTimestamp(), 'Client connected : ', socket.id);
@@ -268,3 +256,5 @@ function checkWin(grid) {
 function isPieceAvailable(player) {
     return player.pieces[player.activePiece] > 0;
 }
+
+module.exports = io;
