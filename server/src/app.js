@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+require("./auth/passport");
+
 const api = require('./api');
 
 const app = express();
