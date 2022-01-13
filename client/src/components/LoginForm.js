@@ -27,7 +27,7 @@ const LoginForm = () => {
         <Form onSubmit={formSubmit} id="login-form">
             <InputGroup>
                 <label htmlFor="username">{language.general.username}</label>
-                <input onChange={event => setName(event.target.value)} type="text" id="username" placeholder="John Doe" maxlength="42" required />
+                <input onChange={event => setName(event.target.value)} type="text" id="username" placeholder="John Doe" maxLength="42" required />
             </InputGroup>
             <Button type="submit" color="primary">{language.general.login}</Button>
         </Form>
