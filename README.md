@@ -1,3 +1,5 @@
+![](https://res.cloudinary.com/hf10ee93o/image/upload/v1628042787/meta_image_szx9xm.jpg)
+
 # What's TicTacToe 2.0 ?
 
 This project was born one day when I was on Instagram and I saw a video of two people playing tic-tac-toe, but it was not a classic tic-tac-toe. Indeed, they were playing not with crosses and circles but with Russian dolls giving several sizes of pawns. It is possible to put a larger piece on top of a smaller one to take control of the square.
